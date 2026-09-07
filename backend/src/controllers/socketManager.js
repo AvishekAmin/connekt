@@ -1,6 +1,6 @@
-import { Server } from "socket.io"
+import { Server } from "socket.io";
 
 export const connectToSocket = (server) => {
-    const io = new Server(server);
-    return io;
-}
+  const io = new Server(server);
+  return io;
+};
