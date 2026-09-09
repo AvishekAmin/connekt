@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { TextField, Button, IconButton, Badge } from "@mui/material";
 import { io } from "socket.io-client";
+import { useNavigate } from "react-router-dom";
 import VideocamIcon from "@mui/icons-material/Videocam";
 import VideocamOffIcon from "@mui/icons-material/VideocamOff";
 import styles from "../styles/videoComponent.module.css";
@@ -358,6 +359,8 @@ export default function VideoMeetComponent() {
     connectToSocketServer();
   };
 
+  let routeTo = useNavigate();
+
   let connect = () => {
     setAskForUsername(false);
     getMedia();
@@ -448,6 +451,17 @@ export default function VideoMeetComponent() {
     setMessage("");
   };
 
+  let handleEndCall = () => {
+    try {
+      let tracks = localVideoRef.current.srcObject.getTracks();
+      tracks.forEach((track) => track.stop());
+    } catch (err) {
+      console.log(err);
+    }
+
+    routeTo("/home");
+  };
+
   return (
     <div>
       {askForUsername === true ? (
@@ -474,6 +488,22 @@ export default function VideoMeetComponent() {
             <div className={styles.chatRoom}>
               <div className={styles.chatContainer}>
                 <h1>Chat</h1>
+
+                <div className={styles.chattingDisplay}>
+                  {messages.length > 0 ? (
+                    messages.map((item, index) => {
+                      return (
+                        <div style={{ marginBottom: "20px" }} key={index}>
+                          <p style={{ fontWeight: "bold" }}>{item.sender}</p>
+                          <p>{item.data}</p>
+                        </div>
+                      );
+                    })
+                  ) : (
+                    <p>No Messages Yet!</p>
+                  )}
+                </div>
+
                 <div className={styles.chattingArea}>
                   {message}
                   <TextField
@@ -497,7 +527,7 @@ export default function VideoMeetComponent() {
             <IconButton onClick={handleVideo} style={{ color: "white" }}>
               {video === true ? <VideocamIcon /> : <VideocamOffIcon />}
             </IconButton>
-            <IconButton style={{ color: "red" }}>
+            <IconButton onClick={handleEndCall} style={{ color: "red" }}>
               <CallEndIcon />
             </IconButton>
             <IconButton onClick={handleAudio} style={{ color: "white" }}>
