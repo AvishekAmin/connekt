@@ -1,25 +1,29 @@
-import "dotenv/config";
 import express from "express";
 import { createServer } from "node:http";
-import mongoose from "mongoose";
-import { connectToSocket } from "./controllers/socketManager.js";
 import cors from "cors";
+import { config } from "./config/env.js";
+import { connectDatabase } from "./config/database.js";
+import { connectToSocket } from "./sockets/socketManager.js";
+import { errorHandler } from "./middleware/errorHandler.js";
 import userRoutes from "./routes/users.routes.js";
+import healthRoutes from "./routes/health.routes.js";
 
 const app = express();
 const server = createServer(app);
 const io = connectToSocket(server);
 
-app.set("port", process.env.PORT || 8080);
+app.set("port", config.port);
 app.use(cors());
 app.use(express.json({ limit: "40kb" }));
 app.use(express.urlencoded({ limit: "40kb", extended: true }));
 
+app.use("/health", healthRoutes);
 app.use("/api/v1/users", userRoutes);
 
+app.use(errorHandler);
+
 const start = async () => {
-  const connectionDb = await mongoose.connect(process.env.MONGO_URI);
-  console.log(`MONGO connected DB Host: ${connectionDb.connection.host}`);
+  await connectDatabase();
 
   server.listen(app.get("port"), () => {
     console.log(`Server is listening on port ${app.get("port")}`);
@@ -27,3 +31,5 @@ const start = async () => {
 };
 
 start();
+
+export { app, server, io };
