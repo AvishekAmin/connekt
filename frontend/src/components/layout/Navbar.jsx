@@ -1,13 +1,16 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { History, LogOut } from "lucide-react";
+import { ROUTES } from "@/constants/routes";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function Navbar({ showAuth = false, showAppNav = false }) {
   const navigate = useNavigate();
+  const { logout } = useAuth();
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    navigate("/auth");
+    logout();
+    navigate(ROUTES.AUTH);
   };
 
   return (
@@ -15,7 +18,7 @@ export default function Navbar({ showAuth = false, showAppNav = false }) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Brand Logo */}
         <Link
-          to={showAppNav ? "/home" : "/"}
+          to={showAppNav ? ROUTES.HOME : ROUTES.LANDING}
           className="flex items-center gap-2.5 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-full px-2 py-1 transition-all"
         >
           <img
@@ -38,7 +41,7 @@ export default function Navbar({ showAuth = false, showAppNav = false }) {
               variant="outline"
               size="sm"
               className="border-[#1E2B4D] bg-[#0D1527] hover:bg-[#131D36] text-white text-xs font-semibold px-5 rounded-full shadow-sm"
-              onClick={() => navigate("/auth")}
+              onClick={() => navigate(ROUTES.AUTH)}
             >
               Login
             </Button>
@@ -50,7 +53,7 @@ export default function Navbar({ showAuth = false, showAppNav = false }) {
                 variant="outline"
                 size="sm"
                 className="border-[#1E2B4D] bg-[#0D1527] hover:bg-[#131D36] text-slate-200 hover:text-white rounded-full px-4 text-xs font-medium gap-2"
-                onClick={() => navigate("/history")}
+                onClick={() => navigate(ROUTES.HISTORY)}
               >
                 <History className="size-3.5 text-[#00D8F6]" />
                 <span className="hidden sm:inline">Meeting History</span>

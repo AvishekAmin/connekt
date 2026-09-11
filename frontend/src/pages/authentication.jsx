@@ -1,6 +1,7 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "@/contexts/AuthContext";
+import { useAuth } from "@/hooks/useAuth";
+import { ROUTES } from "@/constants/routes";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -14,7 +15,7 @@ import {
 
 export default function Authentication() {
   const navigate = useNavigate();
-  const { handleRegister, handleLogin } = useContext(AuthContext);
+  const { login, register } = useAuth();
 
   const [formState, setFormState] = useState(0); // 0 = Login, 1 = Sign Up
   const [username, setUsername] = useState("");
@@ -33,10 +34,10 @@ export default function Authentication() {
 
     try {
       if (formState === 0) {
-        await handleLogin(username, password);
-        navigate("/home");
+        await login(username, password);
+        navigate(ROUTES.HOME);
       } else {
-        const result = await handleRegister(name, username, password);
+        const result = await register(name, username, password);
         setUsername("");
         setPassword("");
         setName("");
@@ -62,7 +63,7 @@ export default function Authentication() {
       {/* Top Navigation Bar */}
       <div className="w-full max-w-5xl mx-auto flex items-center justify-between">
         <Link
-          to="/"
+          to={ROUTES.LANDING}
           className="inline-flex items-center gap-2 text-xs font-medium text-slate-400 hover:text-white bg-[#0D1527] border border-[#1E2B4D] hover:bg-[#131D36] rounded-full px-4 py-2 transition-all"
         >
           <ArrowLeft className="size-3.5" />
@@ -70,7 +71,7 @@ export default function Authentication() {
         </Link>
 
         {/* Brand Logo in header */}
-        <Link to="/" className="flex items-center gap-2">
+        <Link to={ROUTES.LANDING} className="flex items-center gap-2">
           <img
             src="/favicon.svg"
             alt="Connekt"

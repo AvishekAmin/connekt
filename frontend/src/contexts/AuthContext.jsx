@@ -1,72 +1,34 @@
-import axios from "axios";
 import { createContext, useState } from "react";
-import server from "../environment";
+import { STORAGE_KEYS } from "@/constants/routes";
 
-export const AuthContext = createContext({});
-
-const client = axios.create({
-  baseURL: `${server}/api/v1/users`,
-});
+export const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  const [userData, setUserData] = useState(null);
+  const [token, setToken] = useState(() => {
+    return localStorage.getItem(STORAGE_KEYS.TOKEN) || null;
+  });
 
-  const handleRegister = async (name, username, password) => {
-    const request = await client.post("/register", {
-      name,
-      username,
-      password,
-    });
-
-    if (request.status === 201) {
-      return request.data.message;
+  const setAuthToken = (newToken) => {
+    if (newToken) {
+      localStorage.setItem(STORAGE_KEYS.TOKEN, newToken);
+      setToken(newToken);
+    } else {
+      localStorage.removeItem(STORAGE_KEYS.TOKEN);
+      setToken(null);
     }
   };
 
-  const handleLogin = async (username, password) => {
-    const request = await client.post("/login", {
-      username,
-      password,
-    });
-
-    if (request.status === 200) {
-      localStorage.setItem("token", request.data.token);
-    }
+  const clearAuthToken = () => {
+    localStorage.removeItem(STORAGE_KEYS.TOKEN);
+    setToken(null);
   };
 
-  const getHistoryOfUser = async () => {
-    try {
-      let request = await client.get("/get_all_activity", {
-        params: {
-          token: localStorage.getItem("token"),
-        },
-      });
-      return request.data;
-    } catch (err) {
-      throw err;
-    }
+  const value = {
+    token,
+    isAuthenticated: Boolean(token),
+    setAuthToken,
+    clearAuthToken,
   };
 
-  const addToUserHistory = async (meetingCode) => {
-    try {
-      let request = await client.post("/add_to_activity", {
-        token: localStorage.getItem("token"),
-        meeting_code: meetingCode,
-      });
-      return request;
-    } catch (err) {
-      throw err;
-    }
-  };
-
-  const data = {
-    userData,
-    setUserData,
-    handleRegister,
-    handleLogin,
-    getHistoryOfUser,
-    addToUserHistory,
-  };
-
-  return <AuthContext.Provider value={data}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
