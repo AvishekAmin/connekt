@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { ROUTES } from "@/constants/routes";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -37,7 +38,7 @@ export default function MeetingLobby({
       {/* Top Header */}
       <div className="w-full max-w-5xl flex items-center justify-between">
         <Link
-          to="/home"
+          to={ROUTES.HOME}
           className="inline-flex items-center gap-2 text-xs font-medium text-slate-300 hover:text-white bg-[#0D1527] border border-[#1E2B4D] hover:bg-[#131D36] rounded-full px-4 py-2 transition-all group"
         >
           <ArrowLeft className="size-4 group-hover:-translate-x-0.5 transition-transform" />

@@ -1,8 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import withAuth from "@/utils/withAuth";
 import Navbar from "@/components/layout/Navbar";
-import { AuthContext } from "@/contexts/AuthContext";
+import { useMeetingHistory } from "@/hooks/useMeetingHistory";
+import { formatDate, formatTime } from "@/utils/formatters";
+import { ROUTES } from "@/constants/routes";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -22,70 +24,16 @@ import {
 } from "lucide-react";
 
 function HistoryComponent() {
-  const { getHistoryOfUser } = useContext(AuthContext);
   const navigate = useNavigate();
+  const { meetings, loading, error, refetch: fetchHistory } = useMeetingHistory();
 
-  const [meetings, setMeetings] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [copiedCode, setCopiedCode] = useState(null);
-
-  const fetchHistory = async () => {
-    setLoading(true);
-    setError("");
-    try {
-      const history = await getHistoryOfUser();
-      if (Array.isArray(history)) {
-        // Sort descending by date
-        setMeetings([...history].reverse());
-      } else {
-        setMeetings([]);
-      }
-    } catch (err) {
-      console.error(err);
-      setError("Failed to load your meeting history. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchHistory();
-  }, []);
 
   const handleCopyCode = (code) => {
     navigator.clipboard.writeText(code);
     setCopiedCode(code);
     setTimeout(() => setCopiedCode(null), 2000);
-  };
-
-  const formatDate = (dateString) => {
-    if (!dateString) return "N/A";
-    try {
-      const date = new Date(dateString);
-      return date.toLocaleDateString("en-US", {
-        weekday: "short",
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-      });
-    } catch {
-      return dateString;
-    }
-  };
-
-  const formatTime = (dateString) => {
-    if (!dateString) return "";
-    try {
-      const date = new Date(dateString);
-      return date.toLocaleTimeString("en-US", {
-        hour: "2-digit",
-        minute: "2-digit",
-      });
-    } catch {
-      return "";
-    }
   };
 
   const filteredMeetings = meetings.filter((m) =>
@@ -101,7 +49,7 @@ function HistoryComponent() {
         {/* Top Back Navigation Pill & Header */}
         <div className="space-y-4">
           <Link
-            to="/home"
+            to={ROUTES.HOME}
             className="inline-flex items-center gap-2 text-xs font-medium text-slate-300 hover:text-white bg-[#0D1527] border border-[#1E2B4D] hover:bg-[#131D36] rounded-full px-4 py-2 w-fit transition-all"
           >
             <ArrowLeft className="size-3.5" />
@@ -224,7 +172,7 @@ function HistoryComponent() {
                   <Button
                     size="sm"
                     className="rounded-full bg-gradient-to-r from-[#00D8F6] to-[#7B61FF] text-black font-bold text-xs gap-1.5 h-9 px-5 shadow-md shadow-cyan-500/20 hover:brightness-110"
-                    onClick={() => navigate(`/${item.meetingCode}`)}
+                    onClick={() => navigate(ROUTES.getMeetingPath(item.meetingCode))}
                   >
                     <span>Rejoin Room</span>
                     <ArrowRight className="size-3.5 text-black stroke-[2.5]" />

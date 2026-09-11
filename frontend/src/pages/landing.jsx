@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/layout/Navbar";
+import { ROUTES } from "@/constants/routes";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -41,7 +42,7 @@ export default function LandingPage() {
                   <Button
                     size="lg"
                     className="bg-gradient-to-r from-[#00D8F6] to-[#7B61FF] text-black font-bold px-8 h-12 shadow-xl shadow-cyan-500/25 hover:brightness-110 gap-2 text-base rounded-full"
-                    onClick={() => navigate("/auth")}
+                    onClick={() => navigate(ROUTES.AUTH)}
                   >
                     <span>Get Started — It's Free</span>
                     <ArrowRight className="size-4 text-black stroke-[2.5]" />

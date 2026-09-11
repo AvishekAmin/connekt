@@ -1,8 +1,10 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import withAuth from "@/utils/withAuth";
 import Navbar from "@/components/layout/Navbar";
-import { AuthContext } from "@/contexts/AuthContext";
+import { useMeetingHistory } from "@/hooks/useMeetingHistory";
+import { formatDate } from "@/utils/formatters";
+import { ROUTES } from "@/constants/routes";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -19,41 +21,22 @@ import {
 
 function HomeComponent() {
   const navigate = useNavigate();
-  const { addToUserHistory, getHistoryOfUser } = useContext(AuthContext);
+  const { meetings, loading: loadingHistory, addToHistory } = useMeetingHistory();
 
   const [meetingCode, setMeetingCode] = useState("");
   const [error, setError] = useState("");
-  const [recentMeetings, setRecentMeetings] = useState([]);
-  const [loadingHistory, setLoadingHistory] = useState(true);
   const [copiedCode, setCopiedCode] = useState(null);
 
-  useEffect(() => {
-    const loadRecent = async () => {
-      try {
-        const history = await getHistoryOfUser();
-        if (Array.isArray(history)) {
-          // Take the 4 most recent meetings
-          const sorted = [...history].reverse().slice(0, 4);
-          setRecentMeetings(sorted);
-        }
-      } catch (err) {
-        console.error("Failed to load meeting history", err);
-      } finally {
-        setLoadingHistory(false);
-      }
-    };
-
-    loadRecent();
-  }, []);
+  const recentMeetings = meetings.slice(0, 4);
 
   const handleCreateInstantMeeting = async () => {
     const randomCode = Math.random().toString(36).substring(2, 9);
     try {
-      await addToUserHistory(randomCode);
-      navigate(`/${randomCode}`);
+      await addToHistory(randomCode);
+      navigate(ROUTES.getMeetingPath(randomCode));
     } catch (err) {
       console.error(err);
-      navigate(`/${randomCode}`);
+      navigate(ROUTES.getMeetingPath(randomCode));
     }
   };
 
@@ -67,12 +50,12 @@ function HomeComponent() {
     }
 
     try {
-      await addToUserHistory(cleanCode);
-      navigate(`/${cleanCode}`);
+      await addToHistory(cleanCode);
+      navigate(ROUTES.getMeetingPath(cleanCode));
     } catch (err) {
       console.error(err);
       // Even if adding to history fails, proceed to meeting room
-      navigate(`/${cleanCode}`);
+      navigate(ROUTES.getMeetingPath(cleanCode));
     }
   };
 
@@ -80,20 +63,6 @@ function HomeComponent() {
     navigator.clipboard.writeText(code);
     setCopiedCode(code);
     setTimeout(() => setCopiedCode(null), 2000);
-  };
-
-  const formatDate = (dateString) => {
-    if (!dateString) return "";
-    try {
-      const date = new Date(dateString);
-      return date.toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-      });
-    } catch {
-      return dateString;
-    }
   };
 
   return (
@@ -195,7 +164,7 @@ function HomeComponent() {
                 </h2>
               </div>
               <Link
-                to="/history"
+                to={ROUTES.HISTORY}
                 className="text-xs font-semibold text-[#00D8F6] hover:underline"
               >
                 View all history →
@@ -245,7 +214,7 @@ function HomeComponent() {
                       variant="outline"
                       size="sm"
                       className="rounded-full bg-[#131D36] border-[#1E2B4D] hover:bg-[#1A2642] hover:border-slate-500 text-white text-xs font-semibold px-4 py-2 shrink-0"
-                      onClick={() => navigate(`/${item.meetingCode}`)}
+                      onClick={() => navigate(ROUTES.getMeetingPath(item.meetingCode))}
                     >
                       Rejoin
                     </Button>

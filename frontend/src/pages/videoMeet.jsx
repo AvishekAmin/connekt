@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { io } from "socket.io-client";
 import { useNavigate, useParams } from "react-router-dom";
-import server from "../environment";
+import server from "@/config/environment";
+import { ROUTES } from "@/constants/routes";
 
 import MeetingLobby from "@/components/meeting/MeetingLobby";
 import MeetingHeader from "@/components/meeting/MeetingHeader";
@@ -10,7 +11,7 @@ import MeetingControls from "@/components/meeting/MeetingControls";
 import ChatPanel from "@/components/meeting/ChatPanel";
 
 const server_url = server;
-var connections = {};
+const connections = {};
 
 const peerConfigConnections = {
   iceServers: [
@@ -24,7 +25,7 @@ export default function VideoMeetComponent() {
   const { url: routeMeetingCode } = useParams();
   const routeTo = useNavigate();
 
-  var socketRef = useRef();
+  const socketRef = useRef();
   let socketIdRef = useRef();
   let localVideoRef = useRef();
 
@@ -212,7 +213,7 @@ export default function VideoMeetComponent() {
   }, [audio, video]);
 
   let gotMessageFromServer = (fromId, message) => {
-    var signal = JSON.parse(message);
+    const signal = JSON.parse(message);
 
     if (fromId !== socketIdRef.current) {
       if (signal.sdp) {
@@ -478,7 +479,7 @@ export default function VideoMeetComponent() {
       console.log(err);
     }
 
-    routeTo("/home");
+    routeTo(ROUTES.HOME);
   };
 
   const handleToggleChat = () => {
