@@ -76,8 +76,7 @@ export const connectToSocket = (server) => {
     });
 
     socket.on("disconnect", () => {
-      var diffTime = Math.abs(timeOnline[socket.id] - new Date());
-      var key;
+      let key;
       for (const [room, persons] of JSON.parse(
         JSON.stringify(Object.entries(connections)),
       )) {
