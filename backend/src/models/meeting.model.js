@@ -7,6 +7,8 @@ const meetingSchema = new Schema({
   date: { type: Date, default: Date.now, required: true },
 });
 
+meetingSchema.index({ user_id: 1, date: -1 });
+
 const Meeting = mongoose.model("Meeting", meetingSchema);
 
 export { Meeting };
