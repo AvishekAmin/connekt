@@ -1,4 +1,4 @@
-# 🎥 Connekt: A Full-Stack Real-Time Video Conferencing Platform
+# 🎥 Connekt: A Real-Time Video Conferencing Platform
 
 **Connekt** is a modern full-stack real-time video conferencing platform designed to make online communication simple, interactive, and accessible. It enables users to create or join meeting rooms using unique meeting codes and communicate through real-time video, audio, screen sharing, and chat.
 

@@ -14,4 +14,10 @@ export const config = {
 
   // Frontend URL for CORS
   frontendUrl: process.env.FRONTEND_URL || "http://localhost:5173",
+
+  // WebRTC ICE Configuration
+  webrtcStunUrl: process.env.WEBRTC_STUN_URL || "stun:stun.l.google.com:19302",
+  webrtcTurnUrl: process.env.WEBRTC_TURN_URL || "",
+  webrtcTurnUsername: process.env.WEBRTC_TURN_USERNAME || "",
+  webrtcTurnCredential: process.env.WEBRTC_TURN_CREDENTIAL || "",
 };
