@@ -6,7 +6,3 @@ export const ROUTES = {
   MEETING: "/:url",
   getMeetingPath: (code) => `/${code}`,
 };
-
-export const STORAGE_KEYS = {
-  TOKEN: "token",
-};

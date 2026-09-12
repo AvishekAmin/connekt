@@ -3,13 +3,13 @@ import { useAuth } from "./useAuth";
 import { getUserHistory, addMeetingToHistory } from "@/services/historyService";
 
 export const useMeetingHistory = () => {
-  const { token } = useAuth();
+  const { isAuthenticated } = useAuth();
   const [meetings, setMeetings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   const fetchHistory = useCallback(async () => {
-    if (!token) {
+    if (!isAuthenticated) {
       setMeetings([]);
       setLoading(false);
       return;
@@ -19,7 +19,7 @@ export const useMeetingHistory = () => {
     setError("");
 
     try {
-      const data = await getUserHistory(token);
+      const data = await getUserHistory();
       if (Array.isArray(data)) {
         setMeetings([...data].reverse());
       } else {
@@ -31,16 +31,16 @@ export const useMeetingHistory = () => {
     } finally {
       setLoading(false);
     }
-  }, [token]);
+  }, [isAuthenticated]);
 
   useEffect(() => {
     fetchHistory();
   }, [fetchHistory]);
 
   const addToHistory = async (meetingCode) => {
-    if (!token || !meetingCode) return;
+    if (!isAuthenticated || !meetingCode) return;
     try {
-      await addMeetingToHistory(token, meetingCode);
+      await addMeetingToHistory(meetingCode);
     } catch (err) {
       console.error("Failed to add meeting to history:", err);
     }

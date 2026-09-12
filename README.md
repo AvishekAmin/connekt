@@ -262,7 +262,7 @@ connekt/
 ### Signup
 
 ```http
-POST /api/v1/users/register
+POST /api/v1/users/signup
 ```
 
 ### Login

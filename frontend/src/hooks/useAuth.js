@@ -1,6 +1,6 @@
-import { useContext } from "react";
+import { useContext, useCallback } from "react";
 import { AuthContext } from "@/contexts/AuthContext";
-import { loginUser, registerUser } from "@/services/authService";
+import { loginUser, signupUser, logoutUser, getMe } from "@/services/authService";
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
@@ -9,32 +9,49 @@ export const useAuth = () => {
     throw new Error("useAuth must be used within an AuthProvider");
   }
 
-  const { token, isAuthenticated, setAuthToken, clearAuthToken } = context;
+  const { user, isAuthenticated, isLoading, setAuthData, clearAuthData, setUser } = context;
 
-  const login = async (username, password) => {
+  const login = useCallback(async (username, password) => {
     const data = await loginUser(username, password);
-    if (data?.token) {
-      setAuthToken(data.token);
+    if (data?.accessToken) {
+      setAuthData(data.accessToken, data.user);
     }
     return data;
-  };
+  }, [setAuthData]);
 
-  const register = async (name, username, password) => {
-    return await registerUser(name, username, password);
-  };
+  const signup = useCallback(async (name, username, password) => {
+    return await signupUser(name, username, password);
+  }, []);
 
-  const logout = () => {
-    clearAuthToken();
-  };
+  const logout = useCallback(async () => {
+    try {
+      await logoutUser();
+    } catch {
+      // Even if the server call fails, clear local state
+    }
+    clearAuthData();
+  }, [clearAuthData]);
+
+  const fetchUser = useCallback(async () => {
+    try {
+      const userData = await getMe();
+      setUser(userData);
+      return userData;
+    } catch {
+      return null;
+    }
+  }, [setUser]);
 
   return {
-    token,
+    user,
     isAuthenticated,
+    isLoading,
     login,
-    register,
+    signup,
     logout,
-    // Aliases for atomic migration safety
+    fetchUser,
+    // Aliases for backward compatibility
     handleLogin: login,
-    handleRegister: register,
+    handleSignup: signup,
   };
 };
