@@ -1,38 +1,18 @@
-import httpStatus from "http-status";
-import { User } from "../models/user.model.js";
 import { Meeting } from "../models/meeting.model.js";
 import { AppError } from "../utils/AppError.js";
 
-export const getUserMeetings = async (token) => {
-  if (!token) {
-    throw new AppError("Authentication token required", httpStatus.UNAUTHORIZED);
-  }
-
-  const user = await User.findOne({ token });
-  if (!user) {
-    throw new AppError("Invalid or expired token", httpStatus.UNAUTHORIZED);
-  }
-
-  const meetings = await Meeting.find({ user_id: user.username });
+export const getUserMeetings = async (username) => {
+  const meetings = await Meeting.find({ user_id: username });
   return meetings;
 };
 
-export const addMeetingToHistory = async (token, meetingCode) => {
-  if (!token) {
-    throw new AppError("Authentication token required", httpStatus.UNAUTHORIZED);
-  }
-
+export const addMeetingToHistory = async (username, meetingCode) => {
   if (!meetingCode) {
-    throw new AppError("Meeting code is required", httpStatus.BAD_REQUEST);
-  }
-
-  const user = await User.findOne({ token });
-  if (!user) {
-    throw new AppError("Invalid or expired token", httpStatus.UNAUTHORIZED);
+    throw new AppError("Meeting code is required", 400);
   }
 
   const newMeeting = new Meeting({
-    user_id: user.username,
+    user_id: username,
     meetingCode: meetingCode,
   });
 

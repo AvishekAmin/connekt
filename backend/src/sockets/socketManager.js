@@ -1,15 +1,22 @@
 import { Server } from "socket.io";
+import { config } from "../config/env.js";
 
 let connections = {};
 let messages = {};
 let timeOnline = {};
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://localhost:3000",
+  "https://connekt-avishek.onrender.com",
+  config.frontendUrl,
+].filter(Boolean);
+
 export const connectToSocket = (server) => {
   const io = new Server(server, {
     cors: {
-      origin: "*",
+      origin: allowedOrigins,
       methods: ["GET", "POST"],
-      allowedHeaders: ["*"],
       credentials: true,
     },
   });
