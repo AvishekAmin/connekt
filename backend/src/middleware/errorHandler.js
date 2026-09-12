@@ -6,5 +6,11 @@ export const errorHandler = (err, req, res, next) => {
     console.error("Server Error:", err);
   }
 
-  return res.status(statusCode).json({ message });
+  const response = { message };
+
+  if (err.code) {
+    response.code = err.code;
+  }
+
+  return res.status(statusCode).json(response);
 };

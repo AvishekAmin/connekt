@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { ROUTES } from "@/constants/routes";
 import { Button } from "@/components/ui/button";
@@ -15,9 +15,21 @@ import {
 
 export default function Authentication() {
   const navigate = useNavigate();
-  const { login, register } = useAuth();
+  const location = useLocation();
+  const { login, signup } = useAuth();
 
-  const [formState, setFormState] = useState(0); // 0 = Login, 1 = Sign Up
+  const [formState, setFormState] = useState(() => {
+    if (location.state && typeof location.state.formState === "number") {
+      return location.state.formState;
+    }
+    return 0; // 0 = Log In, 1 = Sign Up
+  });
+
+  useEffect(() => {
+    if (location.state && typeof location.state.formState === "number") {
+      setFormState(location.state.formState);
+    }
+  }, [location.state]);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
@@ -37,7 +49,7 @@ export default function Authentication() {
         await login(username, password);
         navigate(ROUTES.HOME);
       } else {
-        const result = await register(name, username, password);
+        const result = await signup(name, username, password);
         setUsername("");
         setPassword("");
         setName("");
@@ -114,7 +126,7 @@ export default function Authentication() {
                 setSuccessMessage("");
               }}
             >
-              Login
+              Log In
             </button>
             <button
               type="button"
@@ -159,7 +171,7 @@ export default function Authentication() {
                 <Input
                   required
                   type="text"
-                  placeholder="e.g. Alex Smith"
+                  placeholder="Enter your Full Name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   disabled={isLoading}
@@ -225,7 +237,7 @@ export default function Authentication() {
                   <span>{formState === 0 ? "Logging in..." : "Signing up..."}</span>
                 </>
               ) : (
-                <span>{formState === 0 ? "Login" : "Sign Up"}</span>
+                <span>{formState === 0 ? "Log In" : "Sign Up"}</span>
               )}
             </Button>
           </form>
@@ -259,17 +271,12 @@ export default function Authentication() {
                   }}
                   className="text-[#00D8F6] font-bold hover:underline focus:outline-none"
                 >
-                  Login
+                  Log In
                 </button>
               </p>
             )}
           </div>
         </div>
-      </div>
-
-      {/* Bottom subtle copyright */}
-      <div className="text-center text-xs text-slate-500 py-2">
-        Protected by Connekt real-time platform security
       </div>
     </div>
   );

@@ -1,5 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
-  <rect width="32" height="32" rx="8" fill="#0B1120"/>
-  <circle cx="16" cy="16" r="12" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="50 20"/>
-  <circle cx="16" cy="16" r="5" fill="#F59E0B"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+  <defs>
+    <linearGradient id="videoIconGradient" x1="2" y1="5" x2="22" y2="19" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#00F0FF"/>
+      <stop offset="100%" stop-color="#00B8F6"/>
+    </linearGradient>
+    <filter id="videoGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="0" stdDeviation="0.6" flood-color="#00D8F6" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+  <path
+    d="M4.5 5A2.5 2.5 0 0 0 2 7.5v9A2.5 2.5 0 0 0 4.5 19h9a2.5 2.5 0 0 0 2.5-2.5v-1.8l3.3 2.2a1 1 0 0 0 1.55-.83V7.93a1 1 0 0 0-1.55-.83L16 9.3V7.5A2.5 2.5 0 0 0 13.5 5h-9z"
+    fill="url(#videoIconGradient)"
+    filter="url(#videoGlow)"
+  />
 </svg>
