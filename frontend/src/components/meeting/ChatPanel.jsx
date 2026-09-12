@@ -35,6 +35,16 @@ export default function ChatPanel({
     }
   };
 
+  const formatMessageTime = (isoString) => {
+    if (!isoString) return "";
+    try {
+      const d = new Date(isoString);
+      return d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    } catch {
+      return "";
+    }
+  };
+
   return (
     <aside
       className="fixed inset-y-0 right-0 z-50 w-full sm:w-80 md:w-96 bg-[#0D1527]/98 backdrop-blur-xl border-l border-[#1E2B4D] flex flex-col shadow-2xl transition-transform animate-in slide-in-from-right duration-200 select-text"
@@ -68,14 +78,21 @@ export default function ChatPanel({
 
             return (
               <div
-                key={index}
+                key={item.id || index}
                 className={`flex flex-col space-y-1 ${
                   isMe ? "items-end" : "items-start"
                 }`}
               >
-                <span className="text-[11px] font-semibold text-slate-400 px-1">
-                  {isMe ? "You" : item.sender || "Participant"}
-                </span>
+                <div className="flex items-center gap-1.5 px-1">
+                  <span className="text-[11px] font-semibold text-slate-400">
+                    {isMe ? "You" : item.sender || "Participant"}
+                  </span>
+                  {item.timestamp && (
+                    <span className="text-[9px] text-slate-500">
+                      {formatMessageTime(item.timestamp)}
+                    </span>
+                  )}
+                </div>
 
                 <div
                   className={`max-w-[85%] px-3.5 py-2 rounded-2xl text-sm leading-relaxed break-words ${

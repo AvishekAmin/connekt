@@ -1,4 +1,4 @@
-import { Mic, MicOff } from "lucide-react";
+import { Mic, MicOff, User } from "lucide-react";
 
 export default function VideoTile({
   stream = null,
@@ -7,9 +7,19 @@ export default function VideoTile({
   socketId = "",
   label = "Participant",
   isMuted = false,
+  isCameraOff = false,
 }) {
+  const getInitials = (name) => {
+    if (!name) return "P";
+    const parts = name.trim().split(" ");
+    if (parts.length >= 2) {
+      return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
+    }
+    return name.substring(0, 2).toUpperCase();
+  };
+
   return (
-    <div className="relative w-full h-full min-h-[160px] aspect-video rounded-2xl overflow-hidden bg-[#0D1527] border border-[#1E2B4D] shadow-xl flex items-center justify-center group">
+    <div className="relative w-full h-full min-h-[180px] aspect-video rounded-2xl overflow-hidden bg-[#0D1527] border border-[#1E2B4D] shadow-xl flex items-center justify-center group">
       {/* Video Element */}
       {isLocal ? (
         <video
@@ -17,7 +27,9 @@ export default function VideoTile({
           autoPlay
           muted
           playsInline
-          className="w-full h-full object-cover -scale-x-100"
+          className={`w-full h-full object-cover -scale-x-100 ${
+            isCameraOff ? "hidden" : "block"
+          }`}
         />
       ) : (
         <video
@@ -29,8 +41,20 @@ export default function VideoTile({
           }}
           autoPlay
           playsInline
-          className="w-full h-full object-cover"
+          className={`w-full h-full object-cover ${
+            isCameraOff ? "hidden" : "block"
+          }`}
         />
+      )}
+
+      {/* Camera Off Avatar Fallback */}
+      {isCameraOff && (
+        <div className="flex flex-col items-center justify-center space-y-2 select-none">
+          <div className="size-16 sm:size-20 rounded-full bg-[#131D36] border border-[#1E2B4D] flex items-center justify-center text-[#00D8F6] font-bold text-lg sm:text-xl shadow-lg">
+            {label && label !== "You" ? getInitials(label) : <User className="size-8" />}
+          </div>
+          <span className="text-xs font-medium text-slate-400">{label}</span>
+        </div>
       )}
 
       {/* Participant Identity Capsule Pill (Bottom Left) */}

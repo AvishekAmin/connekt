@@ -1,13 +1,18 @@
 import VideoTile from "./VideoTile";
 
 export default function VideoGrid({
-  videos = [],
+  participants = [],
+  videos = [], // Fallback if old prop is passed
   localVideoRef = null,
   isAudioMuted = false,
+  isVideoOff = false,
+  localName = "You",
 }) {
-  const totalParticipants = videos.length + 1;
+  // Use participants if provided, else fallback to videos
+  const remotePeers = participants.length > 0 ? participants : videos;
+  const totalParticipants = remotePeers.length + 1;
 
-  // Compute adaptive layout class based on participant count
+  // Adaptive responsive grid layout based on total participant count
   const getGridClasses = () => {
     if (totalParticipants === 1) {
       return "grid grid-cols-1 max-w-3xl w-full";
@@ -28,20 +33,30 @@ export default function VideoGrid({
         <VideoTile
           isLocal={true}
           localRef={localVideoRef}
-          label="You"
+          label={localName || "You"}
           isMuted={isAudioMuted}
+          isCameraOff={isVideoOff}
         />
 
-        {/* Remote Video Tiles */}
-        {videos.map((videoItem, index) => (
-          <VideoTile
-            key={videoItem.socketId || index}
-            stream={videoItem.stream}
-            socketId={videoItem.socketId}
-            label={videos.length === 1 ? "Participant" : `Participant ${index + 2}`}
-            isLocal={false}
-          />
-        ))}
+        {/* Remote Video Tiles with Verified Identities */}
+        {remotePeers.map((peer, index) => {
+          const displayName =
+            peer.name || peer.username || (remotePeers.length === 1 ? "Participant" : `Participant ${index + 2}`);
+          const isPeerMuted = typeof peer.micActive === "boolean" ? !peer.micActive : false;
+          const isPeerCameraOff = typeof peer.cameraActive === "boolean" ? !peer.cameraActive : false;
+
+          return (
+            <VideoTile
+              key={peer.socketId || index}
+              stream={peer.stream}
+              socketId={peer.socketId}
+              label={displayName}
+              isLocal={false}
+              isMuted={isPeerMuted}
+              isCameraOff={isPeerCameraOff}
+            />
+          );
+        })}
       </div>
     </div>
   );
