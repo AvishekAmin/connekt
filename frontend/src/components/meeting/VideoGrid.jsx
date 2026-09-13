@@ -3,9 +3,11 @@ import VideoTile from "./VideoTile";
 export default function VideoGrid({
   participants = [],
   videos = [], // Fallback if old prop is passed
+  localStream = null,
   localVideoRef = null,
   isAudioMuted = false,
   isVideoOff = false,
+  isScreenSharing = false,
   localName = "You",
 }) {
   // Use participants if provided, else fallback to videos
@@ -32,10 +34,12 @@ export default function VideoGrid({
         {/* Local Video Tile */}
         <VideoTile
           isLocal={true}
+          stream={localStream}
           localRef={localVideoRef}
           label={localName || "You"}
           isMuted={isAudioMuted}
           isCameraOff={isVideoOff}
+          isScreenSharing={isScreenSharing}
         />
 
         {/* Remote Video Tiles with Verified Identities */}
@@ -54,6 +58,7 @@ export default function VideoGrid({
               isLocal={false}
               isMuted={isPeerMuted}
               isCameraOff={isPeerCameraOff}
+              isScreenSharing={peer.isScreenSharing}
             />
           );
         })}

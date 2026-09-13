@@ -15,7 +15,7 @@ import { useAuth } from "@/hooks/useAuth";
 
 export default function Navbar({ _showAuth = false, _showAppNav = false }) {
   const navigate = useNavigate();
-  const { user, isAuthenticated, logout } = useAuth();
+  const { user, isAuthenticated, isLoading, logout } = useAuth();
 
   const [meetingInput, setMeetingInput] = useState("");
   const [inputError, setInputError] = useState(false);
@@ -74,14 +74,30 @@ export default function Navbar({ _showAuth = false, _showAppNav = false }) {
     }
     setMeetingInput("");
     setMobileMenuOpen(false);
-    navigate(ROUTES.getMeetingPath(code));
+    const meetingPath = ROUTES.getMeetingPath(code);
+
+    if (!isAuthenticated) {
+      navigate(ROUTES.AUTH, {
+        state: { redirectTo: meetingPath, formState: 0 },
+      });
+    } else {
+      navigate(meetingPath);
+    }
   };
 
   // Create new instant meeting handler
   const handleCreateMeeting = () => {
     const newCode = generateMeetingCode();
     setMobileMenuOpen(false);
-    navigate(ROUTES.getMeetingPath(newCode));
+    const meetingPath = ROUTES.getMeetingPath(newCode);
+
+    if (!isAuthenticated) {
+      navigate(ROUTES.AUTH, {
+        state: { redirectTo: meetingPath, formState: 0 },
+      });
+    } else {
+      navigate(meetingPath);
+    }
   };
 
   // Auth navigation handlers
@@ -93,8 +109,8 @@ export default function Navbar({ _showAuth = false, _showAppNav = false }) {
   const handleLogout = async () => {
     setUserDropdownOpen(false);
     setMobileMenuOpen(false);
+    navigate(ROUTES.LANDING, { replace: true });
     await logout();
-    navigate(ROUTES.AUTH);
   };
 
   return (
@@ -161,7 +177,7 @@ export default function Navbar({ _showAuth = false, _showAppNav = false }) {
           <button
             type="button"
             onClick={handleCreateMeeting}
-            className="rounded-full border border-[#00D8F6]/45 hover:border-[#00D8F6] bg-[#0D1527]/90 hover:bg-[#131D36] text-white px-4 py-2 text-xs sm:text-sm font-semibold flex items-center gap-2 transition-all shadow-sm hover:shadow-cyan-500/15 active:scale-95 shrink-0 group"
+            className="h-[38px] rounded-full border border-[#00D8F6]/45 hover:border-[#00D8F6] bg-[#0D1527]/90 hover:bg-[#131D36] text-white px-4 py-2 text-xs sm:text-sm font-semibold flex items-center gap-2 transition-all shadow-sm hover:shadow-cyan-500/15 active:scale-95 shrink-0 group"
           >
             <div className="relative flex items-center justify-center text-[#00D8F6]">
               <Video className="size-4 text-[#00D8F6]" />
@@ -173,7 +189,9 @@ export default function Navbar({ _showAuth = false, _showAppNav = false }) {
 
         {/* Right: Auth Buttons (Havenly Styling) or User Profile */}
         <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
-          {!isAuthenticated ? (
+          {isLoading ? (
+            <div className="size-9 rounded-full bg-[#131D36] border border-[#1E2B4D] animate-pulse" />
+          ) : !isAuthenticated ? (
             <>
               {/* Sign Up Button (Gradient Pill with Black Text) */}
               <button
@@ -198,9 +216,9 @@ export default function Navbar({ _showAuth = false, _showAppNav = false }) {
               {/* Authenticated Links: Meeting History */}
               <Link
                 to={ROUTES.HISTORY}
-                className="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-[#1E2B4D] bg-[#0D1527] hover:bg-[#131D36] hover:border-[#00D8F6]/40 text-slate-200 hover:text-white px-4 py-2 text-xs font-semibold transition-all"
+                className="h-[38px] hidden sm:inline-flex items-center gap-2 rounded-full border border-[#1E2B4D] bg-[#0D1527] hover:bg-[#131D36] hover:border-[#00D8F6]/40 text-slate-200 hover:text-white px-4 py-2 text-xs sm:text-sm font-semibold transition-all shrink-0 active:scale-95"
               >
-                <History className="size-3.5 text-[#00D8F6]" />
+                <History className="size-4 text-[#00D8F6]" />
                 <span>History</span>
               </Link>
 
@@ -231,7 +249,7 @@ export default function Navbar({ _showAuth = false, _showAppNav = false }) {
 
                     <div className="pt-1.5 space-y-0.5">
                       <Link
-                        to={ROUTES.HOME}
+                        to={ROUTES.DASHBOARD}
                         onClick={() => setUserDropdownOpen(false)}
                         className="flex items-center gap-2 px-3 py-2 text-xs font-medium text-slate-200 hover:text-white hover:bg-[#131D36] rounded-xl transition-all"
                       >
@@ -308,8 +326,8 @@ export default function Navbar({ _showAuth = false, _showAppNav = false }) {
             <span>Create a meeting</span>
           </button>
 
-          {/* Mobile Auth Buttons (if logged out) */}
-          {!isAuthenticated && (
+          {/* Mobile Auth Buttons / Profile */}
+          {!isLoading && !isAuthenticated && (
             <div className="grid grid-cols-2 gap-2 pt-1 border-t border-[#1E2B4D]">
               <button
                 type="button"
@@ -324,6 +342,54 @@ export default function Navbar({ _showAuth = false, _showAppNav = false }) {
                 className="rounded-full bg-gradient-to-r from-[#00D8F6] to-[#7B61FF] text-black font-bold text-xs py-2 text-center"
               >
                 Log In
+              </button>
+            </div>
+          )}
+
+          {!isLoading && isAuthenticated && (
+            <div className="space-y-3 pt-2 border-t border-[#1E2B4D]">
+              <div className="flex items-center gap-3 px-1">
+                <div className="size-9 rounded-full bg-gradient-to-r from-[#00D8F6] to-[#7B61FF] text-black font-extrabold flex items-center justify-center text-sm shadow-md shadow-cyan-500/25 shrink-0">
+                  {user?.name?.charAt(0)?.toUpperCase() ||
+                    user?.username?.charAt(0)?.toUpperCase() ||
+                    "U"}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="text-xs font-bold text-white truncate">
+                    {user?.name || user?.username}
+                  </p>
+                  <p className="text-[11px] text-slate-400 truncate">
+                    @{user?.username}
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-2">
+                <Link
+                  to={ROUTES.DASHBOARD}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center justify-center gap-1.5 rounded-full border border-[#1E2B4D] bg-[#131D36] text-white py-2 text-xs font-medium text-center hover:bg-[#1A2642] transition-all"
+                >
+                  <LayoutDashboard className="size-3.5 text-[#00D8F6]" />
+                  <span>Dashboard</span>
+                </Link>
+                <Link
+                  to={ROUTES.HISTORY}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center justify-center gap-1.5 rounded-full border border-[#1E2B4D] bg-[#131D36] text-white py-2 text-xs font-medium text-center hover:bg-[#1A2642] transition-all"
+                >
+                  <History className="size-3.5 text-[#00D8F6]" />
+                  <span>History</span>
+                </Link>
+              </div>
+
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="w-full flex items-center justify-center gap-2 rounded-full bg-red-500/15 border border-red-500/30 text-red-400 hover:bg-red-500/25 py-2 text-xs font-medium text-center transition-all"
+              >
+                <LogOut className="size-3.5" />
+                <span>Log Out</span>
               </button>
             </div>
           )}

@@ -11,12 +11,25 @@ import {
   CheckCircle2,
   ArrowLeft,
   Loader2,
+  Video,
 } from "lucide-react";
 
 export default function Authentication() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { login, signup } = useAuth();
+  const { isAuthenticated, isLoading: isLoadingAuth, login, signup } = useAuth();
+
+  // If already authenticated, forward immediately to destination or home
+  useEffect(() => {
+    if (!isLoadingAuth && isAuthenticated) {
+      const destination =
+        location.state?.redirectTo ||
+        (location.state?.from ? location.state.from.pathname : null) ||
+        new URLSearchParams(location.search).get("redirect") ||
+        ROUTES.DASHBOARD;
+      navigate(destination, { replace: true });
+    }
+  }, [isAuthenticated, isLoadingAuth, navigate, location]);
 
   const [formState, setFormState] = useState(() => {
     if (location.state && typeof location.state.formState === "number") {
@@ -47,7 +60,12 @@ export default function Authentication() {
     try {
       if (formState === 0) {
         await login(username, password);
-        navigate(ROUTES.HOME);
+        const destination =
+          location.state?.redirectTo ||
+          (location.state?.from ? location.state.from.pathname : null) ||
+          new URLSearchParams(location.search).get("redirect") ||
+          ROUTES.DASHBOARD;
+        navigate(destination, { replace: true });
       } else {
         const result = await signup(name, username, password);
         setUsername("");
@@ -110,6 +128,19 @@ export default function Authentication() {
                 : "Fill in the information below to get started with Connekt"}
             </p>
           </div>
+
+          {/* Informational Redirect Banner if user was trying to join a meeting */}
+          {location.state?.redirectTo && (
+            <div className="mb-5 p-3 rounded-2xl bg-[#062436] border border-[#00D8F6]/30 text-xs text-[#00D8F6] flex items-center gap-2 shadow-inner">
+              <Video className="size-4 shrink-0" />
+              <span>
+                Please {formState === 0 ? "log in" : "sign up"} to enter meeting{" "}
+                <strong className="font-mono text-white">
+                  #{location.state.redirectTo.replace(/^\/+/, "")}
+                </strong>
+              </span>
+            </div>
+          )}
 
           {/* Segmented Capsule Tabs */}
           <div className="grid grid-cols-2 p-1 bg-[#0A1020] rounded-full border border-[#1E2B4D] mb-6">

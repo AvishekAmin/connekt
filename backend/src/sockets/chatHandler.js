@@ -15,7 +15,7 @@ const MAX_MESSAGE_LENGTH = 1000;
  * @param {import("socket.io").Server} io
  * @param {import("socket.io").Socket} socket
  */
-export const registerChatHandlers = (io, socket) => {
+export const signupChatHandlers = (io, socket) => {
   const handleMessage = (rawText) => {
     const roomCode = socket.roomCode || roomManager.getSocketRoom(socket.id);
     if (!roomCode) {

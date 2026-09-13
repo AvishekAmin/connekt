@@ -84,7 +84,7 @@ With a responsive interface, real-time communication features, protected routes,
 - Enter a meeting code to join a room
 - Automatically save joined meetings to history
 - Navigate directly to meeting rooms
-- Return to the Home page after ending a call
+- Return to the Dashboard after ending a call
 - Authentication-protected meeting workflow
 
 ## 📜 Meeting History
@@ -92,12 +92,12 @@ With a responsive interface, real-time communication features, protected routes,
 - Save previously joined meeting codes
 - Retrieve authenticated user's meeting history
 - Display meeting codes with dates
-- Navigate between Home and History pages
+- Navigate between Dashboard and History pages
 - Persistent storage using MongoDB
 
 ## 🛡️ Protected Routes
 
-The Home page is protected using an authentication wrapper that checks whether an authentication token exists before allowing access. Unauthenticated users are redirected to the authentication page. 
+The Dashboard page is protected using an authentication wrapper that checks whether an authentication token exists before allowing access. Unauthenticated users are redirected to the authentication page. 
 
 ## 🎨 User Interface
 
@@ -120,36 +120,36 @@ The interface includes:
 Connekt follows a client-server architecture with three primary components:
 
 ```text
-                         ┌────────────────────────┐
-                         │      React + Vite      │
-                         │       Frontend         │
-                         │                        │
-                         │  Auth / Home / Meeting │
-                         │  Chat / History / UI   │
-                         └───────────┬────────────┘
-                                     │
-                         REST API / Socket.IO
-                                     │
-                                     ▼
-                         ┌────────────────────────┐
-                         │   Node.js + Express    │
-                         │        Backend         │
-                         │                        │
-                         │ Authentication / APIs  │
-                         │ Socket.IO Signaling    │
-                         └───────────┬────────────┘
-                                     │
-                                     ▼
-                         ┌────────────────────────┐
-                         │      MongoDB Atlas     │
-                         │                        │
-                         │ Users / Meetings       │
-                         └────────────────────────┘
+                         ┌─────────────────────────────┐
+                         │         React + Vite        │
+                         │           Frontend          │
+                         │                             │
+                         │  Auth / Dashboard / Meeting │
+                         │        Chat / History       │
+                         └──────────────┬──────────────┘
+                                        │
+                               REST API / Socket.IO
+                                        │
+                                        ▼
+                         ┌─────────────────────────────┐
+                         │      Node.js + Express      │
+                         │           Backend           │
+                         │                             │
+                         │    Authentication / APIs    │
+                         │     Socket.IO Signaling     │
+                         └──────────────┬──────────────┘
+                                        │
+                                        ▼
+                         ┌─────────────────────────────┐
+                         │        MongoDB Atlas        │
+                         │                             │
+                         │       Users / Meetings      │
+                         └─────────────────────────────┘
 
-                                  WebRTC
-                      Browser ◄──────────────► Browser
-                        │                        │
-                        └── Peer-to-Peer Media ──┘
+                                      WebRTC
+                         Browser ◄──────────────► Browser
+                           │                        │
+                           └── Peer-to-Peer Media ──┘
 ```
 
 ---
@@ -228,8 +228,8 @@ connekt/
 │   │   │
 │   │   ├── pages/
 │   │   │   ├── authentication.jsx
+│   │   │   ├── dashboard.jsx
 │   │   │   ├── history.jsx
-│   │   │   ├── home.jsx
 │   │   │   ├── landing.jsx
 │   │   │   └── videoMeet.jsx
 │   │   │

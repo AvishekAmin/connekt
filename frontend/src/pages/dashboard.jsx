@@ -11,15 +11,16 @@ import { Skeleton } from "@/components/ui/skeleton";
 import {
   Video,
   ArrowRight,
+  ArrowLeft,
   History,
   Calendar,
   Clock,
-  Sparkles,
   Copy,
   Check,
+  LayoutDashboard,
 } from "lucide-react";
 
-function HomeComponent() {
+function DashboardComponent() {
   const navigate = useNavigate();
   const { meetings, loading: loadingHistory, addToHistory } = useMeetingHistory();
 
@@ -70,21 +71,23 @@ function HomeComponent() {
       {/* Navigation */}
       <Navbar showAppNav={true} />
 
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-8">
-        {/* Welcome Dashboard Banner */}
-        <div className="relative overflow-hidden rounded-3xl border border-[#1E2B4D] bg-[#0D1527] p-6 sm:p-8 shadow-xl">
-          <div className="absolute right-0 top-0 w-96 h-96 bg-[#00D8F6]/10 rounded-full blur-3xl pointer-events-none -z-10" />
-          <div className="absolute left-1/3 bottom-0 w-64 h-64 bg-[#7B61FF]/10 rounded-full blur-3xl pointer-events-none -z-10" />
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-2 sm:pt-3 pb-8 sm:pb-12 space-y-8">
+        {/* Top Back Navigation Pill & Welcome Header */}
+        <div className="space-y-4">
+          <Link
+            to={ROUTES.LANDING}
+            className="inline-flex items-center gap-2 text-xs font-medium text-slate-300 hover:text-white bg-[#0D1527] border border-[#1E2B4D] hover:bg-[#131D36] rounded-full px-4 py-2 w-fit transition-all"
+          >
+            <ArrowLeft className="size-3.5" />
+            <span>Back to home</span>
+          </Link>
 
-          <div className="max-w-2xl space-y-2.5">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#062436] border border-[#00D8F6]/30 text-xs font-semibold text-[#00D8F6]">
-              <Sparkles className="size-3" />
-              <span>Connekt Dashboard</span>
-            </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
-              Welcome back
+          <div className="space-y-1">
+            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white flex items-center gap-2.5">
+              <LayoutDashboard className="size-7 text-[#00D8F6]" />
+              <span>Welcome back</span>
             </h1>
-            <p className="text-sm sm:text-base text-slate-400">
+            <p className="text-sm text-slate-400">
               Join an existing room using your unique meeting code, create an instant session, or review your recent call activity.
             </p>
           </div>
@@ -115,7 +118,7 @@ function HomeComponent() {
                   <div className="relative">
                     <Input
                       type="text"
-                      placeholder="e.g. project-standup"
+                      placeholder="e.g. connekt-team-sync"
                       value={meetingCode}
                       onChange={(e) => {
                         setMeetingCode(e.target.value);
@@ -241,4 +244,4 @@ function HomeComponent() {
   );
 }
 
-export default withAuth(HomeComponent);
+export default withAuth(DashboardComponent);

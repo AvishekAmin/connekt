@@ -1,4 +1,4 @@
-import apiClient from "./api";
+import apiClient, { executeRefreshToken } from "./api";
 
 export const signupUser = async (name, username, password) => {
   const response = await apiClient.post("/api/v1/auth/signup", {
@@ -18,8 +18,7 @@ export const loginUser = async (username, password) => {
 };
 
 export const refreshToken = async () => {
-  const response = await apiClient.post("/api/v1/auth/refresh");
-  return response.data;
+  return await executeRefreshToken();
 };
 
 export const logoutUser = async () => {

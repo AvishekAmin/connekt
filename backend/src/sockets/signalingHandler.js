@@ -7,7 +7,7 @@ import { roomManager } from "./roomManager.js";
  * @param {import("socket.io").Server} io
  * @param {import("socket.io").Socket} socket
  */
-export const registerSignalingHandlers = (io, socket) => {
+export const signupSignalingHandlers = (io, socket) => {
   // --- SDP Offer ---
   socket.on("signal:offer", (payload) => {
     if (!payload || typeof payload !== "object") return;

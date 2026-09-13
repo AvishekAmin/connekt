@@ -33,6 +33,8 @@ function VideoMeetComponent() {
   const {
     localVideoRef,
     localStream,
+    screenStream,
+    mediaStream,
     videoAvailable,
     audioAvailable,
     screenAvailable,
@@ -47,10 +49,21 @@ function VideoMeetComponent() {
     stopAllTracks,
   } = useMediaStream();
 
+  const activeLocalStream = isScreenSharing && screenStream?.current ? screenStream.current : mediaStream;
+
   // Initialize camera and microphone on lobby mount
   useEffect(() => {
     initializeMedia();
   }, [initializeMedia]);
+
+  // Ensure local video element always receives the active stream (camera or screen)
+  useEffect(() => {
+    if (localVideoRef.current && activeLocalStream) {
+      if (localVideoRef.current.srcObject !== activeLocalStream) {
+        localVideoRef.current.srcObject = activeLocalStream;
+      }
+    }
+  }, [inCall, activeLocalStream, localVideoRef]);
 
   // Update lobby display name when auth user profile resolves
   useEffect(() => {
@@ -200,7 +213,7 @@ function VideoMeetComponent() {
     stopAllTracks();
     closeAllPeers();
     disconnectSocket();
-    navigate(ROUTES.HOME);
+    navigate(ROUTES.DASHBOARD);
   }, [stopAllTracks, closeAllPeers, disconnectSocket, navigate]);
 
   return (
@@ -210,6 +223,7 @@ function VideoMeetComponent() {
           username={username}
           setUsername={setUsername}
           localVideoRef={localVideoRef}
+          stream={mediaStream}
           onConnect={handleEnterMeeting}
           meetingCode={routeMeetingCode || "Room"}
           videoAvailable={videoAvailable}
@@ -231,9 +245,11 @@ function VideoMeetComponent() {
           <main className="flex-1 relative flex overflow-hidden">
             <VideoGrid
               participants={participants}
+              localStream={activeLocalStream}
               localVideoRef={localVideoRef}
               isAudioMuted={!isAudioOn}
               isVideoOff={!isVideoOn}
+              isScreenSharing={isScreenSharing}
               localName={username || currentUser?.name || "You"}
             />
 

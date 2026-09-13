@@ -8,7 +8,6 @@ import {
   Mic,
   MicOff,
   ArrowRight,
-  Shield,
   ArrowLeft,
   User,
   Sparkles,
@@ -18,6 +17,7 @@ export default function MeetingLobby({
   username = "",
   setUsername,
   localVideoRef,
+  stream = null,
   onConnect,
   meetingCode = "",
   videoAvailable = true,
@@ -38,7 +38,7 @@ export default function MeetingLobby({
       {/* Top Header */}
       <div className="w-full max-w-5xl flex items-center justify-between">
         <Link
-          to={ROUTES.HOME}
+          to={ROUTES.DASHBOARD}
           className="inline-flex items-center gap-2 text-xs font-medium text-slate-300 hover:text-white bg-[#0D1527] border border-[#1E2B4D] hover:bg-[#131D36] rounded-full px-4 py-2 transition-all group"
         >
           <ArrowLeft className="size-4 group-hover:-translate-x-0.5 transition-transform" />
@@ -59,7 +59,18 @@ export default function MeetingLobby({
           <div className="lg:col-span-7 flex flex-col items-center">
             <div className="relative w-full aspect-video rounded-3xl overflow-hidden bg-[#0D1527] border border-[#1E2B4D] shadow-2xl flex items-center justify-center">
               <video
-                ref={localVideoRef}
+                ref={(el) => {
+                  if (localVideoRef) {
+                    if (typeof localVideoRef === "function") {
+                      localVideoRef(el);
+                    } else {
+                      localVideoRef.current = el;
+                    }
+                  }
+                  if (el && stream && el.srcObject !== stream) {
+                    el.srcObject = stream;
+                  }
+                }}
                 autoPlay
                 muted
                 playsInline
@@ -161,11 +172,6 @@ export default function MeetingLobby({
                 <ArrowRight className="size-4 text-black stroke-[2.5]" />
               </Button>
             </form>
-
-            <div className="p-3.5 rounded-2xl bg-[#0D1527] border border-[#1E2B4D] text-xs text-slate-400 flex items-center gap-2.5">
-              <Shield className="size-4 text-[#00D8F6] shrink-0" />
-              <span>Peer-to-peer WebRTC connection begins as soon as you enter.</span>
-            </div>
           </div>
         </div>
       </main>

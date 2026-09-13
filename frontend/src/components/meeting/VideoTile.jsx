@@ -8,6 +8,7 @@ export default function VideoTile({
   label = "Participant",
   isMuted = false,
   isCameraOff = false,
+  isScreenSharing = false,
 }) {
   const getInitials = (name) => {
     if (!name) return "P";
@@ -23,20 +24,31 @@ export default function VideoTile({
       {/* Video Element */}
       {isLocal ? (
         <video
-          ref={localRef}
+          ref={(el) => {
+            if (localRef) {
+              if (typeof localRef === "function") {
+                localRef(el);
+              } else {
+                localRef.current = el;
+              }
+            }
+            if (el && stream && el.srcObject !== stream) {
+              el.srcObject = stream;
+            }
+          }}
           autoPlay
           muted
           playsInline
-          className={`w-full h-full object-cover -scale-x-100 ${
-            isCameraOff ? "hidden" : "block"
-          }`}
+          className={`w-full h-full object-cover ${
+            isScreenSharing ? "" : "-scale-x-100"
+          } ${isCameraOff ? "hidden" : "block"}`}
         />
       ) : (
         <video
           data-socket={socketId}
-          ref={(ref) => {
-            if (ref && stream) {
-              ref.srcObject = stream;
+          ref={(el) => {
+            if (el && stream && el.srcObject !== stream) {
+              el.srcObject = stream;
             }
           }}
           autoPlay

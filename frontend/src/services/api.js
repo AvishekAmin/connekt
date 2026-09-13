@@ -73,8 +73,7 @@ apiClient.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        const { data } = await apiClient.post("/api/v1/auth/refresh");
-        accessToken = data.accessToken;
+        const data = await executeRefreshToken();
         processQueue(null, data.accessToken);
         originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
         return apiClient(originalRequest);
@@ -92,6 +91,27 @@ apiClient.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+// Deduplicated refresh token promise runner
+let refreshPromise = null;
+
+export const executeRefreshToken = async () => {
+  if (refreshPromise) {
+    return refreshPromise;
+  }
+
+  refreshPromise = (async () => {
+    try {
+      const response = await apiClient.post("/api/v1/auth/refresh");
+      accessToken = response.data.accessToken;
+      return response.data;
+    } finally {
+      refreshPromise = null;
+    }
+  })();
+
+  return refreshPromise;
+};
 
 // Token accessors for AuthContext
 export const setApiAccessToken = (token) => {

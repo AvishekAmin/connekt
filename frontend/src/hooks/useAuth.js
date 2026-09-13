@@ -9,7 +9,16 @@ export const useAuth = () => {
     throw new Error("useAuth must be used within an AuthProvider");
   }
 
-  const { user, isAuthenticated, isLoading, setAuthData, clearAuthData, setUser } = context;
+  const {
+    user,
+    isAuthenticated,
+    isLoading,
+    isLoggingOut,
+    setIsLoggingOut,
+    setAuthData,
+    clearAuthData,
+    setUser,
+  } = context;
 
   const login = useCallback(async (username, password) => {
     const data = await loginUser(username, password);
@@ -24,13 +33,17 @@ export const useAuth = () => {
   }, []);
 
   const logout = useCallback(async () => {
+    setIsLoggingOut(true);
     try {
       await logoutUser();
     } catch {
       // Even if the server call fails, clear local state
     }
     clearAuthData();
-  }, [clearAuthData]);
+    setTimeout(() => {
+      setIsLoggingOut(false);
+    }, 500);
+  }, [clearAuthData, setIsLoggingOut]);
 
   const fetchUser = useCallback(async () => {
     try {
@@ -46,6 +59,7 @@ export const useAuth = () => {
     user,
     isAuthenticated,
     isLoading,
+    isLoggingOut,
     login,
     signup,
     logout,

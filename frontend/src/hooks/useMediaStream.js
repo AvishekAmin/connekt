@@ -10,6 +10,7 @@ export function useMediaStream() {
   const localStream = useRef(null);
   const screenStream = useRef(null);
 
+  const [mediaStream, setMediaStream] = useState(null);
   const [videoAvailable, setVideoAvailable] = useState(false);
   const [audioAvailable, setAudioAvailable] = useState(false);
   const [screenAvailable, setScreenAvailable] = useState(false);
@@ -35,6 +36,7 @@ export function useMediaStream() {
       });
 
       localStream.current = stream;
+      setMediaStream(stream);
       setVideoAvailable(true);
       setAudioAvailable(true);
       setIsVideoOn(true);
@@ -80,6 +82,7 @@ export function useMediaStream() {
       const fallbackTracks = [videoTrack, audioTrack].filter(Boolean);
       const compositeStream = new MediaStream(fallbackTracks);
       localStream.current = compositeStream;
+      setMediaStream(compositeStream);
 
       if (localVideoRef.current) {
         localVideoRef.current.srcObject = compositeStream;
@@ -129,6 +132,10 @@ export function useMediaStream() {
       screenStream.current = null;
     }
     setIsScreenSharing(false);
+    setMediaStream(localStream.current);
+    if (localVideoRef.current && localStream.current) {
+      localVideoRef.current.srcObject = localStream.current;
+    }
   }, []);
 
   /**
@@ -144,8 +151,12 @@ export function useMediaStream() {
         });
 
         screenStream.current = displayStream;
-        const screenTrack = displayStream.getVideoTracks()[0];
+        setMediaStream(displayStream);
+        if (localVideoRef.current) {
+          localVideoRef.current.srcObject = displayStream;
+        }
 
+        const screenTrack = displayStream.getVideoTracks()[0];
         setIsScreenSharing(true);
 
         screenTrack.onended = () => {
@@ -178,6 +189,7 @@ export function useMediaStream() {
       screenStream.current.getTracks().forEach((track) => track.stop());
       screenStream.current = null;
     }
+    setMediaStream(null);
     if (localVideoRef.current) {
       localVideoRef.current.srcObject = null;
     }
@@ -193,6 +205,8 @@ export function useMediaStream() {
   return {
     localVideoRef,
     localStream,
+    screenStream,
+    mediaStream,
     videoAvailable,
     audioAvailable,
     screenAvailable,

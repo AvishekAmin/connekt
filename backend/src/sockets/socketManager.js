@@ -2,8 +2,8 @@ import { Server } from "socket.io";
 import { config } from "../config/env.js";
 import { socketAuthMiddleware } from "./socketAuth.js";
 import { roomManager } from "./roomManager.js";
-import { registerSignalingHandlers } from "./signalingHandler.js";
-import { registerChatHandlers } from "./chatHandler.js";
+import { signupSignalingHandlers } from "./signalingHandler.js";
+import { signupChatHandlers } from "./chatHandler.js";
 
 const allowedOrigins = [
   "http://localhost:5173",
@@ -142,8 +142,8 @@ export const connectToSocket = (server) => {
     });
 
     // --- Wire Signaling & Chat Handlers ---
-    registerSignalingHandlers(io, socket);
-    registerChatHandlers(io, socket);
+    signupSignalingHandlers(io, socket);
+    signupChatHandlers(io, socket);
 
     // --- Disconnect Handling ---
     socket.on("disconnect", () => {

@@ -45,11 +45,11 @@ function HistoryComponent() {
       {/* Navbar */}
       <Navbar showAppNav={true} />
 
-      <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-8">
+      <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-2 sm:pt-3 pb-8 sm:pb-12 space-y-8">
         {/* Top Back Navigation Pill & Header */}
         <div className="space-y-4">
           <Link
-            to={ROUTES.HOME}
+            to={ROUTES.DASHBOARD}
             className="inline-flex items-center gap-2 text-xs font-medium text-slate-300 hover:text-white bg-[#0D1527] border border-[#1E2B4D] hover:bg-[#131D36] rounded-full px-4 py-2 w-fit transition-all"
           >
             <ArrowLeft className="size-3.5" />
@@ -212,7 +212,7 @@ function HistoryComponent() {
             </div>
             <Button
               size="sm"
-              onClick={() => navigate("/home")}
+              onClick={() => navigate(ROUTES.DASHBOARD)}
               className="rounded-full bg-gradient-to-r from-[#00D8F6] to-[#7B61FF] text-black font-bold text-xs h-9 px-5"
             >
               Join a Meeting
