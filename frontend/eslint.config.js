@@ -24,7 +24,7 @@ export default defineConfig([
       ],
       "react-refresh/only-export-components": [
         "warn",
-        { allowConstantExport: true },
+        { allowConstantExport: true, extraHOCs: ["withAuth"] },
       ],
       "react-hooks/exhaustive-deps": "warn",
       "react-hooks/set-state-in-effect": "off",

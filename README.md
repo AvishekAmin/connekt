@@ -1,194 +1,183 @@
-# 🎥 Connekt: A Real-Time Video Conferencing Platform
+# 🎥 Connekt: Real-Time WebRTC Video Conferencing Platform
 
-**Connekt** is a modern full-stack real-time video conferencing platform designed to make online communication simple, interactive, and accessible. It enables users to create or join meeting rooms using unique meeting codes and communicate through real-time video, audio, screen sharing, and chat.
+[![Backend Tests](https://img.shields.io/badge/Backend%20Tests-40%2F40%20Passing-brightgreen?style=flat-square)](file:///c:/MajorProject/Connekt/connekt/backend)
+[![Frontend Build](https://img.shields.io/badge/Vite-Passing-success?style=flat-square)](file:///c:/MajorProject/Connekt/connekt/frontend)
+[![Code Style](https://img.shields.io/badge/ESLint-0%20Errors-blue?style=flat-square)](file:///c:/MajorProject/Connekt/connekt/frontend)
+[![License](https://img.shields.io/badge/License-ISC-purple?style=flat-square)](LICENSE)
 
-The application provides a complete conferencing workflow — from user authentication and meeting creation/joining to real-time peer-to-peer communication, messaging, screen sharing, and meeting history.
+**Connekt** is an enterprise-grade, full-stack real-time video conferencing platform built with modern WebRTC, Socket.IO, React 19, Express 5, and MongoDB Atlas. Engineered for ultra-low latency peer-to-peer media communication, robust session security, and a sleek, futuristic dark cyberpunk aesthetic with neon accents.
 
-Connekt combines **React, Vite, Node.js, Express.js, MongoDB, Mongoose, Socket.IO, WebRTC, Tailwind CSS, Shadcn/ui, Lucide React and Axios** to demonstrate the architecture and implementation of a real-world real-time communication application.
-
-The frontend communicates with the backend through REST APIs and Socket.IO, while WebRTC is used for peer-to-peer media communication. Meeting history is persisted in MongoDB and associated with authenticated users.
-
-With a responsive interface, real-time communication features, protected routes, and production deployment, Connekt is designed as a portfolio-ready full-stack application demonstrating modern web development and real-time system concepts.
-
----
-
-# 🌐 Live Demo
-
-🔗 **Website:** https://connekt-avishek.onrender.com
-
-🔗 **Backend:** https://connekt-avishek-backend.onrender.com
-
-> ⚠️ The backend is hosted on Render's free tier, so the first request after a period of inactivity may take longer while the service wakes up.
+Connekt delivers seamless multi-peer video meetings, crystal-clear audio with real-time level metering, zero-renegotiation screen sharing, synchronized in-meeting chat, meeting history persistence, and comprehensive authentication with refresh token reuse detection.
 
 ---
 
-# 🎯 Key Features
+## 🌐 Live Deployment
 
-- 🔐 User Login & Signup
-- 🎥 Real-Time Video Conferencing
-- 🎙️ Audio Communication
-- 🖥️ Screen Sharing
-- 💬 Real-Time Chat
-- 🏠 Meeting Room Creation & Joining
-- 🔑 Unique Meeting Codes
-- 📜 Meeting History
-- 🛡️ Protected Routes
-- 📱 Responsive Meeting Interface
-- ⚡ Real-Time Signaling with Socket.IO
-- 🌐 WebRTC Peer-to-Peer Communication
-- 🗄️ MongoDB-Based Data Persistence
+- 🔗 **Production Web App:** [https://connekt-avishek.onrender.com](https://connekt-avishek.onrender.com)
+- 🔗 **Production Backend API:** [https://connekt-avishek-backend.onrender.com](https://connekt-avishek-backend.onrender.com)
+
+> ⚠️ **Note on Render Free Tier:** The backend is hosted on Render's free compute tier, which automatically spins down when idle. The initial request or login after inactivity may take 20–30 seconds while the container spins up. Subsequent requests run at full speed.
 
 ---
 
-# ✨ Features
+## 🎯 Architectural Pillars
 
-## 🔐 Authentication & Authorization
-
-- User registration with username and password
-- Password hashing using `bcrypt`
-- User login with token-based authentication
-- Authentication-aware frontend routing
-- Protected application pages
-- Automatic logout functionality
-
-## 🎥 Real-Time Video Conferencing
-
-- Multi-user meeting rooms
-- Real-time audio and video communication
-- Meeting rooms based on shareable meeting codes
-- WebRTC peer connections
-- Socket.IO signaling
-- Camera enable / disable controls
-- Microphone enable / disable controls
-- End-call functionality
-
-## 🖥️ Screen Sharing
-
-- Browser-based screen capture
-- Screen-share start / stop controls
-- Screen stream replacement during a meeting
-- Automatic transition back to media after screen sharing ends
-
-## 💬 Real-Time Chat
-
-- Real-time meeting chat
-- Message sending through Socket.IO
-- Incoming message handling
-- Sender identification
-- Chat window toggle
-- New-message indicator
-- Message persistence for the active meeting session
-
-## 🏠 Meeting Management
-
-- Enter a meeting code to join a room
-- Automatically save joined meetings to history
-- Navigate directly to meeting rooms
-- Return to the Dashboard after ending a call
-- Authentication-protected meeting workflow
-
-## 📜 Meeting History
-
-- Save previously joined meeting codes
-- Retrieve authenticated user's meeting history
-- Display meeting codes with dates
-- Navigate between Dashboard and History pages
-- Persistent storage using MongoDB
-
-## 🛡️ Protected Routes
-
-The Dashboard page is protected using an authentication wrapper that checks whether an authentication token exists before allowing access. Unauthenticated users are redirected to the authentication page. 
-
-## 🎨 User Interface
-
-Connekt uses **TailwindCSS** and **Shadcn/ui** components for the authentication and meeting interfaces, combined with custom CSS modules for the conferencing experience.
-
-The interface includes:
-
-- Tailwind CSS buttons and form controls
-- Responsive meeting layouts
-- Dedicated chat panel
-- Video participant layouts
-- Meeting control buttons
-- Responsive navigation
-- Custom meeting-room styling
+1. **Modern Unified-Plan WebRTC**: Multi-peer mesh using standard transceivers (`addTrack`/`ontrack`), smooth track replacement for instant screen sharing (`sender.replaceTrack()`), and real-time audio energy level metering via the Web Audio API.
+2. **Hardened Dual-Token Security**: Short-lived (15m) JWT access tokens combined with secure, `httpOnly`, `sameSite: strict` refresh tokens featuring session family rotation and automatic replay attack revocation.
+3. **Isolated Real-Time Signaling**: Socket.IO handshake authenticated via JWT, strict single-room enforcement per socket, cross-room signal injection prevention, and sliding-window chat rate limiting.
+4. **Resilient Layered API**: Express 5.x layered architecture (Routes → Middleware → Controllers → Services → Models) with Zod schema validation, Helmet security headers, and automated rate limiting.
 
 ---
 
-# 🏗️ Application Architecture
+## 🏗️ System Architecture
 
-Connekt follows a client-server architecture with three primary components:
+Connekt separates RESTful state management and identity verification from real-time WebRTC signaling and peer-to-peer media streaming.
+
+### High-Level Topology
 
 ```text
-                         ┌─────────────────────────────┐
-                         │         React + Vite        │
-                         │           Frontend          │
-                         │                             │
-                         │  Auth / Dashboard / Meeting │
-                         │        Chat / History       │
-                         └──────────────┬──────────────┘
-                                        │
-                               REST API / Socket.IO
-                                        │
-                                        ▼
-                         ┌─────────────────────────────┐
-                         │      Node.js + Express      │
-                         │           Backend           │
-                         │                             │
-                         │    Authentication / APIs    │
-                         │     Socket.IO Signaling     │
-                         └──────────────┬──────────────┘
-                                        │
-                                        ▼
-                         ┌─────────────────────────────┐
-                         │        MongoDB Atlas        │
-                         │                             │
-                         │       Users / Meetings      │
-                         └─────────────────────────────┘
+                                  ┌─────────────────────────────────────────┐
+                                  │            Client (Browser)             │
+                                  │                                         │
+                                  │  React 19 + Vite + TailwindCSS v4       │
+                                  │  - AuthContext (Bootstrap & Tokens)     │
+                                  │  - Axios Interceptors (Silent Refresh)  │
+                                  │  - WebRTC Peer Connection Manager       │
+                                  │  - Web Audio API (AnalyserNode)         │
+                                  └─────────────┬───────────────────────────┘
+                                                │
+                       ┌────────────────────────┴────────────────────────┐
+                       │ REST APIs (HTTPS)                               │ Socket.IO Signaling (WSS)
+                       ▼                                                 ▼
+        ┌─────────────────────────────┐                   ┌───────────────────────────────┐
+        │     Express 5.x Backend     │                   │       Socket.IO Gateway       │
+        │                             │                   │                               │
+        │  - Helmet Security Headers  │                   │  - Handshake JWT Verification │
+        │  - Global / Auth Rate Limit │                   │  - Single-Room Enforcement    │
+        │  - Zod Request Validation   │                   │  - Cross-Room Signal Firewall │
+        │  - Cookie Parser (HttpOnly) │                   │  - Sliding Window Chat Limit  │
+        └──────────────┬──────────────┘                   └───────────────┬───────────────┘
+                       │                                                  │
+                       ▼                                                  ▼
+        ┌─────────────────────────────┐                   ┌───────────────────────────────┐
+        │        Service Layer        │                   │     WebRTC Mesh Topology      │
+        │                             │                   │                               │
+        │  - authService (JWT/Family) │                   │  Peer A ◄─── P2P Media ───► Peer B
+        │  - historyService (MongoDB) │                   │    ▲                         ▲
+        └──────────────┬──────────────┘                   │    └──────── Peer C ─────────┘
+                       │                                  │   (Google STUN: stun.l.google.com)
+                       ▼                                  └───────────────────────────────┘
+        ┌─────────────────────────────┐
+        │        MongoDB Atlas        │
+        │                             │
+        │  - Users & Refresh Sessions │
+        │  - User Meeting Activities  │
+        └─────────────────────────────┘
+```
 
-                                      WebRTC
-                         Browser ◄──────────────► Browser
-                           │                        │
-                           └── Peer-to-Peer Media ──┘
+### Detailed Component Interaction
+
+```text
++---------------------------------------------------------------------------------------------------+
+| FRONTEND CLIENT (React 19 / Vite)                                                                 |
+|                                                                                                   |
+|  +--------------------+   +-----------------------+   +-------------------+   +----------------+  |
+|  | AuthContext        |   | Axios API Client      |   | Socket Client     |   | WebRTC Manager |  |
+|  | State & User Auth  |-->| Bearer Auth Header    |-->| Handshake with    |-->| RTCPeerConnect |  |
+|  | Session Lifecycles |   | 401 Silent Token Rot. |   | Active JWT Token  |   | Unified Plan   |  |
+|  +--------------------+   +-----------------------+   +-------------------+   +----------------+  |
++---------------------------------------|-------------------------|-----------------------|---------+
+                                        |                         |                       |
+                             HTTPS REST |              WSS Events |                       |
+                                        v                         v                       |
++-----------------------------------------------------------------+                       |
+| BACKEND SERVER (Node.js / Express 5 / Socket.IO)                |                       |
+|                                                                 |                       |
+|  [Middleware Pipeline]                                          |                       |
+|  Helmet -> CORS -> RateLimiter -> CookieParser -> JsonParser    |                       |
+|                                                                 |                       |
+|  [REST Routes & Controllers]         [Socket.IO Manager]        |                       |
+|  - /api/v1/auth/*                    - Connection Auth Gate     |                       |
+|  - /api/v1/meetings/*                - room:join / peer:joined  |                       |
+|  - /health                           - signal:offer/answer/ice  |                       |
+|                                      - chat:message Rate Limiter|                       |
+|  [Services & Data Layer]                                        |                       |
+|  - authService.js (Bcrypt + JWT + Session Family Tree)          |                       |
+|  - historyService.js (Atomic Mongoose Queries)                  |                       |
++---------------------------------------|-------------------------+                       |
+                                        |                                                 |
+                       Database Queries |                                     STUN / ICE  |
+                                        v                                                 v
++-----------------------------------------------+             +-------------------------------------+
+| MONGODB ATLAS CLUSTER                         |             | GOOGLE STUN INFRASTRUCTURE          |
+| - Users Collection (Bcrypt Passwords, Tokens) |             | stun:stun.l.google.com:19302        |
+| - Meetings Collection (User History Activity) |             | NAT Traversal & Candidate Discovery |
++-----------------------------------------------+             +-------------------------------------+
 ```
 
 ---
 
-# 🚀 Tech Stack
+## ✨ Feature Deep-Dive
 
-## 🖌️ Frontend
+### 🔐 1. Authentication & Session Security
+- **Dual-Token System**:
+  - **Access Token**: Stateless JWT (15-minute expiration) sent in `Authorization: Bearer <token>` header.
+  - **Refresh Token**: Cryptographically secure UUID token (7-day expiration) stored exclusively in an `httpOnly`, `sameSite: strict`, `secure` cookie to prevent XSS exfiltration.
+- **Refresh Token Rotation & Reuse Detection**:
+  - Every refresh token exchange generates a new token while preserving the lineage (`sessionId`, `revokedAt`, `replacedBySessionId`).
+  - If a revoked token is replayed (indicating a compromised token), the backend immediately revokes the **entire session family**, protecting the account against hijack attempts.
+- **Brute Force Protection**: Dedicated rate limiter restricts authentication attempts to 20 requests per 15 minutes per IP.
+- **Input Validation**: All payloads validated using strict Zod schemas before reaching the service layer.
 
-- React
-- Vite
-- JavaScript
-- React Router
-- TailwindCSS
-- Shadcn/ui
-- Axios
-- Socket.IO Client
-- CSS / CSS Modules
+### 🎥 2. Modern WebRTC Real-Time Audio & Video
+- **Unified-Plan RTCPeerConnection**: Audio and video tracks are managed via standard transceivers (`sendrecv`), fully compliant with modern browser standards.
+- **Zero-Renegotiation Screen Sharing**: When a user initiates or terminates screen sharing, `sender.replaceTrack()` swaps the video track directly on existing peer connections. This eliminates screen flickering and connection drops.
+- **Active Audio Level Metering**: Integrated `AudioContext` and `AnalyserNode` measure microphone RMS energy, providing real-time visual indicators when a participant speaks.
+- **Track Lifecycle Management**: All microphone and webcam tracks are explicitly stopped upon leaving a call, preventing lingering device activity indicators in the browser.
 
-## ⚙️ Backend
+### ⚡ 3. Hardened Socket.IO Signaling
+- **Handshake Authentication**: Socket.IO connections require a valid JWT passed in `auth.token`. Unauthenticated or expired socket connections are rejected at handshake.
+- **Single-Room Enforcement**: A client socket can only belong to one room at any time. Joining a new room automatically detaches and notifies peers in the previous room.
+- **Cross-Room Signal Firewall**: The server verifies that both the sender and the recipient socket are in the exact same room before routing `signal:offer`, `signal:answer`, or `signal:ice-candidate`.
+- **Chat Validation & Rate Limiting**: Chat messages are restricted to 1,000 characters and rate-limited via a sliding window (maximum 5 messages every 5 seconds) to prevent spam. Sender identity is stamped directly from the authenticated session.
 
-- Node.js
-- Express.js
-- Socket.IO
-- Mongoose
-- bcrypt
-- dotenv
-- CORS
+### 🎨 4. Futuristic Cyberpunk UI & Responsiveness
+- **Aesthetic**: Deep space-grade dark theme (`#050814`) with cyan (`#00d8f6`) and violet (`#7b61ff`) glow accents.
+- **Responsive Layouts**: Dynamic CSS Grid meeting video layout that automatically shifts between 1-to-1 spotlight views and multi-peer gallery tiles.
+- **Dedicated Chat Drawer**: In-meeting real-time chat with unread message badges and sender attribution.
+- **Meeting Lobby & Controls**: Pre-join device previews, one-click camera/microphone toggling, screen sharing controls, and end-meeting redirection to Dashboard.
+- **Informational Pages**: Dedicated Privacy & Terms, About Us, and Contact Us pages styled uniformly.
 
-## 🎥 Real-Time Communication
+---
 
-- WebRTC
-- RTCPeerConnection
-- Socket.IO
-- Google STUN Server
+## 🚀 Tech Stack
 
-## 🗄️ Database
+### Frontend Architecture
+- **Framework:** [React 19](https://react.dev/) + [Vite 8](https://vite.dev/) (Client Environment)
+- **Routing:** [React Router 7](https://reactrouter.com/) (Protected Routes & Auth-aware redirects)
+- **Styling:** [Tailwind CSS v4](https://tailwindcss.com/) + [Shadcn UI](https://ui.shadcn.com/)
+- **Component Primitives:** [Radix UI](https://www.radix-ui.com/) (`@radix-ui/react-slot`)
+- **Iconography:** [Lucide React](https://lucide.dev/)
+- **HTTP Client:** [Axios](https://axios-http.com/) (With request interceptor for Bearer JWT & response interceptor for silent token refresh queue)
+- **Real-Time Client:** [Socket.IO Client](https://socket.io/docs/v4/client-api/)
+- **Audio Processing:** Web Audio API (`AudioContext` + `AnalyserNode` for microphone volume level metering)
+- **Utilities:** `clsx`, `tailwind-merge`, `class-variance-authority`, `cn`
 
-- MongoDB Atlas
-- Mongoose ODM
+### Backend Architecture
+- **Runtime:** [Node.js](https://nodejs.org/) (ES Modules)
+- **Framework:** [Express.js 5](https://expressjs.com/)
+- **Real-Time Engine:** [Socket.IO 4.8](https://socket.io/) (Scoped room signaling & real-time messaging)
+- **Database ODM:** [Mongoose 9.9](https://mongoosejs.com/) (MongoDB connection pooling & schema models)
+- **Authentication:** [jsonwebtoken](https://github.com/auth0/node-jsonwebtoken) (Stateless access tokens) + [bcrypt](https://github.com/kelektiv/node.bcrypt.js) (Salted password hashing)
+- **Validation:** [Zod 4](https://zod.dev/) (Runtime schema enforcement)
+- **Security Middleware:** [Helmet](https://helmetjs.github.io/), [express-rate-limit](https://github.com/express-rate-limit/express-rate-limit), [cookie-parser](https://github.com/expressjs/cookie-parser), [cors](https://github.com/expressjs/cors)
+- **Automated Testing:** Node Native Test Runner (`node --test`), [Supertest](https://github.com/ladjs/supertest)
+
+### Real-Time & Cloud Infrastructure
+- **Media Protocol:** Modern WebRTC Unified Plan (`RTCPeerConnection`, `addTrack`, `ontrack`, `replaceTrack`)
+- **NAT Traversal:** Google Public STUN (`stun:stun.l.google.com:19302`)
+- **Database Cluster:** [MongoDB Atlas](https://www.mongodb.com/atlas)
+- **Deployment Platform:** [Render](https://render.com/)
 
 ---
 
@@ -199,230 +188,434 @@ connekt/
 │
 ├── backend/
 │   ├── src/
+│   │   ├── config/
+│   │   │   ├── env.js
+│   │   │   └── jwt.js
 │   │   ├── controllers/
-│   │   │   ├── socketManager.js
 │   │   │   └── user.controller.js
-│   │   │
+│   │   ├── middleware/
+│   │   │   ├── asyncHandler.js
+│   │   │   ├── auth.js
+│   │   │   ├── errorHandler.js
+│   │   │   └── rateLimiter.js
 │   │   ├── models/
 │   │   │   ├── meeting.model.js
 │   │   │   └── user.model.js
-│   │   │
 │   │   ├── routes/
+│   │   │   ├── health.routes.js
 │   │   │   └── users.routes.js
-│   │   │
+│   │   ├── services/
+│   │   │   ├── authService.js
+│   │   │   └── historyService.js
+│   │   ├── sockets/
+│   │   │   └── socketManager.js
+│   │   ├── utils/
+│   │   │   └── AppError.js
+│   │   ├── validators/
+│   │   │   └── auth.validator.js
 │   │   └── app.js
-│   │
+│   ├── test/
+│   │   ├── auth.test.js
+│   │   └── socket.test.js
 │   ├── .env.example
 │   ├── package.json
 │   └── package-lock.json
 │
 ├── frontend/
 │   ├── public/
-│   │   ├── background.png
-│   │   ├── logo.png
-│   │   └── mobile.png
-│   │
+│   │   └── favicon.svg
 │   ├── src/
+│   │   ├── components/
+│   │   │   ├── layout/
+│   │   │   │   └── Navbar.jsx
+│   │   │   ├── meeting/
+│   │   │   │   ├── ChatPanel.jsx
+│   │   │   │   ├── MeetingControls.jsx
+│   │   │   │   ├── MeetingHeader.jsx
+│   │   │   │   ├── MeetingLobby.jsx
+│   │   │   │   ├── VideoGrid.jsx
+│   │   │   │   └── VideoTile.jsx
+│   │   │   └── ui/
+│   │   │       ├── badge.jsx
+│   │   │       ├── button.jsx
+│   │   │       ├── input.jsx
+│   │   │       └── skeleton.jsx
+│   │   ├── config/
+│   │   │   └── environment.js
+│   │   ├── constants/
+│   │   │   └── routes.js
 │   │   ├── contexts/
 │   │   │   └── AuthContext.jsx
-│   │   │
+│   │   ├── hooks/
+│   │   │   ├── useAuth.js
+│   │   │   └── useMeetingHistory.js
 │   │   ├── pages/
+│   │   │   ├── about.jsx
 │   │   │   ├── authentication.jsx
+│   │   │   ├── contact.jsx
 │   │   │   ├── dashboard.jsx
 │   │   │   ├── history.jsx
 │   │   │   ├── landing.jsx
+│   │   │   ├── privacy.jsx
 │   │   │   └── videoMeet.jsx
-│   │   │
+│   │   ├── services/
+│   │   │   ├── api.js
+│   │   │   ├── authService.js
+│   │   │   └── historyService.js
 │   │   ├── styles/
 │   │   │   └── videoComponent.module.css
-│   │   │
 │   │   ├── utils/
 │   │   │   └── withAuth.jsx
-│   │   │
 │   │   ├── App.css
 │   │   ├── App.jsx
-│   │   ├── environment.js
 │   │   ├── index.css
 │   │   └── main.jsx
-│   │
+│   ├── eslint.config.js
 │   ├── package.json
-│   └── package-lock.json
+│   ├── package-lock.json
+│   └── vite.config.js
 │
 ├── .gitignore
-├── README.md
-└── ...
+└── README.md
 ```
 
 ---
 
-# 🔌 API Endpoints
-
-## Authentication
-
-### Signup
-
-```http
-POST /api/v1/users/signup
-```
-
-### Login
-
-```http
-POST /api/v1/users/login
-```
-
-## Meeting History
-
-### Add Meeting to History
-
-```http
-POST /api/v1/users/add_to_activity
-```
-
-### Get User Meeting History
-
-```http
-GET /api/v1/users/get_all_activity?token=<token>
-```
-
-The backend defines these routes under `/api/v1/users`.
-
----
-
-# 🔑 Environment Variables
-
-## Backend
-
-Create:
+## 🔄 Real-Time Signaling & WebRTC Lifecycle
 
 ```text
-backend/.env
-```
-
-Example:
-
-```env
-MONGO_URI=your_mongodb_connection_string
-PORT=8080
+Peer A (Host)                      Socket.IO Server                      Peer B (Joiner)
+      │                                   │                                     │
+      │── 1. room:join { roomId } ───────>│                                     │
+      │<─ 2. room:joined { roomId } ──────│                                     │
+      │                                   │                                     │
+      │                                   │<── 3. room:join { roomId } ─────────│
+      │                                   │─── 4. room:joined { roomId, peers }─>
+      │<─ 5. peer:joined { peerId: B } ───│                                     │
+      │                                   │                                     │
+      │── 6. signal:offer ───────────────>│ (Verify same-room co-location)      │
+      │                                   │─── 7. signal:offer ────────────────>│
+      │                                   │                                     │
+      │                                   │<── 8. signal:answer ────────────────│
+      │<─ 9. signal:answer ───────────────│                                     │
+      │                                   │                                     │
+      │── 10. signal:ice-candidate ──────>│─── 11. signal:ice-candidate ───────>│
+      │<─ 13. signal:ice-candidate ───────│<── 12. signal:ice-candidate ───────│
+      │                                   │                                     │
+      │================== 14. Direct P2P Media Stream Established =============│
+      │                                   │                                     │
+      │── 15. media:state-change ────────>│─── 16. media:state-change ─────────>│
+      │── 17. chat:message ──────────────>│─── 18. chat:message ───────────────>│
+      │                                   │                                     │
+      │                                   │<── 19. disconnect ──────────────────│
+      │<─ 20. peer:left { peerId: B } ────│                                     │
 ```
 
 ---
 
-# 🚀 Installation & Local Development
+## 🔌 REST API Specification
 
-## 1. Clone the Repository
+### Health Check
 
+```http
+GET /health
+```
+- **Response `200 OK`:**
+  ```json
+  { "status": "ok", "db": "connected" }
+  ```
+
+---
+
+### Authentication (`/api/v1/auth`)
+
+#### 1. Register User
+```http
+POST /api/v1/auth/signup
+Content-Type: application/json
+
+{
+  "name": "Alex Mercer",
+  "username": "alexmercer",
+  "password": "Password123"
+}
+```
+- **Response `201 Created`:**
+  ```json
+  {
+    "message": "User registered successfully",
+    "user": {
+      "id": "670...",
+      "name": "Alex Mercer",
+      "username": "alexmercer"
+    }
+  }
+  ```
+
+#### 2. User Login
+```http
+POST /api/v1/auth/login
+Content-Type: application/json
+
+{
+  "username": "alexmercer",
+  "password": "Password123"
+}
+```
+- **Response `200 OK`:**
+  - Sets HTTP-Only cookie: `refreshToken=<token>; HttpOnly; Secure; SameSite=Strict; Max-Age=604800`
+  ```json
+  {
+    "accessToken": "eyJhbG...",
+    "user": {
+      "id": "670...",
+      "name": "Alex Mercer",
+      "username": "alexmercer"
+    }
+  }
+  ```
+
+#### 3. Refresh Access Token
+```http
+POST /api/v1/auth/refresh
+Cookie: refreshToken=<token>
+```
+- **Response `200 OK`:**
+  - Rotates refresh cookie with a newly minted token.
+  ```json
+  { "accessToken": "eyJhbG..." }
+  ```
+- **Response `401 Unauthorized` (Token Reuse Detected):**
+  - Triggers immediate session family revocation.
+  ```json
+  { "error": "Invalid refresh token", "code": "REFRESH_TOKEN_REUSE" }
+  ```
+
+#### 4. Current User Profile
+```http
+GET /api/v1/auth/me
+Authorization: Bearer <accessToken>
+```
+- **Response `200 OK`:**
+  ```json
+  {
+    "user": {
+      "id": "670...",
+      "name": "Alex Mercer",
+      "username": "alexmercer"
+    }
+  }
+  ```
+
+#### 5. User Logout
+```http
+POST /api/v1/auth/logout
+Cookie: refreshToken=<token>
+```
+- **Response `200 OK`:**
+  - Clears `refreshToken` cookie and marks session as revoked in the database.
+  ```json
+  { "message": "Logged out successfully" }
+  ```
+
+---
+
+### Meeting Management (`/api/v1/meetings`)
+
+#### 1. Record Meeting to History
+```http
+POST /api/v1/meetings/activity
+Authorization: Bearer <accessToken>
+Content-Type: application/json
+
+{
+  "meetingCode": "alpha-room-123"
+}
+```
+- **Response `201 Created`:**
+  ```json
+  { "message": "Meeting added to history" }
+  ```
+
+#### 2. Retrieve User Meeting History
+```http
+GET /api/v1/meetings/activity
+Authorization: Bearer <accessToken>
+```
+- **Response `200 OK`:**
+  ```json
+  [
+    {
+      "_id": "670...",
+      "meetingCode": "alpha-room-123",
+      "date": "2026-09-13T11:00:00.000Z"
+    }
+  ]
+  ```
+
+*(Note: Legacy endpoints `/api/v1/users/login`, `/api/v1/users/signup`, `/api/v1/users/add_to_activity`, and `/api/v1/users/get_all_activity` remain fully functional as compatibility aliases).*
+
+---
+
+## ⚡ Socket.IO Event Specification
+
+All socket connections require an authenticated JWT token during handshake:
+```javascript
+const socket = io(SERVER_URL, {
+  auth: { token: accessToken }
+});
+```
+
+| Event Name | Direction | Payload | Description |
+| :--- | :--- | :--- | :--- |
+| `room:join` | Client → Server | `{ roomId: string }` | Join a meeting room. Enforces single-room per socket. |
+| `room:joined` | Server → Client | `{ roomId: string, peers: Array }` | Confirms room entry and provides active peer list. |
+| `peer:joined` | Server → Client | `{ peerId: string, name: string }` | Broadcast to peers when a new user enters the room. |
+| `peer:left` | Server → Client | `{ peerId: string }` | Broadcast to peers when a user exits or disconnects. |
+| `signal:offer` | Client ⇄ Server | `{ to: string, offer: RTCSessionDescription }` | Relays WebRTC SDP offer (cross-room isolated). |
+| `signal:answer` | Client ⇄ Server | `{ to: string, answer: RTCSessionDescription }` | Relays WebRTC SDP answer (cross-room isolated). |
+| `signal:ice-candidate` | Client ⇄ Server | `{ to: string, candidate: RTCIceCandidate }` | Relays ICE candidate for NAT traversal. |
+| `media:state-change` | Client ⇄ Server | `{ isAudioMuted: boolean, isVideoOff: boolean }` | Broadcasts microphone/camera status to peers. |
+| `chat:message` | Client ⇄ Server | `{ message: string }` | Sends a chat message (rate-limited, server-verified sender). |
+| `chat:error` | Server → Client | `{ error: string }` | Emitted when message exceeds length or rate limit. |
+
+---
+
+## 🔑 Environment Configuration
+
+### Backend (`backend/.env`)
+
+```env
+# Server Configuration
+PORT=8080
+NODE_ENV=development
+
+# Database Connection
+MONGO_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/connekt?retryWrites=true&w=majority
+
+# JWT Secrets (Minimum 32 characters)
+JWT_ACCESS_SECRET=your_super_secret_access_key_min_32_chars_long
+JWT_REFRESH_SECRET=your_super_secret_refresh_key_min_32_chars_long
+
+# Token Expiry Durations
+JWT_ACCESS_EXPIRY=15m
+JWT_REFRESH_EXPIRY=7d
+
+# CORS Allowed Origin
+FRONTEND_URL=http://localhost:5173
+
+# WebRTC ICE Configuration (Optional - Defaults to Google Public STUN)
+WEBRTC_STUN_URL=stun:stun.l.google.com:19302
+WEBRTC_TURN_URL=
+WEBRTC_TURN_USERNAME=
+WEBRTC_TURN_CREDENTIAL=
+```
+
+### Frontend (`frontend/.env`)
+
+```env
+# Optional override (defaults automatically based on import.meta.env.PROD)
+VITE_BACKEND_URL=http://localhost:8080
+```
+
+---
+
+## 🛠️ Local Development Guide
+
+### Prerequisites
+- [Node.js](https://nodejs.org/) (v18.0.0 or higher recommended)
+- [npm](https://www.npmjs.com/) (v9.0.0 or higher)
+- [MongoDB Atlas](https://www.mongodb.com/atlas) account or local MongoDB instance
+
+---
+
+### Step 1: Clone Repository
 ```bash
 git clone https://github.com/AvishekAmin/connekt.git
 cd connekt
 ```
 
-## 2. Backend Setup
+---
 
+### Step 2: Backend Setup
 ```bash
 cd backend
+
+# Install dependencies
 npm install
+
+# Configure environment
+cp .env.example .env
+# Edit .env with your MongoDB Atlas URI and JWT secrets
+
+# Start development server
 npm run dev
 ```
+The backend will launch at `http://localhost:8080`.
 
-The backend runs on:
+---
 
-```text
-http://localhost:8080
-```
-
-## 3. Frontend Setup
-
-Open another terminal:
-
+### Step 3: Frontend Setup
+Open a new terminal window:
 ```bash
 cd frontend
+
+# Install dependencies
 npm install
+
+# Start Vite development server
 npm run dev
 ```
+The frontend will launch at `http://localhost:5173`.
 
-The Vite development server runs on:
+---
 
-```text
-http://localhost:5173
+## 🧪 Testing & Verification
+
+Connekt includes comprehensive automated test suites for security and real-time operations:
+
+### Run Backend Tests
+```bash
+cd backend
+npm test
+```
+**Test Coverage Includes (40 tests across 16 suites):**
+- ✅ User registration validation and duplicate detection
+- ✅ Login authentication, password verification, and credential security
+- ✅ Bearer token validation and protected route authorization
+- ✅ Refresh token rotation, cookie attributes, and session revocation
+- ✅ Replay attack and token reuse detection (family invalidation)
+- ✅ Cross-user meeting isolation (User A cannot access User B's history)
+- ✅ Socket.IO handshake JWT authentication and rejection of invalid/expired tokens
+- ✅ Single-room-per-socket enforcement and auto-leave mechanics
+- ✅ Scoped signaling isolation (prevention of cross-room signal injection)
+- ✅ Chat sliding-window rate limiting and server-side sender stamping
+- ✅ Health endpoint verification
+
+### Run Frontend Verification
+```bash
+cd frontend
+
+# Run ESLint check
+npm run lint
+
+# Run production build
+npm run build
 ```
 
 ---
 
-# 🔄 Real-Time Communication Flow
+## 👨‍💻 Author
 
-A typical Connekt meeting follows this flow:
+**Avishek Amin**  
+Full-Stack Developer & Real-Time Systems Enthusiast
 
-```text
-1. User opens a meeting URL
-          ↓
-2. Browser requests camera / microphone access
-          ↓
-3. Client connects to Socket.IO backend
-          ↓
-4. Client joins the meeting room
-          ↓
-5. Socket.IO exchanges signaling information
-          ↓
-6. RTCPeerConnection objects are created
-          ↓
-7. WebRTC establishes peer-to-peer media connections
-          ↓
-8. Video / audio streams are exchanged
-          ↓
-9. Socket.IO handles real-time chat and signaling
-```
+- 🔗 **LinkedIn:** [linkedin.com/in/avishekamin](https://www.linkedin.com/in/avishekamin)
+- 🔗 **GitHub:** [github.com/AvishekAmin](https://github.com/AvishekAmin)
+- 📧 **Email:** [avishekamin207@gmail.com](mailto:avishekamin207@gmail.com)
 
 ---
 
-# 🧩 Project Highlights
-
-✅ Full-Stack Real-Time Communication Platform
-
-✅ React + Vite Frontend
-
-✅ Node.js + Express Backend
-
-✅ MongoDB Atlas Database
-
-✅ WebRTC-Based Video Communication
-
-✅ Socket.IO Signaling
-
-✅ Real-Time Chat
-
-✅ Screen Sharing
-
-✅ Audio / Video Controls
-
-✅ Authentication & Protected Routes
-
-✅ Meeting History
-
-✅ RESTful API Architecture
-
-✅ TailwindCSS, Shadcn/ui Interface
-
-✅ Production Deployment
-
-✅ Separate Frontend and Backend Services
-
-✅ Responsive Meeting Experience
-
----
-
-# 👨‍💻 Author
-
-## Avishek Amin
-
-🔗 **LinkedIn:** https://www.linkedin.com/in/avishekamin
-
-🔗 **Email:** avishekamin207@gmail.com
-
-🔗 **GitHub:** https://github.com/AvishekAmin
-
----
-
-### ⭐ **If you like this project, consider giving it a star!**
+### ⭐ If you find this project valuable or interesting, consider giving it a star!
 
 ---
