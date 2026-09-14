@@ -1,20 +1,12 @@
 import { randomUUID } from "node:crypto";
 import { roomManager } from "./roomManager.js";
 
-// Map<socketId, number[]> for sliding-window rate limiting
 const messageTimestamps = new Map();
 
 const RATE_LIMIT_WINDOW_MS = 5000;
 const MAX_MESSAGES_PER_WINDOW = 5;
 const MAX_MESSAGE_LENGTH = 1000;
 
-/**
- * Validates, rate-limits, and broadcasts in-call chat messages.
- * Enforces server-side identity (socket.user.name and socket.user.id) and timestamps.
- *
- * @param {import("socket.io").Server} io
- * @param {import("socket.io").Socket} socket
- */
 export const signupChatHandlers = (io, socket) => {
   const handleMessage = (rawText) => {
     const roomCode = socket.roomCode || roomManager.getSocketRoom(socket.id);
@@ -39,7 +31,6 @@ export const signupChatHandlers = (io, socket) => {
       return;
     }
 
-    // --- Rate Limiting (Sliding Window) ---
     const now = Date.now();
     let timestamps = messageTimestamps.get(socket.id) || [];
     timestamps = timestamps.filter((t) => now - t < RATE_LIMIT_WINDOW_MS);
@@ -54,7 +45,6 @@ export const signupChatHandlers = (io, socket) => {
     timestamps.push(now);
     messageTimestamps.set(socket.id, timestamps);
 
-    // --- Construct Server-Stamped Message ---
     const messagePayload = {
       id: randomUUID(),
       text: trimmed,
@@ -63,25 +53,24 @@ export const signupChatHandlers = (io, socket) => {
       timestamp: new Date().toISOString(),
     };
 
-    // Broadcast to everyone in the room (including sender)
     io.to(roomCode).emit("chat:broadcast", messagePayload);
-
-    // Also support legacy client listener event name for smooth migration
-    io.to(roomCode).emit("chat-message", trimmed, messagePayload.sender, socket.id);
+    io.to(roomCode).emit(
+      "chat-message",
+      trimmed,
+      messagePayload.sender,
+      socket.id,
+    );
   };
 
-  // Modern event: chat:message
   socket.on("chat:message", (data) => {
     const text = typeof data === "object" && data !== null ? data.text : data;
     handleMessage(text);
   });
 
-  // Legacy event: chat-message (data, clientSender) -> ignores clientSender!
   socket.on("chat-message", (data) => {
     handleMessage(data);
   });
 
-  // Cleanup rate limiter on disconnect
   socket.on("disconnect", () => {
     messageTimestamps.delete(socket.id);
   });

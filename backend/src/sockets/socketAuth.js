@@ -1,17 +1,14 @@
 import jwt from "jsonwebtoken";
 import { config } from "../config/env.js";
 
-/**
- * Socket.IO handshake authentication middleware.
- * Verifies Bearer JWT access token from handshake.auth.token or handshake.headers.authorization.
- * Attaches verified identity to socket.user.
- */
 export const socketAuthMiddleware = (socket, next) => {
   const tokenHeader =
     socket.handshake.auth?.token || socket.handshake.headers?.authorization;
 
   if (!tokenHeader || !tokenHeader.startsWith("Bearer ")) {
-    const err = new Error("AUTH_REQUIRED: Access token required for real-time connection");
+    const err = new Error(
+      "AUTH_REQUIRED: Access token required for real-time connection",
+    );
     err.data = { code: "AUTH_REQUIRED" };
     return next(err);
   }

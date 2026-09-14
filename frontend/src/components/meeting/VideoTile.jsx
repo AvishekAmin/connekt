@@ -21,7 +21,6 @@ export default function VideoTile({
 
   return (
     <div className="relative w-full h-full min-h-[180px] aspect-video rounded-2xl overflow-hidden bg-[#0D1527] border border-[#1E2B4D] shadow-xl flex items-center justify-center group">
-      {/* Video Element */}
       {isLocal ? (
         <video
           ref={(el) => {
@@ -59,17 +58,19 @@ export default function VideoTile({
         />
       )}
 
-      {/* Camera Off Avatar Fallback */}
       {isCameraOff && (
         <div className="flex flex-col items-center justify-center space-y-2 select-none">
           <div className="size-16 sm:size-20 rounded-full bg-[#131D36] border border-[#1E2B4D] flex items-center justify-center text-[#00D8F6] font-bold text-lg sm:text-xl shadow-lg">
-            {label && label !== "You" ? getInitials(label) : <User className="size-8" />}
+            {label && label !== "You" ? (
+              getInitials(label)
+            ) : (
+              <User className="size-8" />
+            )}
           </div>
           <span className="text-xs font-medium text-slate-400">{label}</span>
         </div>
       )}
 
-      {/* Participant Identity Capsule Pill (Bottom Left) */}
       <div className="absolute bottom-3 left-3 px-3 py-1 rounded-full bg-[#050814]/85 backdrop-blur-md text-xs font-semibold text-white flex items-center gap-1.5 z-10 border border-[#1E2B4D] select-none shadow-md">
         {isMuted ? (
           <MicOff className="size-3 text-red-400" />

@@ -17,9 +17,13 @@ import {
 export default function Authentication() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { isAuthenticated, isLoading: isLoadingAuth, login, signup } = useAuth();
+  const {
+    isAuthenticated,
+    isLoading: isLoadingAuth,
+    login,
+    signup,
+  } = useAuth();
 
-  // If already authenticated, forward immediately to destination or home
   useEffect(() => {
     if (!isLoadingAuth && isAuthenticated) {
       const destination =
@@ -35,7 +39,7 @@ export default function Authentication() {
     if (location.state && typeof location.state.formState === "number") {
       return location.state.formState;
     }
-    return 0; // 0 = Log In, 1 = Sign Up
+    return 0;
   });
 
   useEffect(() => {
@@ -71,13 +75,16 @@ export default function Authentication() {
         setUsername("");
         setPassword("");
         setName("");
-        setSuccessMessage(result || "Account created successfully! You can now log in.");
+        setSuccessMessage(
+          result || "Account created successfully! You can now log in.",
+        );
         setFormState(0);
       }
     } catch (err) {
       console.error(err);
       const errorMessage =
-        err?.response?.data?.message || "Something went wrong. Please check your credentials.";
+        err?.response?.data?.message ||
+        "Something went wrong. Please check your credentials.";
       setError(errorMessage);
     } finally {
       setIsLoading(false);
@@ -86,11 +93,9 @@ export default function Authentication() {
 
   return (
     <div className="min-h-screen bg-[#050814] text-white flex flex-col justify-between p-4 sm:p-6 lg:p-8 relative overflow-hidden selection:bg-[#00D8F6]/20 selection:text-[#00D8F6]">
-      {/* Subtle Ambient Glow */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-[#00D8F6]/10 rounded-full blur-3xl pointer-events-none -z-10" />
       <div className="absolute bottom-1/4 right-1/3 w-[350px] h-[350px] bg-[#7B61FF]/10 rounded-full blur-3xl pointer-events-none -z-10" />
 
-      {/* Top Navigation Bar */}
       <div className="w-full max-w-5xl mx-auto flex items-center justify-between">
         <Link
           to={ROUTES.LANDING}
@@ -100,21 +105,14 @@ export default function Authentication() {
           <span>Back to home</span>
         </Link>
 
-        {/* Brand Logo in header */}
         <Link to={ROUTES.LANDING} className="flex items-center gap-2">
-          <img
-            src="/favicon.svg"
-            alt="Connekt"
-            className="size-7 rounded-md"
-          />
+          <img src="/favicon.svg" alt="Connekt" className="size-7 rounded-md" />
           <span className="font-bold text-lg text-white">Connekt</span>
         </Link>
       </div>
 
-      {/* Center Auth Card Modal */}
       <div className="w-full max-w-md mx-auto my-8">
         <div className="bg-[#0D1527]/95 border border-[#1E2B4D] rounded-3xl p-6 sm:p-10 shadow-2xl shadow-black/80 backdrop-blur-md">
-          {/* Brand Wordmark with Havenly multi-color gradient */}
           <div className="text-center space-y-1 mb-6">
             <span className="text-2xl sm:text-3xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[#00D8F6] via-[#6366F1] to-[#EC4899]">
               Connekt
@@ -129,7 +127,6 @@ export default function Authentication() {
             </p>
           </div>
 
-          {/* Informational Redirect Banner if user was trying to join a meeting */}
           {location.state?.redirectTo && (
             <div className="mb-5 p-3 rounded-2xl bg-[#062436] border border-[#00D8F6]/30 text-xs text-[#00D8F6] flex items-center gap-2 shadow-inner">
               <Video className="size-4 shrink-0" />
@@ -142,7 +139,6 @@ export default function Authentication() {
             </div>
           )}
 
-          {/* Segmented Capsule Tabs */}
           <div className="grid grid-cols-2 p-1 bg-[#0A1020] rounded-full border border-[#1E2B4D] mb-6">
             <button
               type="button"
@@ -176,7 +172,6 @@ export default function Authentication() {
             </button>
           </div>
 
-          {/* Success Alert */}
           {successMessage && (
             <div className="mb-4 p-3.5 rounded-2xl border border-[#00E599]/30 bg-[#052E16]/70 text-[#00E599] text-xs sm:text-sm flex items-start gap-2.5">
               <CheckCircle2 className="size-4 shrink-0 mt-0.5" />
@@ -184,7 +179,6 @@ export default function Authentication() {
             </div>
           )}
 
-          {/* Error Alert */}
           {error && (
             <div className="mb-4 p-3.5 rounded-2xl border border-red-500/30 bg-red-500/10 text-red-400 text-xs sm:text-sm flex items-start gap-2.5">
               <AlertCircle className="size-4 shrink-0 mt-0.5" />
@@ -192,7 +186,6 @@ export default function Authentication() {
             </div>
           )}
 
-          {/* Actual Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
             {formState === 1 && (
               <div className="space-y-1.5">
@@ -256,7 +249,6 @@ export default function Authentication() {
               </div>
             </div>
 
-            {/* Gradient Pill Submit Button */}
             <Button
               type="submit"
               disabled={isLoading}
@@ -265,7 +257,9 @@ export default function Authentication() {
               {isLoading ? (
                 <>
                   <Loader2 className="size-4 animate-spin text-black" />
-                  <span>{formState === 0 ? "Logging in..." : "Signing up..."}</span>
+                  <span>
+                    {formState === 0 ? "Logging in..." : "Signing up..."}
+                  </span>
                 </>
               ) : (
                 <span>{formState === 0 ? "Log In" : "Sign Up"}</span>
@@ -273,7 +267,6 @@ export default function Authentication() {
             </Button>
           </form>
 
-          {/* Footer toggle */}
           <div className="mt-6 text-center text-xs sm:text-sm text-slate-400">
             {formState === 0 ? (
               <p>

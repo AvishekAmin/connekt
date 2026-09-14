@@ -15,7 +15,6 @@ export default function ChatPanel({
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
 
-  // Auto-scroll to bottom whenever new messages arrive or panel opens, and autofocus input
   useEffect(() => {
     if (isOpen) {
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -50,7 +49,6 @@ export default function ChatPanel({
       className="fixed inset-y-0 right-0 z-50 w-full sm:w-80 md:w-96 bg-[#0D1527]/98 backdrop-blur-xl border-l border-[#1E2B4D] flex flex-col shadow-2xl transition-transform animate-in slide-in-from-right duration-200 select-text"
       aria-label="In-call chat drawer"
     >
-      {/* Header */}
       <div className="h-14 px-4 border-b border-[#1E2B4D] flex items-center justify-between shrink-0">
         <div className="flex items-center gap-2">
           <MessageSquare className="size-4 text-[#00D8F6]" />
@@ -67,14 +65,14 @@ export default function ChatPanel({
         </button>
       </div>
 
-      {/* Messages List */}
       <div className="flex-1 p-4 overflow-y-auto space-y-3.5">
         {messages.length > 0 ? (
           messages.map((item, index) => {
             const isMe =
               currentUser &&
               item.sender &&
-              item.sender.toLowerCase().trim() === currentUser.toLowerCase().trim();
+              item.sender.toLowerCase().trim() ===
+                currentUser.toLowerCase().trim();
 
             return (
               <div
@@ -113,14 +111,14 @@ export default function ChatPanel({
             </div>
             <p className="text-sm font-medium text-white">No messages yet</p>
             <p className="text-xs">
-              Messages sent during this call will appear here for all participants.
+              Messages sent during this call will appear here for all
+              participants.
             </p>
           </div>
         )}
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Input Form Area */}
       <div className="p-3 border-t border-[#1E2B4D] bg-[#0D1527] shrink-0">
         <form
           onSubmit={(e) => {

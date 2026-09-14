@@ -35,7 +35,6 @@ export default function MeetingLobby({
 
   return (
     <div className="min-h-screen bg-[#050814] text-white flex flex-col items-center justify-between p-4 sm:p-8 selection:bg-[#00D8F6]/20 selection:text-[#00D8F6]">
-      {/* Top Header */}
       <div className="w-full max-w-5xl flex items-center justify-between">
         <Link
           to={ROUTES.DASHBOARD}
@@ -45,17 +44,14 @@ export default function MeetingLobby({
           <span>Leave Lobby</span>
         </Link>
 
-        {/* Room Code Badge */}
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0D1527] border border-[#1E2B4D] text-xs font-mono text-slate-400">
           <span>Room:</span>
           <span className="font-bold text-[#00D8F6]">#{meetingCode}</span>
         </div>
       </div>
 
-      {/* Main Centered Content */}
       <main className="w-full max-w-4xl my-auto py-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          {/* Video Preview Card (Visual Focus) */}
           <div className="lg:col-span-7 flex flex-col items-center">
             <div className="relative w-full aspect-video rounded-3xl overflow-hidden bg-[#0D1527] border border-[#1E2B4D] shadow-2xl flex items-center justify-center">
               <video
@@ -79,7 +75,6 @@ export default function MeetingLobby({
                 }`}
               />
 
-              {/* Video Off Fallback Avatar */}
               {(!isVideoOn || !videoAvailable) && (
                 <div className="flex flex-col items-center justify-center text-slate-400 space-y-2 select-none">
                   <div className="size-16 rounded-full bg-[#131D36] border border-[#1E2B4D] flex items-center justify-center text-[#00D8F6]">
@@ -89,7 +84,6 @@ export default function MeetingLobby({
                 </div>
               )}
 
-              {/* Floating Quick Controls on Preview */}
               <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-3 px-3.5 py-1.5 rounded-full bg-[#050814]/85 backdrop-blur-md border border-[#1E2B4D] z-10 shadow-lg">
                 <button
                   type="button"
@@ -133,16 +127,18 @@ export default function MeetingLobby({
             </p>
           </div>
 
-          {/* Join Info & Username Form */}
           <div className="lg:col-span-5 space-y-6">
             <div className="space-y-2">
               <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#00D8F6]">
                 <Sparkles className="size-3.5" />
                 <span>Ready to Join?</span>
               </div>
-              <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">Meeting Lobby</h1>
+              <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
+                Meeting Lobby
+              </h1>
               <p className="text-xs sm:text-sm text-slate-400">
-                Enter your display name so other participants in the room can identify you.
+                Enter your display name so other participants in the room can
+                identify you.
               </p>
             </div>
 
@@ -176,9 +172,9 @@ export default function MeetingLobby({
         </div>
       </main>
 
-      {/* Bottom Footer note */}
       <div className="text-center text-xs text-slate-500">
-        Connekt Conferencing • Room Code: <span className="font-mono text-[#00D8F6]">#{meetingCode}</span>
+        Connekt Conferencing • Room Code:{" "}
+        <span className="font-mono text-[#00D8F6]">#{meetingCode}</span>
       </div>
     </div>
   );

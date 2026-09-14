@@ -13,7 +13,6 @@ describe("Socket.IO Real-Time & WebRTC Infrastructure Tests", () => {
   let serverUrl;
   let io;
 
-  // Helper to generate access tokens
   const generateToken = (payload, options = {}) => {
     return jwt.sign(payload, config.jwtAccessSecret, {
       expiresIn: options.expiresIn || "15m",
@@ -40,7 +39,6 @@ describe("Socket.IO Real-Time & WebRTC Infrastructure Tests", () => {
   };
 
   before(async () => {
-    // Spin up an isolated HTTP + Socket.IO server for testing
     server = createServer();
     io = connectToSocket(server);
 
@@ -58,7 +56,6 @@ describe("Socket.IO Real-Time & WebRTC Infrastructure Tests", () => {
     await new Promise((resolve) => server.close(resolve));
   });
 
-  // Helper to connect a test client
   const createTestClient = (token, options = {}) => {
     return Client(serverUrl, {
       auth: token ? { token: `Bearer ${token}` } : {},
@@ -155,7 +152,6 @@ describe("Socket.IO Real-Time & WebRTC Infrastructure Tests", () => {
       });
 
       clientAlice.on("room:joined", () => {
-        // Once Alice is in, Bob joins
         clientBob.emit("room:join", { meetingCode: "test-room-multi" });
       });
 
@@ -179,14 +175,15 @@ describe("Socket.IO Real-Time & WebRTC Infrastructure Tests", () => {
       });
 
       clientBob.on("room:joined", () => {
-        // Alice switches from room-alpha to room-beta
         clientAlice.emit("room:join", { meetingCode: "room-beta" });
       });
 
-      // Bob should be notified that Alice left room-alpha
       clientBob.on("peer:left", (leftData) => {
         assert.strictEqual(leftData.userId, userAlice.sub);
-        assert.strictEqual(roomManager.getSocketRoom(clientAlice.id), "room-beta");
+        assert.strictEqual(
+          roomManager.getSocketRoom(clientAlice.id),
+          "room-beta",
+        );
         done();
       });
     });
@@ -216,7 +213,6 @@ describe("Socket.IO Real-Time & WebRTC Infrastructure Tests", () => {
       });
 
       clientBob.on("room:joined", (bobData) => {
-        // Bob sends offer to Alice
         const aliceId = bobData.existingParticipants[0].socketId;
         clientBob.emit("signal:offer", {
           to: aliceId,
@@ -242,18 +238,15 @@ describe("Socket.IO Real-Time & WebRTC Infrastructure Tests", () => {
       });
 
       clientAlice.on("room:joined", () => {
-        // Charlie joins room-two
         clientCharlie.emit("room:join", { meetingCode: "room-two" });
       });
 
       clientCharlie.on("room:joined", () => {
-        // Charlie maliciously attempts to send an offer to Alice who is in room-one
         clientCharlie.emit("signal:offer", {
           to: clientAlice.id,
           sdp: { type: "offer", sdp: "malicious-offer" },
         });
 
-        // Wait 300ms to verify Alice does NOT receive it
         setTimeout(() => {
           assert.strictEqual(aliceReceivedSignal, false);
           done();
@@ -288,7 +281,6 @@ describe("Socket.IO Real-Time & WebRTC Infrastructure Tests", () => {
       });
 
       clientBob.on("room:joined", () => {
-        // Alice sends message, attempting to spoof sender as "Administrator"
         clientAlice.emit("chat:message", {
           text: "Hello room!",
           sender: "Administrator",
@@ -297,7 +289,7 @@ describe("Socket.IO Real-Time & WebRTC Infrastructure Tests", () => {
 
       clientBob.on("chat:broadcast", (msg) => {
         assert.strictEqual(msg.text, "Hello room!");
-        assert.strictEqual(msg.sender, userAlice.name); // Verified from JWT, not "Administrator"!
+        assert.strictEqual(msg.sender, userAlice.name);
         assert.strictEqual(msg.userId, userAlice.sub);
         assert.ok(msg.timestamp);
         assert.ok(msg.id);
@@ -331,7 +323,6 @@ describe("Socket.IO Real-Time & WebRTC Infrastructure Tests", () => {
       });
 
       clientAlice.on("room:joined", () => {
-        // Rapidly emit 6 messages
         for (let i = 0; i < 6; i++) {
           clientAlice.emit("chat:message", { text: `Message ${i + 1}` });
         }
@@ -361,19 +352,19 @@ describe("Socket.IO Real-Time & WebRTC Infrastructure Tests", () => {
       });
 
       clientBob.on("room:joined", () => {
-        // Alice disconnects abruptly
         clientAlice.disconnect();
       });
 
       clientBob.on("peer:left", (leftData) => {
         assert.strictEqual(leftData.userId, userAlice.sub);
 
-        // Bob now leaves
         clientBob.disconnect();
 
-        // Verify room is garbage collected from memory
         setTimeout(() => {
-          assert.strictEqual(roomManager.getRoomParticipants("cleanup-room").length, 0);
+          assert.strictEqual(
+            roomManager.getRoomParticipants("cleanup-room").length,
+            0,
+          );
           assert.strictEqual(roomManager.rooms.has("cleanup-room"), false);
           done();
         }, 100);

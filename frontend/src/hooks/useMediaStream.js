@@ -1,10 +1,5 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 
-/**
- * Custom hook for local media device lifecycle (Camera, Microphone, and Screen Sharing).
- * Uses native MediaStreamTrack.enabled toggling for mute/unmute (eliminating canvas black
- * and audio oscillator workarounds) and avoids any window-global stream pollution.
- */
 export function useMediaStream() {
   const localVideoRef = useRef(null);
   const localStream = useRef(null);
@@ -19,17 +14,15 @@ export function useMediaStream() {
   const [isAudioOn, setIsAudioOn] = useState(true);
   const [isScreenSharing, setIsScreenSharing] = useState(false);
 
-  /**
-   * Initializes user media stream (camera + microphone) with graceful fallbacks.
-   */
   const initializeMedia = useCallback(async () => {
-    // Check screen sharing API support
-    if (typeof navigator !== "undefined" && navigator.mediaDevices?.getDisplayMedia) {
+    if (
+      typeof navigator !== "undefined" &&
+      navigator.mediaDevices?.getDisplayMedia
+    ) {
       setScreenAvailable(true);
     }
 
     try {
-      // First attempt: Request both video and audio
       const stream = await navigator.mediaDevices.getUserMedia({
         video: true,
         audio: true,
@@ -49,13 +42,14 @@ export function useMediaStream() {
     } catch (fullError) {
       console.warn(
         "[MediaStream] Both video & audio could not be acquired simultaneously. Trying individually...",
-        fullError
+        fullError,
       );
 
-      // Second attempt: Try acquiring video alone
       let videoTrack = null;
       try {
-        const vStream = await navigator.mediaDevices.getUserMedia({ video: true });
+        const vStream = await navigator.mediaDevices.getUserMedia({
+          video: true,
+        });
         videoTrack = vStream.getVideoTracks()[0];
         setVideoAvailable(true);
         setIsVideoOn(true);
@@ -65,10 +59,11 @@ export function useMediaStream() {
         setIsVideoOn(false);
       }
 
-      // Third attempt: Try acquiring audio alone
       let audioTrack = null;
       try {
-        const aStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const aStream = await navigator.mediaDevices.getUserMedia({
+          audio: true,
+        });
         audioTrack = aStream.getAudioTracks()[0];
         setAudioAvailable(true);
         setIsAudioOn(true);
@@ -78,7 +73,6 @@ export function useMediaStream() {
         setIsAudioOn(false);
       }
 
-      // Assemble fallback MediaStream
       const fallbackTracks = [videoTrack, audioTrack].filter(Boolean);
       const compositeStream = new MediaStream(fallbackTracks);
       localStream.current = compositeStream;
@@ -91,10 +85,6 @@ export function useMediaStream() {
     }
   }, []);
 
-  /**
-   * Native camera toggle using track.enabled.
-   * Returns the new boolean state.
-   */
   const toggleVideo = useCallback(() => {
     if (!localStream.current) return isVideoOn;
     const videoTrack = localStream.current.getVideoTracks()[0];
@@ -107,10 +97,6 @@ export function useMediaStream() {
     return isVideoOn;
   }, [isVideoOn]);
 
-  /**
-   * Native microphone toggle using track.enabled.
-   * Returns the new boolean state.
-   */
   const toggleAudio = useCallback(() => {
     if (!localStream.current) return isAudioOn;
     const audioTrack = localStream.current.getAudioTracks()[0];
@@ -123,9 +109,6 @@ export function useMediaStream() {
     return isAudioOn;
   }, [isAudioOn]);
 
-  /**
-   * Stops screen share tracks and resets state.
-   */
   const stopScreenShare = useCallback(() => {
     if (screenStream.current) {
       screenStream.current.getTracks().forEach((track) => track.stop());
@@ -138,16 +121,12 @@ export function useMediaStream() {
     }
   }, []);
 
-  /**
-   * Captures screen video via getDisplayMedia.
-   * Attaches an onended handler to automatically revert when user clicks browser "Stop sharing".
-   */
   const startScreenShare = useCallback(
     async (onEndedCallback) => {
       try {
         const displayStream = await navigator.mediaDevices.getDisplayMedia({
           video: true,
-          audio: false, // Display video only to prevent competing audio tracks
+          audio: false,
         });
 
         screenStream.current = displayStream;
@@ -174,12 +153,9 @@ export function useMediaStream() {
         return null;
       }
     },
-    [stopScreenShare]
+    [stopScreenShare],
   );
 
-  /**
-   * Completely shuts down all media hardware tracks on unmount / end-call.
-   */
   const stopAllTracks = useCallback(() => {
     if (localStream.current) {
       localStream.current.getTracks().forEach((track) => track.stop());
@@ -195,7 +171,6 @@ export function useMediaStream() {
     }
   }, []);
 
-  // Cleanup on hook unmount
   useEffect(() => {
     return () => {
       stopAllTracks();

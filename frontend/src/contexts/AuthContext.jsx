@@ -26,7 +26,6 @@ export const AuthProvider = ({ children }) => {
     setIsAuthenticated(false);
   }, []);
 
-  // Silent refresh on boot — try to get a new access token from the HTTP-only cookie
   useEffect(() => {
     let mounted = true;
 
@@ -41,14 +40,16 @@ export const AuthProvider = ({ children }) => {
               setUser(meData);
             }
           } catch (meErr) {
-            console.warn("Could not retrieve user profile during silent refresh:", meErr);
+            console.warn(
+              "Could not retrieve user profile during silent refresh:",
+              meErr,
+            );
           }
           if (mounted) {
             setIsAuthenticated(true);
           }
         }
       } catch {
-        // No valid refresh token — user is not authenticated
         if (mounted) {
           clearApiAccessToken();
           setIsAuthenticated(false);
@@ -68,7 +69,6 @@ export const AuthProvider = ({ children }) => {
     };
   }, []);
 
-  // Listen for forced logout from Axios interceptor
   useEffect(() => {
     const handleLogout = () => {
       clearAuthData();

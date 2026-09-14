@@ -29,7 +29,6 @@ export default function ContactPage() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
-    // Simulate network submission
     setTimeout(() => {
       setLoading(false);
       setSubmitted(true);
@@ -39,11 +38,9 @@ export default function ContactPage() {
 
   return (
     <div className="min-h-screen bg-[#050814] text-white flex flex-col selection:bg-[#00D8F6]/20 selection:text-[#00D8F6]">
-      {/* Navbar */}
       <Navbar />
 
       <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-16 space-y-8">
-        {/* Back Link */}
         <div>
           <Link
             to={ROUTES.LANDING}
@@ -54,7 +51,6 @@ export default function ContactPage() {
           </Link>
         </div>
 
-        {/* Hero Header */}
         <div className="text-center space-y-3 py-6 relative">
           <div className="size-14 rounded-2xl bg-[#00D8F6]/10 border border-[#00D8F6]/30 text-[#00D8F6] flex items-center justify-center mx-auto shadow-lg shadow-cyan-500/10">
             <Mail className="size-7" />
@@ -63,11 +59,12 @@ export default function ContactPage() {
             Get in Touch
           </h1>
           <p className="text-sm sm:text-base text-slate-400 max-w-2xl mx-auto leading-relaxed">
-            Have a question, feedback, or need technical assistance with your video meetings? We'd love to hear from you. Reach out and our team will respond promptly.
+            Have a question, feedback, or need technical assistance with your
+            video meetings? We'd love to hear from you. Reach out and our team
+            will respond promptly.
           </p>
         </div>
 
-        {/* Contact Methods Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="rounded-2xl bg-[#0D1527] border border-[#1E2B4D] p-6 text-center space-y-2 hover:border-[#00D8F6]/40 transition-all">
             <div className="size-12 rounded-xl bg-[#00D8F6]/10 text-[#00D8F6] flex items-center justify-center mx-auto">
@@ -80,7 +77,9 @@ export default function ContactPage() {
             >
               avishekamin207@gmail.com
             </a>
-            <p className="text-xs text-slate-500">Typically respond within 2–4 hours</p>
+            <p className="text-xs text-slate-500">
+              Typically respond within 2–4 hours
+            </p>
           </div>
 
           <div className="rounded-2xl bg-[#0D1527] border border-[#1E2B4D] p-6 text-center space-y-2 hover:border-[#00D8F6]/40 transition-all">
@@ -94,7 +93,9 @@ export default function ContactPage() {
             >
               +91 98765 43210
             </a>
-            <p className="text-xs text-slate-500">Mon–Sat, 9:00 AM – 8:00 PM IST</p>
+            <p className="text-xs text-slate-500">
+              Mon–Sat, 9:00 AM – 8:00 PM IST
+            </p>
           </div>
 
           <div className="rounded-2xl bg-[#0D1527] border border-[#1E2B4D] p-6 text-center space-y-2 hover:border-[#00D8F6]/40 transition-all">
@@ -102,24 +103,32 @@ export default function ContactPage() {
               <MessageSquare className="size-5" />
             </div>
             <h3 className="text-base font-bold text-white">Live Support</h3>
-            <p className="text-xs sm:text-sm text-[#00E599] font-medium">Available 24/7</p>
-            <p className="text-xs text-slate-500">Instant support &amp; room diagnostics</p>
+            <p className="text-xs sm:text-sm text-[#00E599] font-medium">
+              Available 24/7
+            </p>
+            <p className="text-xs text-slate-500">
+              Instant support &amp; room diagnostics
+            </p>
           </div>
         </div>
 
-        {/* Contact Form */}
         <div className="rounded-3xl bg-[#0D1527] border border-[#1E2B4D] p-6 sm:p-10 shadow-xl space-y-6">
           <div className="flex items-center gap-3 border-b border-[#1E2B4D] pb-4">
             <Send className="size-6 text-[#00D8F6]" />
-            <h2 className="text-xl sm:text-2xl font-bold text-white">Send Us a Message</h2>
+            <h2 className="text-xl sm:text-2xl font-bold text-white">
+              Send Us a Message
+            </h2>
           </div>
 
           {submitted ? (
             <div className="p-6 rounded-2xl bg-[#00E599]/10 border border-[#00E599]/30 text-center space-y-3">
               <CheckCircle className="size-10 text-[#00E599] mx-auto" />
-              <h3 className="text-lg font-bold text-white">Message Sent Successfully!</h3>
+              <h3 className="text-lg font-bold text-white">
+                Message Sent Successfully!
+              </h3>
               <p className="text-xs sm:text-sm text-slate-300 max-w-md mx-auto">
-                Thank you for reaching out. We have received your message and our team will get back to you shortly.
+                Thank you for reaching out. We have received your message and
+                our team will get back to you shortly.
               </p>
               <Button
                 variant="outline"
@@ -142,7 +151,9 @@ export default function ContactPage() {
                     required
                     placeholder="Enter your full name"
                     value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, name: e.target.value })
+                    }
                     className="rounded-xl bg-[#131D36] border-[#1E2B4D] text-white h-11 text-sm placeholder:text-slate-500 focus-visible:ring-1 focus-visible:ring-[#00D8F6]"
                   />
                 </div>
@@ -155,7 +166,9 @@ export default function ContactPage() {
                     required
                     placeholder="Enter your email address"
                     value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, email: e.target.value })
+                    }
                     className="rounded-xl bg-[#131D36] border-[#1E2B4D] text-white h-11 text-sm placeholder:text-slate-500 focus-visible:ring-1 focus-visible:ring-[#00D8F6]"
                   />
                 </div>
@@ -168,10 +181,14 @@ export default function ContactPage() {
                 <select
                   required
                   value={formData.subject}
-                  onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, subject: e.target.value })
+                  }
                   className="w-full rounded-xl bg-[#131D36] border border-[#1E2B4D] text-white h-11 px-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#00D8F6]"
                 >
-                  <option value="" disabled>Select a topic</option>
+                  <option value="" disabled>
+                    Select a topic
+                  </option>
                   <option value="General Inquiry">General Inquiry</option>
                   <option value="Technical Support">Technical Support</option>
                   <option value="Bug Report">Bug Report</option>
@@ -190,7 +207,9 @@ export default function ContactPage() {
                   rows={5}
                   placeholder="Tell us how we can help you..."
                   value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, message: e.target.value })
+                  }
                   className="w-full rounded-xl bg-[#131D36] border border-[#1E2B4D] text-white p-3 text-sm placeholder:text-slate-500 focus:outline-none focus:ring-1 focus:ring-[#00D8F6] resize-y"
                 />
               </div>
@@ -207,11 +226,12 @@ export default function ContactPage() {
           )}
         </div>
 
-        {/* Office Info */}
         <div className="rounded-3xl bg-[#0D1527] border border-[#1E2B4D] p-6 sm:p-10 shadow-xl space-y-6">
           <div className="flex items-center gap-3 border-b border-[#1E2B4D] pb-4">
             <Building className="size-6 text-[#00D8F6]" />
-            <h2 className="text-xl sm:text-2xl font-bold text-white">Our Office</h2>
+            <h2 className="text-xl sm:text-2xl font-bold text-white">
+              Our Office
+            </h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm text-slate-300">
@@ -221,9 +241,12 @@ export default function ContactPage() {
                 <span>Headquarters</span>
               </div>
               <p className="text-slate-400 pl-6 leading-relaxed">
-                Connekt Technologies Pvt. Ltd.<br />
-                123 Innovation Drive, 4th Floor<br />
-                Koramangala, Bengaluru<br />
+                Connekt Technologies Pvt. Ltd.
+                <br />
+                123 Innovation Drive, 4th Floor
+                <br />
+                Koramangala, Bengaluru
+                <br />
                 Karnataka 560001, India
               </p>
             </div>
@@ -234,20 +257,25 @@ export default function ContactPage() {
                 <span>Operating Hours</span>
               </div>
               <p className="text-slate-400 pl-6 leading-relaxed">
-                <strong className="text-white">Monday – Friday:</strong> 9:00 AM – 7:00 PM IST<br />
-                <strong className="text-white">Saturday:</strong> 10:00 AM – 5:00 PM IST<br />
-                <strong className="text-white">Sunday:</strong> Closed<br />
-                <em className="text-xs text-slate-500">Online support is active 24/7.</em>
+                <strong className="text-white">Monday – Friday:</strong> 9:00 AM
+                – 7:00 PM IST
+                <br />
+                <strong className="text-white">Saturday:</strong> 10:00 AM –
+                5:00 PM IST
+                <br />
+                <strong className="text-white">Sunday:</strong> Closed
+                <br />
+                <em className="text-xs text-slate-500">
+                  Online support is active 24/7.
+                </em>
               </p>
             </div>
           </div>
         </div>
       </main>
 
-      {/* Footer */}
       <footer className="w-full border-t border-[#1E2B4D]/60 bg-[#070D1C]/90 backdrop-blur-md px-4 sm:px-6 lg:px-8 py-3 shrink-0">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-slate-400">
-          {/* Left Aligned: Social Media Links */}
           <div className="flex items-center gap-2 justify-center md:justify-start flex-1">
             <a
               href="https://www.facebook.com/avishek207"
@@ -309,29 +337,44 @@ export default function ContactPage() {
               aria-label="Email"
               className="size-8 rounded-full bg-white/[0.03] border border-white/[0.08] hover:border-[#00D8F6] hover:bg-[#00D8F6]/10 text-slate-400 hover:text-[#00D8F6] hover:-translate-y-0.5 hover:shadow-[0_0_12px_rgba(0,216,255,0.35)] transition-all flex items-center justify-center"
             >
-              <svg className="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg
+                className="size-3.5"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
                 <rect width="20" height="16" x="2" y="4" rx="2" />
                 <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
               </svg>
             </a>
           </div>
 
-          {/* Center Aligned: Copyright */}
           <div className="text-center font-normal text-slate-400 flex-1 whitespace-nowrap">
             © 2026 Connekt. All rights reserved.
           </div>
 
-          {/* Right Aligned: Links */}
           <div className="flex items-center gap-2.5 justify-center md:justify-end flex-1 whitespace-nowrap">
-            <Link to={ROUTES.PRIVACY} className="hover:text-[#00D8F6] transition-colors">
+            <Link
+              to={ROUTES.PRIVACY}
+              className="hover:text-[#00D8F6] transition-colors"
+            >
               Terms &amp; Privacy
             </Link>
             <span className="text-slate-600">•</span>
-            <Link to={ROUTES.ABOUT} className="hover:text-[#00D8F6] transition-colors">
+            <Link
+              to={ROUTES.ABOUT}
+              className="hover:text-[#00D8F6] transition-colors"
+            >
               About Us
             </Link>
             <span className="text-slate-600">•</span>
-            <Link to={ROUTES.CONTACT} className="text-[#00D8F6] font-medium transition-colors">
+            <Link
+              to={ROUTES.CONTACT}
+              className="text-[#00D8F6] font-medium transition-colors"
+            >
               Contact Us
             </Link>
           </div>

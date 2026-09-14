@@ -6,36 +6,16 @@ const DEFAULT_ICE_SERVERS = [
   },
 ];
 
-/**
- * Custom hook implementing a modern full-mesh WebRTC engine.
- * Features:
- * - W3C Perfect Negotiation Pattern with explicit rollback on offer collision
- * - Early ICE candidate buffering before remoteDescription
- * - addTrack / ontrack API (replacing deprecated addStream / onaddstream)
- * - RTCRtpSender.replaceTrack for seamless screen sharing without renegotiation
- * - Instance-scoped connection state (no module-level or window globals)
- *
- * @param {Object} params
- * @param {import("react").MutableRefObject<MediaStream>} params.localStreamRef
- * @param {import("react").MutableRefObject<import("socket.io-client").Socket>} params.socketRef
- * @param {Array<RTCIceServer>} [params.customIceServers]
- */
 export function useWebRTC({ localStreamRef, socketRef, customIceServers }) {
-  // Map<remoteSocketId, RTCPeerConnection>
   const peerConnections = useRef(new Map());
-  // Map<remoteSocketId, RTCIceCandidateInit[]>
   const candidateQueues = useRef(new Map());
-  // Map<remoteSocketId, { makingOffer: boolean, ignoreOffer: boolean, isSettingRemoteAnswerPending: boolean }>
   const negotiationStates = useRef(new Map());
-
-  // Array of participant objects with live MediaStreams and metadata for UI rendering
   const [participants, setParticipants] = useState([]);
 
-  const iceServers = customIceServers?.length ? customIceServers : DEFAULT_ICE_SERVERS;
+  const iceServers = customIceServers?.length
+    ? customIceServers
+    : DEFAULT_ICE_SERVERS;
 
-  /**
-   * Drain any buffered ICE candidates that arrived before remoteDescription was set.
-   */
   const drainCandidateQueue = useCallback(async (remoteSocketId) => {
     const pc = peerConnections.current.get(remoteSocketId);
     const queue = candidateQueues.current.get(remoteSocketId) || [];
@@ -46,14 +26,14 @@ export function useWebRTC({ localStreamRef, socketRef, customIceServers }) {
       try {
         await pc.addIceCandidate(new RTCIceCandidate(candidate));
       } catch (err) {
-        console.warn(`[WebRTC] Failed to add buffered ICE candidate for ${remoteSocketId}:`, err);
+        console.warn(
+          `[WebRTC] Failed to add buffered ICE candidate for ${remoteSocketId}:`,
+          err,
+        );
       }
     }
   }, []);
 
-  /**
-   * Create or retrieve an RTCPeerConnection for a remote peer with the Perfect Negotiation pattern.
-   */
   const getOrCreatePeerConnection = useCallback(
     (remoteSocketId, peerMetadata = {}) => {
       if (peerConnections.current.has(remoteSocketId)) {
@@ -62,7 +42,9 @@ export function useWebRTC({ localStreamRef, socketRef, customIceServers }) {
 
       const socket = socketRef.current;
       if (!socket?.id) {
-        console.warn("[WebRTC] Cannot create peer connection: local socket not connected");
+        console.warn(
+          "[WebRTC] Cannot create peer connection: local socket not connected",
+        );
         return null;
       }
 
@@ -70,7 +52,6 @@ export function useWebRTC({ localStreamRef, socketRef, customIceServers }) {
       peerConnections.current.set(remoteSocketId, pc);
       candidateQueues.current.set(remoteSocketId, []);
 
-      // Perfect Negotiation state machine
       const isPolite = socket.id > remoteSocketId;
       const state = {
         makingOffer: false,
@@ -80,14 +61,12 @@ export function useWebRTC({ localStreamRef, socketRef, customIceServers }) {
       };
       negotiationStates.current.set(remoteSocketId, state);
 
-      // 1. Attach local tracks to peer connection
       if (localStreamRef.current) {
         localStreamRef.current.getTracks().forEach((track) => {
           pc.addTrack(track, localStreamRef.current);
         });
       }
 
-      // 2. Handle negotiation needed (triggers offer generation)
       pc.onnegotiationneeded = async () => {
         try {
           state.makingOffer = true;
@@ -97,13 +76,15 @@ export function useWebRTC({ localStreamRef, socketRef, customIceServers }) {
             sdp: pc.localDescription,
           });
         } catch (err) {
-          console.error(`[WebRTC] Error during negotiationneeded for ${remoteSocketId}:`, err);
+          console.error(
+            `[WebRTC] Error during negotiationneeded for ${remoteSocketId}:`,
+            err,
+          );
         } finally {
           state.makingOffer = false;
         }
       };
 
-      // 3. Handle local ICE candidates and emit to remote peer
       pc.onicecandidate = (event) => {
         if (event.candidate && socket.connected) {
           socket.emit("signal:ice", {
@@ -113,12 +94,13 @@ export function useWebRTC({ localStreamRef, socketRef, customIceServers }) {
         }
       };
 
-      // 4. Handle incoming remote tracks (ontrack)
       pc.ontrack = (event) => {
         const remoteStream = event.streams[0] || new MediaStream([event.track]);
 
         setParticipants((prev) => {
-          const existingIndex = prev.findIndex((p) => p.socketId === remoteSocketId);
+          const existingIndex = prev.findIndex(
+            (p) => p.socketId === remoteSocketId,
+          );
           if (existingIndex >= 0) {
             const updated = [...prev];
             updated[existingIndex] = {
@@ -146,11 +128,12 @@ export function useWebRTC({ localStreamRef, socketRef, customIceServers }) {
         });
       };
 
-      // 5. Connection state monitoring
       pc.onconnectionstatechange = () => {
         const connState = pc.connectionState;
         if (connState === "failed") {
-          console.warn(`[WebRTC] Connection to ${remoteSocketId} failed. Attempting ICE restart...`);
+          console.warn(
+            `[WebRTC] Connection to ${remoteSocketId} failed. Attempting ICE restart...`,
+          );
           try {
             pc.restartIce();
           } catch (restartErr) {
@@ -160,19 +143,18 @@ export function useWebRTC({ localStreamRef, socketRef, customIceServers }) {
 
         setParticipants((prev) =>
           prev.map((p) =>
-            p.socketId === remoteSocketId ? { ...p, connectionState: connState } : p
-          )
+            p.socketId === remoteSocketId
+              ? { ...p, connectionState: connState }
+              : p,
+          ),
         );
       };
 
       return pc;
     },
-    [iceServers, localStreamRef, socketRef]
+    [iceServers, localStreamRef, socketRef],
   );
 
-  /**
-   * Handle incoming SDP Offer from remote peer.
-   */
   const handleRemoteOffer = useCallback(
     async ({ from, sdp }) => {
       const pc = getOrCreatePeerConnection(from);
@@ -181,17 +163,19 @@ export function useWebRTC({ localStreamRef, socketRef, customIceServers }) {
       const state = negotiationStates.current.get(from);
       if (!state) return;
 
-      const offerCollision = pc.signalingState !== "stable" || state.makingOffer;
+      const offerCollision =
+        pc.signalingState !== "stable" || state.makingOffer;
       state.ignoreOffer = !state.isPolite && offerCollision;
 
       if (state.ignoreOffer) {
-        console.warn(`[WebRTC] Impolite peer ignoring offer collision from ${from}`);
+        console.warn(
+          `[WebRTC] Impolite peer ignoring offer collision from ${from}`,
+        );
         return;
       }
 
       try {
         if (offerCollision) {
-          // Spec-compliant rollback: reset local offer before processing remote offer
           await pc.setLocalDescription({ type: "rollback" });
         }
 
@@ -209,12 +193,9 @@ export function useWebRTC({ localStreamRef, socketRef, customIceServers }) {
         console.error(`[WebRTC] Error handling offer from ${from}:`, err);
       }
     },
-    [getOrCreatePeerConnection, drainCandidateQueue, socketRef]
+    [getOrCreatePeerConnection, drainCandidateQueue, socketRef],
   );
 
-  /**
-   * Handle incoming SDP Answer from remote peer.
-   */
   const handleRemoteAnswer = useCallback(
     async ({ from, sdp }) => {
       const pc = peerConnections.current.get(from);
@@ -232,45 +213,37 @@ export function useWebRTC({ localStreamRef, socketRef, customIceServers }) {
         if (state) state.isSettingRemoteAnswerPending = false;
       }
     },
-    [drainCandidateQueue]
+    [drainCandidateQueue],
   );
 
-  /**
-   * Handle incoming ICE Candidate from remote peer.
-   */
-  const handleRemoteIceCandidate = useCallback(
-    async ({ from, candidate }) => {
-      if (!candidate) return;
-      const pc = peerConnections.current.get(from);
-      const state = negotiationStates.current.get(from);
+  const handleRemoteIceCandidate = useCallback(async ({ from, candidate }) => {
+    if (!candidate) return;
+    const pc = peerConnections.current.get(from);
+    const state = negotiationStates.current.get(from);
 
-      // If remoteDescription is not yet established, buffer candidate
-      if (!pc || !pc.remoteDescription || !pc.remoteDescription.type) {
-        if (!candidateQueues.current.has(from)) {
-          candidateQueues.current.set(from, []);
-        }
-        candidateQueues.current.get(from).push(candidate);
-        return;
+    if (!pc || !pc.remoteDescription || !pc.remoteDescription.type) {
+      if (!candidateQueues.current.has(from)) {
+        candidateQueues.current.set(from, []);
       }
+      candidateQueues.current.get(from).push(candidate);
+      return;
+    }
 
-      try {
-        await pc.addIceCandidate(new RTCIceCandidate(candidate));
-      } catch (err) {
-        if (!state?.ignoreOffer) {
-          console.warn(`[WebRTC] Error adding ICE candidate from ${from}:`, err);
-        }
+    try {
+      await pc.addIceCandidate(new RTCIceCandidate(candidate));
+    } catch (err) {
+      if (!state?.ignoreOffer) {
+        console.warn(`[WebRTC] Error adding ICE candidate from ${from}:`, err);
       }
-    },
-    []
-  );
+    }
+  }, []);
 
-  /**
-   * Replace outgoing video track on all active peer senders (used for Screen Share without renegotiation).
-   */
   const replaceVideoTrack = useCallback(async (newTrack) => {
     const promises = [];
     peerConnections.current.forEach((pc) => {
-      const sender = pc.getSenders().find((s) => s.track && s.track.kind === "video");
+      const sender = pc
+        .getSenders()
+        .find((s) => s.track && s.track.kind === "video");
       if (sender && newTrack) {
         promises.push(sender.replaceTrack(newTrack));
       }
@@ -278,18 +251,12 @@ export function useWebRTC({ localStreamRef, socketRef, customIceServers }) {
     await Promise.all(promises);
   }, []);
 
-  /**
-   * Update participant media indicators in local React state.
-   */
   const updateParticipantMediaState = useCallback((socketId, updates) => {
     setParticipants((prev) =>
-      prev.map((p) => (p.socketId === socketId ? { ...p, ...updates } : p))
+      prev.map((p) => (p.socketId === socketId ? { ...p, ...updates } : p)),
     );
   }, []);
 
-  /**
-   * Close a specific peer connection and cleanup its resources.
-   */
   const closePeer = useCallback((remoteSocketId) => {
     const pc = peerConnections.current.get(remoteSocketId);
     if (pc) {
@@ -303,12 +270,11 @@ export function useWebRTC({ localStreamRef, socketRef, customIceServers }) {
     candidateQueues.current.delete(remoteSocketId);
     negotiationStates.current.delete(remoteSocketId);
 
-    setParticipants((prev) => prev.filter((p) => p.socketId !== remoteSocketId));
+    setParticipants((prev) =>
+      prev.filter((p) => p.socketId !== remoteSocketId),
+    );
   }, []);
 
-  /**
-   * Cleanly close all active peer connections on call end or unmount.
-   */
   const closeAllPeers = useCallback(() => {
     peerConnections.current.forEach((pc) => {
       pc.onnegotiationneeded = null;
@@ -323,7 +289,6 @@ export function useWebRTC({ localStreamRef, socketRef, customIceServers }) {
     setParticipants([]);
   }, []);
 
-  // Cleanup on unmount
   useEffect(() => {
     return () => {
       closeAllPeers();

@@ -2,22 +2,14 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Navbar from "@/components/layout/Navbar";
 import { ROUTES } from "@/constants/routes";
-import {
-  Shield,
-  FileText,
-  Lock,
-  ArrowLeft,
-  HelpCircle,
-} from "lucide-react";
+import { Shield, FileText, Lock, ArrowLeft, HelpCircle } from "lucide-react";
 
 export default function PrivacyPage() {
   return (
     <div className="min-h-screen bg-[#050814] text-white flex flex-col selection:bg-[#00D8F6]/20 selection:text-[#00D8F6]">
-      {/* Navbar */}
       <Navbar />
 
       <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-16 space-y-8">
-        {/* Back Link */}
         <div>
           <Link
             to={ROUTES.LANDING}
@@ -28,7 +20,6 @@ export default function PrivacyPage() {
           </Link>
         </div>
 
-        {/* Hero Header */}
         <div className="text-center space-y-3 py-6 relative">
           <div className="size-14 rounded-2xl bg-[#00D8F6]/10 border border-[#00D8F6]/30 text-[#00D8F6] flex items-center justify-center mx-auto shadow-lg shadow-cyan-500/10">
             <Shield className="size-7" />
@@ -37,11 +28,12 @@ export default function PrivacyPage() {
             Terms &amp; Privacy
           </h1>
           <p className="text-sm sm:text-base text-slate-400 max-w-2xl mx-auto leading-relaxed">
-            We believe in full transparency. Understand your rights, our commitments, and how we protect your video communication and account data every step of the way.
+            We believe in full transparency. Understand your rights, our
+            commitments, and how we protect your video communication and account
+            data every step of the way.
           </p>
         </div>
 
-        {/* Tabs / Pills */}
         <div className="flex items-center justify-center gap-3">
           <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium bg-[#00D8F6]/10 text-[#00D8F6] border border-[#00D8F6]/30">
             <FileText className="size-3.5" />
@@ -53,11 +45,12 @@ export default function PrivacyPage() {
           </span>
         </div>
 
-        {/* Terms of Service Section */}
         <div className="rounded-3xl bg-[#0D1527] border border-[#1E2B4D] p-6 sm:p-10 shadow-xl space-y-8">
           <div className="flex items-center gap-3 border-b border-[#1E2B4D] pb-5">
             <FileText className="size-6 text-[#00D8F6]" />
-            <h2 className="text-xl sm:text-2xl font-bold text-white">Terms of Service</h2>
+            <h2 className="text-xl sm:text-2xl font-bold text-white">
+              Terms of Service
+            </h2>
           </div>
 
           <div className="space-y-6 text-sm text-slate-300 leading-relaxed">
@@ -66,10 +59,16 @@ export default function PrivacyPage() {
                 <span className="size-6 rounded-full bg-[#00D8F6] text-black font-bold text-xs flex items-center justify-center shrink-0">
                   1
                 </span>
-                <h3 className="text-base font-semibold text-white">Acceptance of Terms</h3>
+                <h3 className="text-base font-semibold text-white">
+                  Acceptance of Terms
+                </h3>
               </div>
               <p className="pl-8 text-slate-400">
-                By accessing or using Connekt, you agree to be bound by these Terms of Service. Connekt provides real-time video conferencing, peer-to-peer WebRTC streaming, and real-time messaging. If you disagree with any part of these terms, you may not access the service.
+                By accessing or using Connekt, you agree to be bound by these
+                Terms of Service. Connekt provides real-time video conferencing,
+                peer-to-peer WebRTC streaming, and real-time messaging. If you
+                disagree with any part of these terms, you may not access the
+                service.
               </p>
             </div>
 
@@ -78,10 +77,16 @@ export default function PrivacyPage() {
                 <span className="size-6 rounded-full bg-[#00D8F6] text-black font-bold text-xs flex items-center justify-center shrink-0">
                   2
                 </span>
-                <h3 className="text-base font-semibold text-white">User Accounts &amp; Authentication</h3>
+                <h3 className="text-base font-semibold text-white">
+                  User Accounts &amp; Authentication
+                </h3>
               </div>
               <p className="pl-8 text-slate-400">
-                You are responsible for maintaining the security of your account credentials. Connekt uses industry-standard JWT authentication with rotating refresh tokens and reuse detection to protect against session hijacking. You must promptly notify us of any security compromises.
+                You are responsible for maintaining the security of your account
+                credentials. Connekt uses industry-standard JWT authentication
+                with rotating refresh tokens and reuse detection to protect
+                against session hijacking. You must promptly notify us of any
+                security compromises.
               </p>
             </div>
 
@@ -90,10 +95,15 @@ export default function PrivacyPage() {
                 <span className="size-6 rounded-full bg-[#00D8F6] text-black font-bold text-xs flex items-center justify-center shrink-0">
                   3
                 </span>
-                <h3 className="text-base font-semibold text-white">Meeting Room Use &amp; Video Calls</h3>
+                <h3 className="text-base font-semibold text-white">
+                  Meeting Room Use &amp; Video Calls
+                </h3>
               </div>
               <p className="pl-8 text-slate-400">
-                Rooms created on Connekt are designed for authorized participants. Room codes must not be distributed publicly for disruptive purposes. We enforce single-room authorization and signaling isolation to prevent cross-room interference.
+                Rooms created on Connekt are designed for authorized
+                participants. Room codes must not be distributed publicly for
+                disruptive purposes. We enforce single-room authorization and
+                signaling isolation to prevent cross-room interference.
               </p>
             </div>
 
@@ -102,20 +112,26 @@ export default function PrivacyPage() {
                 <span className="size-6 rounded-full bg-[#00D8F6] text-black font-bold text-xs flex items-center justify-center shrink-0">
                   4
                 </span>
-                <h3 className="text-base font-semibold text-white">Acceptable Conduct &amp; Screen Sharing</h3>
+                <h3 className="text-base font-semibold text-white">
+                  Acceptable Conduct &amp; Screen Sharing
+                </h3>
               </div>
               <p className="pl-8 text-slate-400">
-                You agree not to use Connekt for illegal, harmful, or harassing activities. Screen sharing and chat messages must not transmit copyrighted, malicious, or abusive material. We reserve the right to terminate access for egregious violations.
+                You agree not to use Connekt for illegal, harmful, or harassing
+                activities. Screen sharing and chat messages must not transmit
+                copyrighted, malicious, or abusive material. We reserve the
+                right to terminate access for egregious violations.
               </p>
             </div>
           </div>
         </div>
 
-        {/* Privacy Policy Section */}
         <div className="rounded-3xl bg-[#0D1527] border border-[#1E2B4D] p-6 sm:p-10 shadow-xl space-y-8">
           <div className="flex items-center gap-3 border-b border-[#1E2B4D] pb-5">
             <Lock className="size-6 text-[#7B61FF]" />
-            <h2 className="text-xl sm:text-2xl font-bold text-white">Privacy Policy</h2>
+            <h2 className="text-xl sm:text-2xl font-bold text-white">
+              Privacy Policy
+            </h2>
           </div>
 
           <div className="space-y-6 text-sm text-slate-300 leading-relaxed">
@@ -124,10 +140,17 @@ export default function PrivacyPage() {
                 <span className="size-6 rounded-full bg-[#7B61FF] text-white font-bold text-xs flex items-center justify-center shrink-0">
                   5
                 </span>
-                <h3 className="text-base font-semibold text-white">Information We Collect</h3>
+                <h3 className="text-base font-semibold text-white">
+                  Information We Collect
+                </h3>
               </div>
               <p className="pl-8 text-slate-400">
-                We collect your name, username, email address, and hashed passwords upon registration. We store meeting history records (meeting codes and timestamps) so you can review previous calls. We do <strong className="text-white">NOT</strong> record or store your live audio, video, or peer-to-peer screen shares on our servers.
+                We collect your name, username, email address, and hashed
+                passwords upon registration. We store meeting history records
+                (meeting codes and timestamps) so you can review previous calls.
+                We do <strong className="text-white">NOT</strong> record or
+                store your live audio, video, or peer-to-peer screen shares on
+                our servers.
               </p>
             </div>
 
@@ -136,10 +159,15 @@ export default function PrivacyPage() {
                 <span className="size-6 rounded-full bg-[#7B61FF] text-white font-bold text-xs flex items-center justify-center shrink-0">
                   6
                 </span>
-                <h3 className="text-base font-semibold text-white">Peer-to-Peer WebRTC Encryption</h3>
+                <h3 className="text-base font-semibold text-white">
+                  Peer-to-Peer WebRTC Encryption
+                </h3>
               </div>
               <p className="pl-8 text-slate-400">
-                All media streams (audio, camera video, screen share) travel directly between peers using W3C WebRTC encrypted with DTLS and SRTP. Signaling servers only broker connection handshakes and never touch or inspect unencrypted media streams.
+                All media streams (audio, camera video, screen share) travel
+                directly between peers using W3C WebRTC encrypted with DTLS and
+                SRTP. Signaling servers only broker connection handshakes and
+                never touch or inspect unencrypted media streams.
               </p>
             </div>
 
@@ -148,10 +176,14 @@ export default function PrivacyPage() {
                 <span className="size-6 rounded-full bg-[#7B61FF] text-white font-bold text-xs flex items-center justify-center shrink-0">
                   7
                 </span>
-                <h3 className="text-base font-semibold text-white">Cookies &amp; Local Storage</h3>
+                <h3 className="text-base font-semibold text-white">
+                  Cookies &amp; Local Storage
+                </h3>
               </div>
               <p className="pl-8 text-slate-400">
-                We use secure HTTP-only cookies strictly for session refresh token rotation. No third-party marketing tracking cookies or invasive profiling tools are deployed on Connekt.
+                We use secure HTTP-only cookies strictly for session refresh
+                token rotation. No third-party marketing tracking cookies or
+                invasive profiling tools are deployed on Connekt.
               </p>
             </div>
 
@@ -160,27 +192,33 @@ export default function PrivacyPage() {
                 <span className="size-6 rounded-full bg-[#7B61FF] text-white font-bold text-xs flex items-center justify-center shrink-0">
                   8
                 </span>
-                <h3 className="text-base font-semibold text-white">Your Rights &amp; Data Control</h3>
+                <h3 className="text-base font-semibold text-white">
+                  Your Rights &amp; Data Control
+                </h3>
               </div>
               <p className="pl-8 text-slate-400">
-                You retain full control over your profile and meeting history. You can request deletion of your account and associated history records at any time by contacting our support team.
+                You retain full control over your profile and meeting history.
+                You can request deletion of your account and associated history
+                records at any time by contacting our support team.
               </p>
             </div>
           </div>
         </div>
 
-        {/* Last Updated */}
         <p className="text-center text-xs text-slate-500">
           Last Updated: September 2026 • Effective Worldwide
         </p>
 
-        {/* Questions Card */}
         <div className="rounded-3xl bg-gradient-to-r from-[#0D1527] to-[#131D36] border border-[#1E2B4D] p-8 text-center space-y-4">
           <HelpCircle className="size-8 text-[#00D8F6] mx-auto" />
           <div className="space-y-1">
-            <h3 className="text-lg font-bold text-white">Questions About Our Policies?</h3>
+            <h3 className="text-lg font-bold text-white">
+              Questions About Our Policies?
+            </h3>
             <p className="text-xs sm:text-sm text-slate-400 max-w-lg mx-auto">
-              Our team is committed to open, ethical communication standards. If you have questions about privacy, terms, or security, we are here to help.
+              Our team is committed to open, ethical communication standards. If
+              you have questions about privacy, terms, or security, we are here
+              to help.
             </p>
           </div>
           <Link
@@ -192,10 +230,8 @@ export default function PrivacyPage() {
         </div>
       </main>
 
-      {/* Footer */}
       <footer className="w-full border-t border-[#1E2B4D]/60 bg-[#070D1C]/90 backdrop-blur-md px-4 sm:px-6 lg:px-8 py-3 shrink-0">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-slate-400">
-          {/* Left Aligned: Social Media Links */}
           <div className="flex items-center gap-2 justify-center md:justify-start flex-1">
             <a
               href="https://www.facebook.com/avishek207"
@@ -257,29 +293,44 @@ export default function PrivacyPage() {
               aria-label="Email"
               className="size-8 rounded-full bg-white/[0.03] border border-white/[0.08] hover:border-[#00D8F6] hover:bg-[#00D8F6]/10 text-slate-400 hover:text-[#00D8F6] hover:-translate-y-0.5 hover:shadow-[0_0_12px_rgba(0,216,255,0.35)] transition-all flex items-center justify-center"
             >
-              <svg className="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg
+                className="size-3.5"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
                 <rect width="20" height="16" x="2" y="4" rx="2" />
                 <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
               </svg>
             </a>
           </div>
 
-          {/* Center Aligned: Copyright */}
           <div className="text-center font-normal text-slate-400 flex-1 whitespace-nowrap">
             © 2026 Connekt. All rights reserved.
           </div>
 
-          {/* Right Aligned: Links */}
           <div className="flex items-center gap-2.5 justify-center md:justify-end flex-1 whitespace-nowrap">
-            <Link to={ROUTES.PRIVACY} className="text-[#00D8F6] font-medium transition-colors">
+            <Link
+              to={ROUTES.PRIVACY}
+              className="text-[#00D8F6] font-medium transition-colors"
+            >
               Terms &amp; Privacy
             </Link>
             <span className="text-slate-600">•</span>
-            <Link to={ROUTES.ABOUT} className="hover:text-[#00D8F6] transition-colors">
+            <Link
+              to={ROUTES.ABOUT}
+              className="hover:text-[#00D8F6] transition-colors"
+            >
               About Us
             </Link>
             <span className="text-slate-600">•</span>
-            <Link to={ROUTES.CONTACT} className="hover:text-[#00D8F6] transition-colors">
+            <Link
+              to={ROUTES.CONTACT}
+              className="hover:text-[#00D8F6] transition-colors"
+            >
               Contact Us
             </Link>
           </div>

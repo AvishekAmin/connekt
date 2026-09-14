@@ -1,6 +1,11 @@
 import { useContext, useCallback } from "react";
 import { AuthContext } from "@/contexts/AuthContext";
-import { loginUser, signupUser, logoutUser, getMe } from "@/services/authService";
+import {
+  loginUser,
+  signupUser,
+  logoutUser,
+  getMe,
+} from "@/services/authService";
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
@@ -20,13 +25,16 @@ export const useAuth = () => {
     setUser,
   } = context;
 
-  const login = useCallback(async (username, password) => {
-    const data = await loginUser(username, password);
-    if (data?.accessToken) {
-      setAuthData(data.accessToken, data.user);
-    }
-    return data;
-  }, [setAuthData]);
+  const login = useCallback(
+    async (username, password) => {
+      const data = await loginUser(username, password);
+      if (data?.accessToken) {
+        setAuthData(data.accessToken, data.user);
+      }
+      return data;
+    },
+    [setAuthData],
+  );
 
   const signup = useCallback(async (name, username, password) => {
     return await signupUser(name, username, password);
@@ -36,9 +44,7 @@ export const useAuth = () => {
     setIsLoggingOut(true);
     try {
       await logoutUser();
-    } catch {
-      // Even if the server call fails, clear local state
-    }
+    } catch {}
     clearAuthData();
     setTimeout(() => {
       setIsLoggingOut(false);
@@ -64,7 +70,6 @@ export const useAuth = () => {
     signup,
     logout,
     fetchUser,
-    // Aliases for backward compatibility
     handleLogin: login,
     handleSignup: signup,
   };

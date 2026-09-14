@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import { ROUTES } from "./constants/routes";
 import LandingPage from "./pages/landing";
@@ -20,7 +20,6 @@ function App() {
           <Route path={ROUTES.DASHBOARD} element={<DashboardComponent />} />
           <Route path={ROUTES.HISTORY} element={<History />} />
           <Route path={ROUTES.PRIVACY} element={<PrivacyPage />} />
-          <Route path="/privacy" element={<Navigate to={ROUTES.PRIVACY} replace />} />
           <Route path={ROUTES.ABOUT} element={<AboutPage />} />
           <Route path={ROUTES.CONTACT} element={<ContactPage />} />
           <Route path={ROUTES.MEETING} element={<VideoMeetComponent />} />

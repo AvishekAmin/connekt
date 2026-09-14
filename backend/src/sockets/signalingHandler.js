@@ -1,14 +1,6 @@
 import { roomManager } from "./roomManager.js";
 
-/**
- * Validates and relays WebRTC signaling messages between peers in the same room.
- * Rejects cross-room injection and malformed payloads.
- *
- * @param {import("socket.io").Server} io
- * @param {import("socket.io").Socket} socket
- */
 export const signupSignalingHandlers = (io, socket) => {
-  // --- SDP Offer ---
   socket.on("signal:offer", (payload) => {
     if (!payload || typeof payload !== "object") return;
     const { to, sdp } = payload;
@@ -17,16 +9,14 @@ export const signupSignalingHandlers = (io, socket) => {
       return;
     }
 
-    // Size limit check (< 64 KB)
     if (JSON.stringify(sdp).length > 65536) {
       console.warn(`[Signaling] Oversized SDP offer from ${socket.id}`);
       return;
     }
 
-    // Room boundary enforcement
     if (!roomManager.isPeerInSameRoom(socket.id, to)) {
       console.warn(
-        `[Security] Blocked unauthorized cross-room offer from ${socket.id} to ${to}`
+        `[Security] Blocked unauthorized cross-room offer from ${socket.id} to ${to}`,
       );
       return;
     }
@@ -37,7 +27,6 @@ export const signupSignalingHandlers = (io, socket) => {
     });
   });
 
-  // --- SDP Answer ---
   socket.on("signal:answer", (payload) => {
     if (!payload || typeof payload !== "object") return;
     const { to, sdp } = payload;
@@ -46,16 +35,14 @@ export const signupSignalingHandlers = (io, socket) => {
       return;
     }
 
-    // Size limit check (< 64 KB)
     if (JSON.stringify(sdp).length > 65536) {
       console.warn(`[Signaling] Oversized SDP answer from ${socket.id}`);
       return;
     }
 
-    // Room boundary enforcement
     if (!roomManager.isPeerInSameRoom(socket.id, to)) {
       console.warn(
-        `[Security] Blocked unauthorized cross-room answer from ${socket.id} to ${to}`
+        `[Security] Blocked unauthorized cross-room answer from ${socket.id} to ${to}`,
       );
       return;
     }
@@ -66,7 +53,6 @@ export const signupSignalingHandlers = (io, socket) => {
     });
   });
 
-  // --- ICE Candidate ---
   socket.on("signal:ice", (payload) => {
     if (!payload || typeof payload !== "object") return;
     const { to, candidate } = payload;
@@ -75,16 +61,14 @@ export const signupSignalingHandlers = (io, socket) => {
       return;
     }
 
-    // Size limit check (< 8 KB)
     if (JSON.stringify(candidate).length > 8192) {
       console.warn(`[Signaling] Oversized ICE candidate from ${socket.id}`);
       return;
     }
 
-    // Room boundary enforcement
     if (!roomManager.isPeerInSameRoom(socket.id, to)) {
       console.warn(
-        `[Security] Blocked unauthorized cross-room ICE candidate from ${socket.id} to ${to}`
+        `[Security] Blocked unauthorized cross-room ICE candidate from ${socket.id} to ${to}`,
       );
       return;
     }
@@ -95,7 +79,6 @@ export const signupSignalingHandlers = (io, socket) => {
     });
   });
 
-  // --- Media State Synchronization (Mute / Camera Toggle / Screen Share) ---
   socket.on("media:state", (updates) => {
     if (!updates || typeof updates !== "object") return;
 

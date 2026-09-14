@@ -25,7 +25,6 @@ export default function MeetingControls({
   return (
     <div className="py-3 px-4 flex items-center justify-center shrink-0 z-30 select-none">
       <div className="inline-flex items-center gap-2.5 sm:gap-3.5 px-4 sm:px-6 py-2 rounded-full bg-[#0D1527]/95 backdrop-blur-xl border border-[#1E2B4D] shadow-2xl shadow-black/80">
-        {/* Microphone Toggle */}
         <button
           type="button"
           onClick={onToggleAudio}
@@ -37,10 +36,13 @@ export default function MeetingControls({
           title={audioState ? "Mute microphone" : "Unmute microphone"}
           aria-label={audioState ? "Mute microphone" : "Unmute microphone"}
         >
-          {audioState ? <Mic className="size-5 text-[#00E599]" /> : <MicOff className="size-5" />}
+          {audioState ? (
+            <Mic className="size-5 text-[#00E599]" />
+          ) : (
+            <MicOff className="size-5" />
+          )}
         </button>
 
-        {/* Video Toggle */}
         <button
           type="button"
           onClick={onToggleVideo}
@@ -52,10 +54,13 @@ export default function MeetingControls({
           title={videoState ? "Turn off camera" : "Turn on camera"}
           aria-label={videoState ? "Turn off camera" : "Turn on camera"}
         >
-          {videoState ? <Video className="size-5 text-[#00D8F6]" /> : <VideoOff className="size-5" />}
+          {videoState ? (
+            <Video className="size-5 text-[#00D8F6]" />
+          ) : (
+            <VideoOff className="size-5" />
+          )}
         </button>
 
-        {/* Screen Share (Conditional on API availability) */}
         {screenAvailable && (
           <button
             type="button"
@@ -76,7 +81,6 @@ export default function MeetingControls({
           </button>
         )}
 
-        {/* Chat Toggle with Unread Badge */}
         <div className="relative">
           <button
             type="button"
@@ -89,10 +93,11 @@ export default function MeetingControls({
             title="Toggle in-call chat"
             aria-label="Toggle in-call chat"
           >
-            <MessageSquare className={`size-5 ${isChatOpen ? "text-black" : ""}`} />
+            <MessageSquare
+              className={`size-5 ${isChatOpen ? "text-black" : ""}`}
+            />
           </button>
 
-          {/* Unread Counter Badge */}
           {!isChatOpen && unreadCount > 0 && (
             <span className="absolute -top-1 -right-1 size-5 bg-gradient-to-r from-[#00D8F6] to-[#7B61FF] text-black font-bold rounded-full text-[10px] flex items-center justify-center border-2 border-[#0D1527] pointer-events-none animate-bounce">
               {unreadCount > 99 ? "99+" : unreadCount}
@@ -100,10 +105,8 @@ export default function MeetingControls({
           )}
         </div>
 
-        {/* Vertical Divider */}
         <div className="h-6 w-px bg-[#1E2B4D] mx-0.5" />
 
-        {/* End Call Button */}
         <button
           type="button"
           onClick={onEndCall}

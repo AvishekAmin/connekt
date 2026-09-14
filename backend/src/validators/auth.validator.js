@@ -11,7 +11,10 @@ export const signupSchema = z.object({
     .trim()
     .min(3, "Username must be at least 3 characters")
     .max(30, "Username must be at most 30 characters")
-    .regex(/^[a-zA-Z0-9_]+$/, "Username can only contain letters, numbers, and underscores"),
+    .regex(
+      /^[a-zA-Z0-9_]+$/,
+      "Username can only contain letters, numbers, and underscores",
+    ),
   password: z
     .string({ required_error: "Password is required" })
     .min(8, "Password must be at least 8 characters")
@@ -21,8 +24,12 @@ export const signupSchema = z.object({
 });
 
 export const loginSchema = z.object({
-  username: z.string({ required_error: "Username is required" }).min(1, "Username is required"),
-  password: z.string({ required_error: "Password is required" }).min(1, "Password is required"),
+  username: z
+    .string({ required_error: "Username is required" })
+    .min(1, "Username is required"),
+  password: z
+    .string({ required_error: "Password is required" })
+    .min(1, "Password is required"),
 });
 
 export const addToHistorySchema = z.object({
@@ -31,5 +38,8 @@ export const addToHistorySchema = z.object({
     .trim()
     .min(3, "Meeting code must be at least 3 characters")
     .max(50, "Meeting code must be at most 50 characters")
-    .regex(/^[a-zA-Z0-9-]+$/, "Meeting code can only contain letters, numbers, and dashes"),
+    .regex(
+      /^[a-zA-Z0-9-]+$/,
+      "Meeting code can only contain letters, numbers, and dashes",
+    ),
 });

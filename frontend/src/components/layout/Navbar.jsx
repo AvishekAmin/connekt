@@ -24,7 +24,6 @@ export default function Navbar({ _showAuth = false, _showAppNav = false }) {
 
   const dropdownRef = useRef(null);
 
-  // Close dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -35,7 +34,6 @@ export default function Navbar({ _showAuth = false, _showAppNav = false }) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Parse meeting code from text or link
   const extractMeetingCode = (input) => {
     if (!input) return "";
     let clean = input.trim();
@@ -55,15 +53,16 @@ export default function Navbar({ _showAuth = false, _showAppNav = false }) {
     return clean;
   };
 
-  // Generate random Google Meet style meeting code
   const generateMeetingCode = () => {
     const chars = "abcdefghijklmnopqrstuvwxyz";
     const segment = (len) =>
-      Array.from({ length: len }, () => chars[Math.floor(Math.random() * chars.length)]).join("");
+      Array.from(
+        { length: len },
+        () => chars[Math.floor(Math.random() * chars.length)],
+      ).join("");
     return `${segment(3)}-${segment(4)}-${segment(3)}`;
   };
 
-  // Join meeting handler
   const handleJoinMeeting = (e) => {
     if (e) e.preventDefault();
     const code = extractMeetingCode(meetingInput);
@@ -85,7 +84,6 @@ export default function Navbar({ _showAuth = false, _showAppNav = false }) {
     }
   };
 
-  // Create new instant meeting handler
   const handleCreateMeeting = () => {
     const newCode = generateMeetingCode();
     setMobileMenuOpen(false);
@@ -100,7 +98,6 @@ export default function Navbar({ _showAuth = false, _showAppNav = false }) {
     }
   };
 
-  // Auth navigation handlers
   const handleNavigateToAuth = (tabState) => {
     setMobileMenuOpen(false);
     navigate(ROUTES.AUTH, { state: { formState: tabState } });
@@ -115,14 +112,11 @@ export default function Navbar({ _showAuth = false, _showAppNav = false }) {
 
   return (
     <header className="sticky top-0 z-50 w-full px-3 py-3 sm:px-6 md:px-8">
-      {/* Floating Pill Capsule Bar */}
       <div className="max-w-7xl mx-auto rounded-2xl md:rounded-full border border-[#1E2B4D] bg-[#0A1020]/90 backdrop-blur-xl px-4 py-2.5 sm:px-6 flex items-center justify-between gap-3 sm:gap-4 shadow-2xl shadow-black/60 transition-all">
-        {/* Left: Brand Logo & Text */}
         <Link
           to={ROUTES.LANDING}
           className="flex items-center gap-2.5 shrink-0 focus:outline-none group"
         >
-          {/* Video Icon styled like Havenly's house icon */}
           <div className="relative flex items-center justify-center">
             <svg
               className="size-7 text-[#00D8F6] transition-transform group-hover:scale-105"
@@ -134,7 +128,6 @@ export default function Navbar({ _showAuth = false, _showAppNav = false }) {
             </svg>
           </div>
 
-          {/* Connekt text matching Havenly navbar typography */}
           <span
             className="text-xl sm:text-2xl font-extrabold tracking-tight text-white transition-colors group-hover:text-cyan-300"
             style={{ textShadow: "0 0 20px rgba(0, 216, 255, 0.28)" }}
@@ -143,9 +136,7 @@ export default function Navbar({ _showAuth = false, _showAppNav = false }) {
           </span>
         </Link>
 
-        {/* Center: Meeting Input & Quick Action (Desktop) */}
         <div className="hidden lg:flex items-center gap-3 flex-1 justify-center max-w-2xl">
-          {/* Enter meeting code or link pill */}
           <form
             onSubmit={handleJoinMeeting}
             className={`flex items-center rounded-full border bg-[#0D1527]/90 px-3.5 py-1.5 transition-all shadow-inner ${
@@ -162,7 +153,11 @@ export default function Navbar({ _showAuth = false, _showAppNav = false }) {
                 setMeetingInput(e.target.value);
                 setInputError(false);
               }}
-              placeholder={inputError ? "Please enter valid code or link" : "Enter meeting code or link"}
+              placeholder={
+                inputError
+                  ? "Please enter valid code or link"
+                  : "Enter meeting code or link"
+              }
               className="bg-transparent text-xs sm:text-sm text-white placeholder:text-slate-400 focus:outline-none w-48 sm:w-56 md:w-64"
             />
             <button
@@ -173,7 +168,6 @@ export default function Navbar({ _showAuth = false, _showAppNav = false }) {
             </button>
           </form>
 
-          {/* Create a meeting pill button */}
           <button
             type="button"
             onClick={handleCreateMeeting}
@@ -187,13 +181,11 @@ export default function Navbar({ _showAuth = false, _showAppNav = false }) {
           </button>
         </div>
 
-        {/* Right: Auth Buttons (Havenly Styling) or User Profile */}
         <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
           {isLoading ? (
             <div className="size-9 rounded-full bg-[#131D36] border border-[#1E2B4D] animate-pulse" />
           ) : !isAuthenticated ? (
             <>
-              {/* Sign Up Button (Gradient Pill with Black Text) */}
               <button
                 type="button"
                 onClick={() => handleNavigateToAuth(1)}
@@ -202,7 +194,6 @@ export default function Navbar({ _showAuth = false, _showAppNav = false }) {
                 Sign Up
               </button>
 
-              {/* Log In Button (Gradient Pill with Black Text, matching Sign Up) */}
               <button
                 type="button"
                 onClick={() => handleNavigateToAuth(0)}
@@ -213,7 +204,6 @@ export default function Navbar({ _showAuth = false, _showAppNav = false }) {
             </>
           ) : (
             <>
-              {/* Authenticated Links: Meeting History */}
               <Link
                 to={ROUTES.HISTORY}
                 className="h-[38px] hidden sm:inline-flex items-center gap-2 rounded-full border border-[#1E2B4D] bg-[#0D1527] hover:bg-[#131D36] hover:border-[#00D8F6]/40 text-slate-200 hover:text-white px-4 py-2 text-xs sm:text-sm font-semibold transition-all shrink-0 active:scale-95"
@@ -222,7 +212,6 @@ export default function Navbar({ _showAuth = false, _showAppNav = false }) {
                 <span>History</span>
               </Link>
 
-              {/* User Avatar Circle with Dropdown (Havenly Style) */}
               <div className="relative" ref={dropdownRef}>
                 <button
                   type="button"
@@ -235,7 +224,6 @@ export default function Navbar({ _showAuth = false, _showAppNav = false }) {
                     "U"}
                 </button>
 
-                {/* Glass Dropdown Menu */}
                 {userDropdownOpen && (
                   <div className="absolute right-0 mt-2.5 w-52 rounded-2xl border border-[#1E2B4D] bg-[#0D1527]/95 backdrop-blur-2xl p-2 shadow-2xl z-50 animate-in fade-in zoom-in-95 duration-150">
                     <div className="px-3 py-2 border-b border-[#1E2B4D]">
@@ -283,23 +271,27 @@ export default function Navbar({ _showAuth = false, _showAppNav = false }) {
             </>
           )}
 
-          {/* Mobile Hamburger Toggle for Meeting Input & Options */}
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="lg:hidden p-2 rounded-full border border-[#1E2B4D] bg-[#0D1527] hover:bg-[#131D36] text-slate-300 hover:text-white transition-all"
             aria-label="Toggle navigation menu"
           >
-            {mobileMenuOpen ? <X className="size-4" /> : <Menu className="size-4" />}
+            {mobileMenuOpen ? (
+              <X className="size-4" />
+            ) : (
+              <Menu className="size-4" />
+            )}
           </button>
         </div>
       </div>
 
-      {/* Mobile Drawer / Glass Panel for Meeting Input & Quick Actions */}
       {mobileMenuOpen && (
         <div className="lg:hidden max-w-7xl mx-auto mt-2 rounded-2xl border border-[#1E2B4D] bg-[#0D1527]/95 backdrop-blur-2xl p-4 shadow-2xl space-y-3.5 animate-in fade-in duration-150">
-          {/* Mobile Meeting Input */}
-          <form onSubmit={handleJoinMeeting} className="flex items-center rounded-full border border-[#1E2B4D] bg-[#101930] px-3.5 py-1.5">
+          <form
+            onSubmit={handleJoinMeeting}
+            className="flex items-center rounded-full border border-[#1E2B4D] bg-[#101930] px-3.5 py-1.5"
+          >
             <Keyboard className="size-4 text-slate-400 shrink-0 mr-2" />
             <input
               type="text"
@@ -316,7 +308,6 @@ export default function Navbar({ _showAuth = false, _showAppNav = false }) {
             </button>
           </form>
 
-          {/* Mobile Create Meeting Button */}
           <button
             type="button"
             onClick={handleCreateMeeting}
@@ -326,7 +317,6 @@ export default function Navbar({ _showAuth = false, _showAppNav = false }) {
             <span>Create a meeting</span>
           </button>
 
-          {/* Mobile Auth Buttons / Profile */}
           {!isLoading && !isAuthenticated && (
             <div className="grid grid-cols-2 gap-2 pt-1 border-t border-[#1E2B4D]">
               <button

@@ -22,7 +22,11 @@ import {
 
 function DashboardComponent() {
   const navigate = useNavigate();
-  const { meetings, loading: loadingHistory, addToHistory } = useMeetingHistory();
+  const {
+    meetings,
+    loading: loadingHistory,
+    addToHistory,
+  } = useMeetingHistory();
 
   const [meetingCode, setMeetingCode] = useState("");
   const [error, setError] = useState("");
@@ -55,7 +59,6 @@ function DashboardComponent() {
       navigate(ROUTES.getMeetingPath(cleanCode));
     } catch (err) {
       console.error(err);
-      // Even if adding to history fails, proceed to meeting room
       navigate(ROUTES.getMeetingPath(cleanCode));
     }
   };
@@ -68,11 +71,9 @@ function DashboardComponent() {
 
   return (
     <div className="min-h-screen bg-[#050814] text-white flex flex-col selection:bg-[#00D8F6]/20 selection:text-[#00D8F6]">
-      {/* Navigation */}
       <Navbar showAppNav={true} />
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-2 sm:pt-3 pb-8 sm:pb-12 space-y-8">
-        {/* Top Back Navigation Pill & Welcome Header */}
         <div className="space-y-4">
           <Link
             to={ROUTES.LANDING}
@@ -88,16 +89,13 @@ function DashboardComponent() {
               <span>Welcome back</span>
             </h1>
             <p className="text-sm text-slate-400">
-              Join an existing room using your unique meeting code, create an instant session, or review your recent call activity.
+              Join an existing room using your unique meeting code, create an
+              instant session, or review your recent call activity.
             </p>
           </div>
         </div>
 
-
-
-        {/* Core Actions Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Join Meeting Card (Main Action) */}
           <div className="lg:col-span-6">
             <div className="rounded-3xl bg-[#0D1527] border border-[#1E2B4D] p-6 sm:p-8 shadow-xl space-y-6">
               <div className="space-y-1">
@@ -106,7 +104,8 @@ function DashboardComponent() {
                 </div>
                 <h2 className="text-xl font-bold text-white">Join a Meeting</h2>
                 <p className="text-sm text-slate-400">
-                  Enter an invitation or room code to instantly connect with peers.
+                  Enter an invitation or room code to instantly connect with
+                  peers.
                 </p>
               </div>
 
@@ -145,7 +144,9 @@ function DashboardComponent() {
               </form>
 
               <div className="pt-2 border-t border-[#1E2B4D]/60 flex items-center justify-between">
-                <span className="text-xs text-slate-400">Need a new room right away?</span>
+                <span className="text-xs text-slate-400">
+                  Need a new room right away?
+                </span>
                 <button
                   type="button"
                   onClick={handleCreateInstantMeeting}
@@ -157,7 +158,6 @@ function DashboardComponent() {
             </div>
           </div>
 
-          {/* Recent Meetings Panel */}
           <div className="lg:col-span-6 space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -177,7 +177,10 @@ function DashboardComponent() {
             {loadingHistory ? (
               <div className="space-y-3">
                 {[1, 2, 3].map((i) => (
-                  <Skeleton key={i} className="h-16 w-full rounded-2xl bg-[#131D36]" />
+                  <Skeleton
+                    key={i}
+                    className="h-16 w-full rounded-2xl bg-[#131D36]"
+                  />
                 ))}
               </div>
             ) : recentMeetings.length > 0 ? (
@@ -217,7 +220,9 @@ function DashboardComponent() {
                       variant="outline"
                       size="sm"
                       className="rounded-full bg-[#131D36] border-[#1E2B4D] hover:bg-[#1A2642] hover:border-slate-500 text-white text-xs font-semibold px-4 py-2 shrink-0"
-                      onClick={() => navigate(ROUTES.getMeetingPath(item.meetingCode))}
+                      onClick={() =>
+                        navigate(ROUTES.getMeetingPath(item.meetingCode))
+                      }
                     >
                       Rejoin
                     </Button>
@@ -230,7 +235,9 @@ function DashboardComponent() {
                   <Clock className="size-5" />
                 </div>
                 <div className="space-y-1">
-                  <p className="text-sm font-medium text-white">No recent meetings</p>
+                  <p className="text-sm font-medium text-white">
+                    No recent meetings
+                  </p>
                   <p className="text-xs text-slate-400">
                     Joined calls will appear here for quick one-click access.
                   </p>

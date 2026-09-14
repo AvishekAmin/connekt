@@ -1,5 +1,8 @@
 import httpStatus from "http-status";
-import { addMeetingToHistory, getUserMeetings } from "../services/historyService.js";
+import {
+  addMeetingToHistory,
+  getUserMeetings,
+} from "../services/historyService.js";
 
 const getUserHistory = async (req, res) => {
   const meetings = await getUserMeetings(req.user.username);

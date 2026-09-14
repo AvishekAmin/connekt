@@ -3,21 +3,6 @@ import { io } from "socket.io-client";
 import server from "@/config/environment";
 import apiClient, { getApiAccessToken } from "@/services/api";
 
-/**
- * Custom hook for authenticated Socket.IO connection and room lifecycle management.
- * Integrates with Phase 3 JWT authentication and silent token refresh on reconnection.
- *
- * @param {Object} params
- * @param {string} params.meetingCode
- * @param {Object} [params.initialMediaState={}]
- * @param {Function} [params.onRoomJoined]
- * @param {Function} [params.onPeerJoined]
- * @param {Function} [params.onPeerLeft]
- * @param {Function} [params.onPeerMediaState]
- * @param {Function} [params.onOffer]
- * @param {Function} [params.onAnswer]
- * @param {Function} [params.onIceCandidate]
- */
 export function useMeetingSocket({
   meetingCode,
   initialMediaState = {},
@@ -36,7 +21,6 @@ export function useMeetingSocket({
   const [unreadCount, setUnreadCount] = useState(0);
   const isChatOpenRef = useRef(false);
 
-  // Keep latest callbacks in refs to avoid socket listener teardown loops
   const callbacksRef = useRef({
     onRoomJoined,
     onPeerJoined,
@@ -67,9 +51,6 @@ export function useMeetingSocket({
     onIceCandidate,
   ]);
 
-  /**
-   * Connect to Socket.IO and register authenticated room lifecycle listeners.
-   */
   const connectSocket = useCallback(() => {
     if (socketRef.current?.connected) return;
 
@@ -85,7 +66,6 @@ export function useMeetingSocket({
 
     socketRef.current = socket;
 
-    // --- Connection & Authentication Handshake ---
     socket.on("connect", () => {
       setIsConnected(true);
       if (meetingCode) {
@@ -96,16 +76,13 @@ export function useMeetingSocket({
       }
     });
 
-    // Reconnection handling with Phase 3 silent refresh integration
     socket.on("connect_error", async (err) => {
       console.warn("[Socket] Connection error:", err.message);
 
       if (err.data?.code === "TOKEN_EXPIRED") {
         try {
-          // Trigger Phase 3 silent refresh through existing apiClient queue
           const refreshRes = await apiClient.post("/api/v1/auth/refresh");
           if (refreshRes.data?.accessToken) {
-            // Update auth token for socket reconnection attempt
             socket.auth = { token: `Bearer ${refreshRes.data.accessToken}` };
             socket.connect();
           }
@@ -116,7 +93,6 @@ export function useMeetingSocket({
       }
     });
 
-    // --- Room Lifecycle Events ---
     socket.on("room:joined", (data) => {
       setCurrentUser(data.participant);
       if (callbacksRef.current.onRoomJoined) {
@@ -142,7 +118,6 @@ export function useMeetingSocket({
       }
     });
 
-    // --- Signaling Events ---
     socket.on("signal:offer", (data) => {
       if (callbacksRef.current.onOffer) {
         callbacksRef.current.onOffer(data);
@@ -161,7 +136,6 @@ export function useMeetingSocket({
       }
     });
 
-    // --- In-Call Chat Events ---
     socket.on("chat:broadcast", (msg) => {
       setMessages((prev) => [
         ...prev,
@@ -188,25 +162,16 @@ export function useMeetingSocket({
     });
   }, [meetingCode, initialMediaState]);
 
-  /**
-   * Send a chat message through validated socket handler.
-   */
   const sendMessage = useCallback((text) => {
     if (!text?.trim() || !socketRef.current?.connected) return;
     socketRef.current.emit("chat:message", { text: text.trim() });
   }, []);
 
-  /**
-   * Emit media state change (mic, camera, screen-share).
-   */
   const sendMediaState = useCallback((updates) => {
     if (!socketRef.current?.connected) return;
     socketRef.current.emit("media:state", updates);
   }, []);
 
-  /**
-   * Set chat open state and reset unread badge when opened.
-   */
   const setChatOpen = useCallback((isOpen) => {
     isChatOpenRef.current = isOpen;
     if (isOpen) {
@@ -214,9 +179,6 @@ export function useMeetingSocket({
     }
   }, []);
 
-  /**
-   * Clean departure and socket disconnection.
-   */
   const disconnectSocket = useCallback(() => {
     if (socketRef.current) {
       socketRef.current.emit("room:leave");
@@ -226,7 +188,6 @@ export function useMeetingSocket({
     setIsConnected(false);
   }, []);
 
-  // Teardown on unmount
   useEffect(() => {
     return () => {
       disconnectSocket();

@@ -4,54 +4,74 @@
 
 @custom-variant dark (&:is(.dark *));
 
-:root, .dark {
-  --background: #050814;        
-  --foreground: #ffffff;        
-  
-  --card: #0d1527;              
+:root,
+.dark {
+  --background: #050814;
+  --foreground: #ffffff;
+
+  --card: #0d1527;
   --card-foreground: #ffffff;
-  
+
   --popover: #0d1527;
   --popover-foreground: #ffffff;
-  
-  --primary: #00d8f6;           
+
+  --primary: #00d8f6;
   --primary-foreground: #000000;
-  
-  --secondary: #131d36;         
+
+  --secondary: #131d36;
   --secondary-foreground: #ffffff;
-  
+
   --muted: #131d36;
-  --muted-foreground: #8292ab;  
-  --accent: #7b61ff;            
+  --muted-foreground: #8292ab;
+  --accent: #7b61ff;
   --accent-foreground: #000000;
-  
-  --destructive: #ef4444;       
+
+  --destructive: #ef4444;
   --destructive-foreground: #ffffff;
-  
-  --border: #1e2b4d;            
-  --input: #1e2b4d;             
-  --ring: #00d8f6;          
-  
+
+  --border: #1e2b4d;
+  --input: #1e2b4d;
+  --ring: #00d8f6;
+
   --radius: 1rem;
 }
 
 body {
   background-color: #050814;
   color: #ffffff;
-  font-family: 'Poppins', 'Inter', system-ui, -apple-system, sans-serif;
+  font-family:
+    "Poppins",
+    "Inter",
+    system-ui,
+    -apple-system,
+    sans-serif;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-h1, h2, h3, h4, h5, h6, button, input, select, textarea {
-  font-family: 'Poppins', 'Inter', system-ui, -apple-system, sans-serif;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+button,
+input,
+select,
+textarea {
+  font-family:
+    "Poppins",
+    "Inter",
+    system-ui,
+    -apple-system,
+    sans-serif;
 }
 
 @theme inline {
-  --font-heading: 'Poppins', 'Inter', sans-serif;
-  --font-sans: 'Poppins', 'Inter', sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
+  --font-heading: "Poppins", "Inter", sans-serif;
+  --font-sans: "Poppins", "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
   --color-ring: var(--ring);
   --color-input: var(--input);
   --color-border: var(--border);
@@ -107,7 +127,6 @@ h1, h2, h3, h4, h5, h6, button, input, select, textarea {
   -webkit-text-fill-color: transparent;
 }
 
-/* Custom Havenly Scrollbar */
 ::-webkit-scrollbar {
   width: 5px;
   height: 5px;

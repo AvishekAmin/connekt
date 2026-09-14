@@ -25,7 +25,12 @@ import {
 
 function HistoryComponent() {
   const navigate = useNavigate();
-  const { meetings, loading, error, refetch: fetchHistory } = useMeetingHistory();
+  const {
+    meetings,
+    loading,
+    error,
+    refetch: fetchHistory,
+  } = useMeetingHistory();
 
   const [searchQuery, setSearchQuery] = useState("");
   const [copiedCode, setCopiedCode] = useState(null);
@@ -37,16 +42,16 @@ function HistoryComponent() {
   };
 
   const filteredMeetings = meetings.filter((m) =>
-    (m.meetingCode || "").toLowerCase().includes(searchQuery.toLowerCase().trim())
+    (m.meetingCode || "")
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase().trim()),
   );
 
   return (
     <div className="min-h-screen bg-[#050814] text-white flex flex-col selection:bg-[#00D8F6]/20 selection:text-[#00D8F6]">
-      {/* Navbar */}
       <Navbar showAppNav={true} />
 
       <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-2 sm:pt-3 pb-8 sm:pb-12 space-y-8">
-        {/* Top Back Navigation Pill & Header */}
         <div className="space-y-4">
           <Link
             to={ROUTES.DASHBOARD}
@@ -63,11 +68,11 @@ function HistoryComponent() {
                 <span>Meeting History</span>
               </h1>
               <p className="text-sm text-slate-400">
-                All previously joined video conference rooms associated with your account.
+                All previously joined video conference rooms associated with
+                your account.
               </p>
             </div>
 
-            {/* Total Badge & Refresh Button */}
             <div className="flex items-center gap-2.5">
               <Button
                 variant="outline"
@@ -76,14 +81,15 @@ function HistoryComponent() {
                 onClick={fetchHistory}
                 disabled={loading}
               >
-                <RefreshCw className={`size-3.5 ${loading ? "animate-spin" : ""}`} />
+                <RefreshCw
+                  className={`size-3.5 ${loading ? "animate-spin" : ""}`}
+                />
                 <span>Refresh</span>
               </Button>
             </div>
           </div>
         </div>
 
-        {/* Search Pill Input */}
         {meetings.length > 0 && (
           <div className="relative max-w-md">
             <Search className="size-4 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
@@ -97,11 +103,13 @@ function HistoryComponent() {
           </div>
         )}
 
-        {/* Content Area */}
         {loading ? (
           <div className="space-y-3">
             {[1, 2, 3, 4].map((i) => (
-              <Skeleton key={i} className="h-20 w-full rounded-2xl bg-[#131D36]" />
+              <Skeleton
+                key={i}
+                className="h-20 w-full rounded-2xl bg-[#131D36]"
+              />
             ))}
           </div>
         ) : error ? (
@@ -109,7 +117,9 @@ function HistoryComponent() {
             <AlertCircle className="size-8 text-red-400 mx-auto" />
             <div className="space-y-1">
               <p className="text-sm font-semibold text-red-400">{error}</p>
-              <p className="text-xs text-slate-400">Please verify your connection and try again.</p>
+              <p className="text-xs text-slate-400">
+                Please verify your connection and try again.
+              </p>
             </div>
             <Button
               variant="outline"
@@ -132,7 +142,10 @@ function HistoryComponent() {
                     <span className="font-mono text-base font-bold text-[#00D8F6] tracking-wide">
                       #{item.meetingCode}
                     </span>
-                    <Badge variant="completed" className="text-[11px] px-2.5 py-0.5 gap-1.5">
+                    <Badge
+                      variant="completed"
+                      className="text-[11px] px-2.5 py-0.5 gap-1.5"
+                    >
                       <span className="size-1.5 rounded-full bg-[#00E599]" />
                       Completed
                     </Badge>
@@ -150,7 +163,9 @@ function HistoryComponent() {
                       )}
                     </button>
                     {copiedCode === item.meetingCode && (
-                      <span className="text-[11px] text-[#00E599] font-medium">Copied!</span>
+                      <span className="text-[11px] text-[#00E599] font-medium">
+                        Copied!
+                      </span>
                     )}
                   </div>
 
@@ -172,7 +187,9 @@ function HistoryComponent() {
                   <Button
                     size="sm"
                     className="rounded-full bg-gradient-to-r from-[#00D8F6] to-[#7B61FF] text-black font-bold text-xs gap-1.5 h-9 px-5 shadow-md shadow-cyan-500/20 hover:brightness-110"
-                    onClick={() => navigate(ROUTES.getMeetingPath(item.meetingCode))}
+                    onClick={() =>
+                      navigate(ROUTES.getMeetingPath(item.meetingCode))
+                    }
                   >
                     <span>Rejoin Room</span>
                     <ArrowRight className="size-3.5 text-black stroke-[2.5]" />
@@ -185,7 +202,9 @@ function HistoryComponent() {
           <div className="rounded-3xl bg-[#0D1527] border border-[#1E2B4D] p-12 text-center space-y-3 shadow-md">
             <Search className="size-8 text-slate-400 mx-auto" />
             <div className="space-y-1">
-              <p className="text-base font-medium text-white">No matching meetings</p>
+              <p className="text-base font-medium text-white">
+                No matching meetings
+              </p>
               <p className="text-xs text-slate-400">
                 No history entries matched "{searchQuery}".
               </p>
@@ -205,9 +224,12 @@ function HistoryComponent() {
               <Video className="size-6" />
             </div>
             <div className="space-y-1 max-w-sm mx-auto">
-              <p className="text-base font-medium text-white">No meeting history yet</p>
+              <p className="text-base font-medium text-white">
+                No meeting history yet
+              </p>
               <p className="text-xs text-slate-400">
-                When you participate in video meetings on Connekt, they will be saved here for easy rejoining.
+                When you participate in video meetings on Connekt, they will be
+                saved here for easy rejoining.
               </p>
             </div>
             <Button
