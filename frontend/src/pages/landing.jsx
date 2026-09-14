@@ -48,10 +48,10 @@ export default function LandingPage() {
               {/* Hero Copy */}
               <div className="lg:col-span-6 space-y-6 sm:space-y-8 text-center lg:text-left">
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.15] text-white">
-                  Connekt with your{" "}
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00D8F6] via-[#6366F1] to-[#EC4899]">
-                    Loved Ones
-                  </span>
+                    Connekt
+                  </span>{" "}
+                  with your loved ones
                 </h1>
 
                 <div className="flex flex-col sm:flex-row gap-3.5 justify-center lg:justify-start pt-2">

@@ -1,8 +1,13 @@
-# 🎥 Connekt: Real-Time WebRTC Video Conferencing Platform
+# 🎥 Connekt: Real-Time Video Conferencing Platform
 
-[![Backend Tests](https://img.shields.io/badge/Backend%20Tests-40%2F40%20Passing-brightgreen?style=flat-square)](file:///c:/MajorProject/Connekt/connekt/backend)
-[![Frontend Build](https://img.shields.io/badge/Vite-Passing-success?style=flat-square)](file:///c:/MajorProject/Connekt/connekt/frontend)
-[![Code Style](https://img.shields.io/badge/ESLint-0%20Errors-blue?style=flat-square)](file:///c:/MajorProject/Connekt/connekt/frontend)
+[![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev/)
+[![Vite](https://img.shields.io/badge/Vite-8-646CFF?style=flat-square&logo=vite&logoColor=white)](https://vite.dev/)
+[![Node.js](https://img.shields.io/badge/Node.js-v20%2B-brightgreen?style=flat-square&logo=node.js)](https://nodejs.org/)
+[![Express.js](https://img.shields.io/badge/Express.js-5.x-lightgrey?style=flat-square&logo=express)](https://expressjs.com/)
+[![WebRTC](https://img.shields.io/badge/WebRTC-Peer--to--Peer-333333?style=flat-square&logo=webrtc&logoColor=white)](https://webrtc.org/)
+[![Socket.IO](https://img.shields.io/badge/Socket.IO-4.8-010101?style=flat-square&logo=socket.io)](https://socket.io/)
+[![MongoDB Atlas](https://img.shields.io/badge/MongoDB%20Atlas-Mongoose%209.9-forestgreen?style=flat-square&logo=mongodb)](https://www.mongodb.com/atlas)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-v4-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 [![License](https://img.shields.io/badge/License-ISC-purple?style=flat-square)](LICENSE)
 
 **Connekt** is an enterprise-grade, full-stack real-time video conferencing platform built with modern WebRTC, Socket.IO, React 19, Express 5, and MongoDB Atlas. Engineered for ultra-low latency peer-to-peer media communication, robust session security, and a sleek, futuristic dark cyberpunk aesthetic with neon accents.
@@ -59,14 +64,14 @@ Connekt separates RESTful state management and identity verification from real-t
         └──────────────┬──────────────┘                   └───────────────┬───────────────┘
                        │                                                  │
                        ▼                                                  ▼
-        ┌─────────────────────────────┐                   ┌───────────────────────────────┐
-        │        Service Layer        │                   │     WebRTC Mesh Topology      │
-        │                             │                   │                               │
-        │  - authService (JWT/Family) │                   │  Peer A ◄─── P2P Media ───► Peer B
-        │  - historyService (MongoDB) │                   │    ▲                         ▲
-        └──────────────┬──────────────┘                   │    └──────── Peer C ─────────┘
-                       │                                  │   (Google STUN: stun.l.google.com)
-                       ▼                                  └───────────────────────────────┘
+        ┌─────────────────────────────┐                   ┌────────────────────────────────────┐
+        │        Service Layer        │                   │     WebRTC Mesh Topology           │
+        │                             │                   │                                    │
+        │  - authService (JWT/Family) │                   │  Peer A ◄─── P2P Media ───► Peer B │
+        │  - historyService (MongoDB) │                   │    ▲                         ▲     │
+        └──────────────┬──────────────┘                   │    └──────── Peer C ─────────┘     │
+                       │                                  │   (Google STUN: stun.l.google.com) │
+                       ▼                                  └────────────────────────────────────┘
         ┌─────────────────────────────┐
         │        MongoDB Atlas        │
         │                             │
@@ -84,7 +89,7 @@ Connekt separates RESTful state management and identity verification from real-t
 |  +--------------------+   +-----------------------+   +-------------------+   +----------------+  |
 |  | AuthContext        |   | Axios API Client      |   | Socket Client     |   | WebRTC Manager |  |
 |  | State & User Auth  |-->| Bearer Auth Header    |-->| Handshake with    |-->| RTCPeerConnect |  |
-|  | Session Lifecycles |   | 401 Silent Token Rot. |   | Active JWT Token  |   | Unified Plan   |  |
+|  | Session Lifecycle  |   | 401 Silent Token Rot. |   | Active JWT Token  |   | Unified Plan   |  |
 |  +--------------------+   +-----------------------+   +-------------------+   +----------------+  |
 +---------------------------------------|-------------------------|-----------------------|---------+
                                         |                         |                       |
@@ -96,11 +101,11 @@ Connekt separates RESTful state management and identity verification from real-t
 |  [Middleware Pipeline]                                          |                       |
 |  Helmet -> CORS -> RateLimiter -> CookieParser -> JsonParser    |                       |
 |                                                                 |                       |
-|  [REST Routes & Controllers]         [Socket.IO Manager]        |                       |
-|  - /api/v1/auth/*                    - Connection Auth Gate     |                       |
-|  - /api/v1/meetings/*                - room:join / peer:joined  |                       |
-|  - /health                           - signal:offer/answer/ice  |                       |
-|                                      - chat:message Rate Limiter|                       |
+|  [REST Routes & Controllers]       [Socket.IO Manager]          |                       |
+|  - /api/v1/auth/*                  - Connection Auth Gate       |                       |
+|  - /api/v1/meetings/*              - room:join / peer:joined    |                       |
+|  - /health                         - signal:offer/answer/ice    |                       |
+|                                    - chat:message Rate Limiter  |                       |
 |  [Services & Data Layer]                                        |                       |
 |  - authService.js (Bcrypt + JWT + Session Family Tree)          |                       |
 |  - historyService.js (Atomic Mongoose Queries)                  |                       |
@@ -150,6 +155,37 @@ Connekt separates RESTful state management and identity verification from real-t
 
 ---
 
+## 📷 Screenshots
+
+### 1. Landing Page
+![Landing Page](./screenshots/landing.png)
+
+### 2. User Authentication (Login)
+![Login Page](./screenshots/login.png)
+
+### 3. New Account Registration (Signup)
+![Signup Page](./screenshots/signup.png)
+
+### 4. User Dashboard & Meeting Launchpad
+![Dashboard](./screenshots/dashboard.png)
+
+### 5. Pre-Meeting Lobby & Device Preview
+![Meeting Lobby](./screenshots/meeting_lobby.png)
+
+### 6. Real-Time Multi-Peer Video Conference
+![Video Conference](./screenshots/video_conference.png)
+
+### 7. Instant Screen Sharing
+![Screen Sharing](./screenshots/screen_sharing.png)
+
+### 8. In-Meeting Real-Time Chat
+![Real-Time Chat](./screenshots/chat.png)
+
+### 9. Meeting History & Activity Logs
+![Meeting History](./screenshots/history.png)
+
+---
+
 ## 🚀 Tech Stack
 
 ### Frontend Architecture
@@ -189,91 +225,114 @@ connekt/
 ├── backend/
 │   ├── src/
 │   │   ├── config/
-│   │   │   ├── env.js
-│   │   │   └── jwt.js
+│   │   │   ├── database.js             # MongoDB connection setup
+│   │   │   └── env.js                  # Environment configuration & validation
 │   │   ├── controllers/
-│   │   │   └── user.controller.js
+│   │   │   ├── auth.controller.js      # Auth request handlers (login, signup, refresh, logout)
+│   │   │   └── user.controller.js      # Meeting history & user activity handlers
 │   │   ├── middleware/
-│   │   │   ├── asyncHandler.js
-│   │   │   ├── auth.js
-│   │   │   ├── errorHandler.js
-│   │   │   └── rateLimiter.js
+│   │   │   ├── asyncHandler.js         # Async error wrapper
+│   │   │   ├── auth.js                 # JWT Bearer authentication guard
+│   │   │   ├── errorHandler.js         # Centralized error handler
+│   │   │   ├── rateLimiter.js          # Auth and global rate limiters
+│   │   │   └── validate.js             # Zod schema validation middleware
 │   │   ├── models/
-│   │   │   ├── meeting.model.js
-│   │   │   └── user.model.js
+│   │   │   ├── meeting.model.js        # Meeting activity schema
+│   │   │   ├── session.model.js        # Refresh token session family schema
+│   │   │   └── user.model.js           # User credentials schema
 │   │   ├── routes/
-│   │   │   ├── health.routes.js
-│   │   │   └── users.routes.js
+│   │   │   ├── auth.routes.js          # Authentication endpoints (/api/v1/auth)
+│   │   │   ├── health.routes.js        # Health check endpoint (/health)
+│   │   │   └── users.routes.js         # Meeting history & backward compat routes
 │   │   ├── services/
-│   │   │   ├── authService.js
-│   │   │   └── historyService.js
+│   │   │   ├── authService.js          # Auth business logic, token rotation & reuse detection
+│   │   │   └── historyService.js       # Meeting history business logic
 │   │   ├── sockets/
-│   │   │   └── socketManager.js
+│   │   │   ├── chatHandler.js          # Real-time chat & rate-limited message handling
+│   │   │   ├── roomManager.js          # Scoped room membership & presence tracking
+│   │   │   ├── signalingHandler.js     # WebRTC SDP offer, answer & ICE candidate relay
+│   │   │   ├── socketAuth.js           # Socket handshake JWT verification
+│   │   │   └── socketManager.js        # Main Socket.IO connection dispatcher
 │   │   ├── utils/
-│   │   │   └── AppError.js
+│   │   │   └── AppError.js             # Custom operational error class
 │   │   ├── validators/
-│   │   │   └── auth.validator.js
-│   │   └── app.js
+│   │   │   └── auth.validator.js       # Zod schemas for credentials & registration
+│   │   └── app.js                      # Express application & HTTP server bootstrap
 │   ├── test/
-│   │   ├── auth.test.js
-│   │   └── socket.test.js
-│   ├── .env.example
+│   │   ├── auth.test.js                # Auth, token rotation & reuse detection tests
+│   │   └── socket.test.js              # Socket handshake, room isolation & chat tests
+│   ├── .env.example                    # Backend environment template
 │   ├── package.json
 │   └── package-lock.json
 │
 ├── frontend/
 │   ├── public/
-│   │   └── favicon.svg
+│   │   └── favicon.svg                 # Application favicon
 │   ├── src/
 │   │   ├── components/
 │   │   │   ├── layout/
-│   │   │   │   └── Navbar.jsx
+│   │   │   │   └── Navbar.jsx          # Header navigation bar with user profile
 │   │   │   ├── meeting/
-│   │   │   │   ├── ChatPanel.jsx
-│   │   │   │   ├── MeetingControls.jsx
-│   │   │   │   ├── MeetingHeader.jsx
-│   │   │   │   ├── MeetingLobby.jsx
-│   │   │   │   ├── VideoGrid.jsx
-│   │   │   │   └── VideoTile.jsx
+│   │   │   │   ├── ChatPanel.jsx       # In-meeting real-time chat drawer
+│   │   │   │   ├── MeetingControls.jsx # Audio, video, screen share & end-call buttons
+│   │   │   │   ├── MeetingHeader.jsx   # Meeting code display & meeting timer
+│   │   │   │   ├── MeetingLobby.jsx    # Pre-meeting device check & preview lobby
+│   │   │   │   ├── VideoGrid.jsx       # Adaptive multi-peer video grid layout
+│   │   │   │   └── VideoTile.jsx       # Individual participant video & status tile
 │   │   │   └── ui/
-│   │   │       ├── badge.jsx
-│   │   │       ├── button.jsx
-│   │   │       ├── input.jsx
-│   │   │       └── skeleton.jsx
+│   │   │       ├── badge.jsx           # Shadcn badge primitive
+│   │   │       ├── button.jsx          # Shadcn button primitive
+│   │   │       ├── input.jsx           # Shadcn input primitive
+│   │   │       └── skeleton.jsx        # Loading skeleton primitive
 │   │   ├── config/
-│   │   │   └── environment.js
+│   │   │   └── environment.js          # Dynamic environment & backend URL selector
 │   │   ├── constants/
-│   │   │   └── routes.js
+│   │   │   └── routes.js               # Application route path constants
 │   │   ├── contexts/
-│   │   │   └── AuthContext.jsx
+│   │   │   └── AuthContext.jsx         # Global authentication state provider
 │   │   ├── hooks/
-│   │   │   ├── useAuth.js
-│   │   │   └── useMeetingHistory.js
+│   │   │   ├── useAuth.js              # Hook for authentication operations
+│   │   │   ├── useMediaStream.js       # Hook for camera & microphone stream management
+│   │   │   ├── useMeetingHistory.js    # Hook for fetching meeting activity history
+│   │   │   ├── useMeetingSocket.js     # Hook for Socket.IO signaling lifecycle
+│   │   │   └── useWebRTC.js            # Hook for peer connections & screen sharing
 │   │   ├── pages/
-│   │   │   ├── about.jsx
-│   │   │   ├── authentication.jsx
-│   │   │   ├── contact.jsx
-│   │   │   ├── dashboard.jsx
-│   │   │   ├── history.jsx
-│   │   │   ├── landing.jsx
-│   │   │   ├── privacy.jsx
-│   │   │   └── videoMeet.jsx
+│   │   │   ├── about.jsx               # About Us information page
+│   │   │   ├── authentication.jsx      # Login and registration page
+│   │   │   ├── contact.jsx             # Contact Us page
+│   │   │   ├── dashboard.jsx           # User dashboard for starting/joining calls
+│   │   │   ├── history.jsx             # Past meeting history page
+│   │   │   ├── landing.jsx             # Landing page with hero & footer
+│   │   │   ├── privacy.jsx             # Terms & Privacy policy page
+│   │   │   └── videoMeet.jsx           # Real-time WebRTC conferencing page
 │   │   ├── services/
-│   │   │   ├── api.js
-│   │   │   ├── authService.js
-│   │   │   └── historyService.js
-│   │   ├── styles/
-│   │   │   └── videoComponent.module.css
+│   │   │   ├── api.js                  # Axios client with silent token refresh interceptor
+│   │   │   ├── authService.js          # Auth API request methods
+│   │   │   └── historyService.js       # Meeting history API request methods
 │   │   ├── utils/
-│   │   │   └── withAuth.jsx
-│   │   ├── App.css
-│   │   ├── App.jsx
-│   │   ├── index.css
-│   │   └── main.jsx
-│   ├── eslint.config.js
+│   │   │   ├── formatters.js           # Date and text formatting utilities
+│   │   │   └── withAuth.jsx            # Protected route Higher-Order Component
+│   │   ├── App.jsx                     # Application routing & route tree
+│   │   ├── index.css                   # Global styles & theme custom properties
+│   │   └── main.jsx                    # React application entry point
+│   ├── components.json                 # Shadcn UI configuration
+│   ├── eslint.config.js                # ESLint configuration
+│   ├── index.html                      # HTML entry template
+│   ├── jsconfig.json                   # Path alias mappings (@/*)
 │   ├── package.json
 │   ├── package-lock.json
-│   └── vite.config.js
+│   └── vite.config.js                  # Vite bundler configuration
+│
+├── screenshots/                        # Production UI screenshot assets
+│   ├── chat.png
+│   ├── dashboard.png
+│   ├── history.png
+│   ├── landing.png
+│   ├── login.png
+│   ├── meeting_lobby.png
+│   ├── screen_sharing.png
+│   ├── signup.png
+│   └── video_conference.png
 │
 ├── .gitignore
 └── README.md
@@ -285,30 +344,30 @@ connekt/
 
 ```text
 Peer A (Host)                      Socket.IO Server                      Peer B (Joiner)
-      │                                   │                                     │
-      │── 1. room:join { roomId } ───────>│                                     │
-      │<─ 2. room:joined { roomId } ──────│                                     │
-      │                                   │                                     │
-      │                                   │<── 3. room:join { roomId } ─────────│
-      │                                   │─── 4. room:joined { roomId, peers }─>
-      │<─ 5. peer:joined { peerId: B } ───│                                     │
-      │                                   │                                     │
-      │── 6. signal:offer ───────────────>│ (Verify same-room co-location)      │
-      │                                   │─── 7. signal:offer ────────────────>│
-      │                                   │                                     │
-      │                                   │<── 8. signal:answer ────────────────│
-      │<─ 9. signal:answer ───────────────│                                     │
-      │                                   │                                     │
-      │── 10. signal:ice-candidate ──────>│─── 11. signal:ice-candidate ───────>│
-      │<─ 13. signal:ice-candidate ───────│<── 12. signal:ice-candidate ───────│
-      │                                   │                                     │
-      │================== 14. Direct P2P Media Stream Established =============│
-      │                                   │                                     │
-      │── 15. media:state-change ────────>│─── 16. media:state-change ─────────>│
-      │── 17. chat:message ──────────────>│─── 18. chat:message ───────────────>│
-      │                                   │                                     │
-      │                                   │<── 19. disconnect ──────────────────│
-      │<─ 20. peer:left { peerId: B } ────│                                     │
+      │                                   │                                      │
+      │── 1. room:join { roomId } ───────>│                                      │
+      │<─ 2. room:joined { roomId } ──────│                                      │
+      │                                   │                                      │
+      │                                   │<── 3. room:join { roomId } ──────────│
+      │                                   │─── 4. room:joined { roomId, peers }─>│
+      │<─ 5. peer:joined { peerId: B } ───│                                      │
+      │                                   │                                      │
+      │── 6. signal:offer ───────────────>│ (Verify same-room co-location)       │
+      │                                   │─── 7. signal:offer ─────────────────>│
+      │                                   │                                      │
+      │                                   │<── 8. signal:answer ─────────────────│
+      │<─ 9. signal:answer ───────────────│                                      │
+      │                                   │                                      │
+      │── 10. signal:ice-candidate ──────>│─── 11. signal:ice-candidate ────────>│
+      │<─ 13. signal:ice-candidate ───────│<── 12. signal:ice-candidate ─────────│
+      │                                   │                                      │
+      │================== 14. Direct P2P Media Stream Established ===============│
+      │                                   │                                      │
+      │── 15. media:state-change ────────>│─── 16. media:state-change ──────────>│
+      │── 17. chat:message ──────────────>│─── 18. chat:message ────────────────>│
+      │                                   │                                      │
+      │                                   │<── 19. disconnect ───────────────────│
+      │<─ 20. peer:left { peerId: B } ────│                                      │
 ```
 
 ---
@@ -608,7 +667,7 @@ npm run build
 ## 👨‍💻 Author
 
 **Avishek Amin**  
-Full-Stack Developer & Real-Time Systems Enthusiast
+Full-Stack Developer & Software Engineer
 
 - 🔗 **LinkedIn:** [linkedin.com/in/avishekamin](https://www.linkedin.com/in/avishekamin)
 - 🔗 **GitHub:** [github.com/AvishekAmin](https://github.com/AvishekAmin)
