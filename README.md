@@ -8,6 +8,7 @@
 [![Socket.IO](https://img.shields.io/badge/Socket.IO-4.8-010101?style=flat-square&logo=socket.io)](https://socket.io/)
 [![MongoDB Atlas](https://img.shields.io/badge/MongoDB%20Atlas-Mongoose%209.9-forestgreen?style=flat-square&logo=mongodb)](https://www.mongodb.com/atlas)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-v4-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![Docker](https://img.shields.io/badge/Docker-Multi--Stage-2496ED?style=flat-square&logo=docker&logoColor=white)](https://www.docker.com/)
 [![License](https://img.shields.io/badge/License-ISC-purple?style=flat-square)](LICENSE)
 
 **Connekt** is an enterprise-grade, full-stack real-time video conferencing platform built with modern WebRTC, Socket.IO, React 19, Express 5, and MongoDB Atlas. Engineered for ultra-low latency peer-to-peer media communication, robust session security, and a sleek, futuristic dark cyberpunk aesthetic with neon accents.
@@ -254,6 +255,10 @@ Peer A (Host)                      Socket.IO Server                      Peer B 
 ```text
 connekt/
 │
+├── .github/
+│   └── workflows/
+│       └── ci.yml                      # GitHub Actions CI workflow (tests, lint, docker buildx)
+│
 ├── backend/
 │   ├── src/
 │   │   ├── config/
@@ -293,7 +298,9 @@ connekt/
 │   ├── test/
 │   │   ├── auth.test.js                # Auth, token rotation & reuse detection tests
 │   │   └── socket.test.js              # Socket handshake, room isolation & chat tests
+│   ├── .dockerignore                   # Docker build ignore patterns
 │   ├── .env.example                    # Backend environment template
+│   ├── Dockerfile                      # Production Node 20 Alpine container image
 │   ├── package.json
 │   └── package-lock.json
 │
@@ -347,10 +354,13 @@ connekt/
 │   │   ├── App.jsx                     # Application routing & route tree
 │   │   ├── index.css                   # Global styles & theme custom properties
 │   │   └── main.jsx                    # React application entry point
+│   ├── .dockerignore                   # Docker build ignore patterns
 │   ├── components.json                 # Shadcn UI configuration
+│   ├── Dockerfile                      # Multi-stage build (Node 20 builder -> Nginx runner)
 │   ├── eslint.config.js                # ESLint configuration
 │   ├── index.html                      # HTML entry template
 │   ├── jsconfig.json                   # Path alias mappings (@/*)
+│   ├── nginx.conf                      # SPA routing, security headers & health probe
 │   ├── package.json
 │   ├── package-lock.json
 │   └── vite.config.js                  # Vite bundler configuration
@@ -366,7 +376,10 @@ connekt/
 │   ├── signup.png
 │   └── video_conference.png
 │
+├── .env.docker.example                 # Docker Compose environment variable template
 ├── .gitignore
+├── docker-compose.yml                  # Local orchestration (MongoDB, backend, frontend)
+├── LICENSE                             # ISC Open-Source License
 └── README.md
 ```
 
@@ -428,6 +441,115 @@ const socket = io(BACKEND_URL, {
 | `media:state-change`   | Client ⇄ Server | Broadcasts participant audio mute / video disabled status   | Authenticated  | `{ isAudioMuted: boolean, isVideoOff: boolean }`                                   |
 | `chat:message`         | Client ⇄ Server | In-meeting chat message (server stamped sender & rate-limit)| Authenticated  | `{ message: string }` $\rightarrow$ `{ id, sender, name, message, timestamp }`     |
 | `chat:error`           | Server → Client | Emitted when message exceeds length or rate limit threshold | Authenticated  | `{ error: string }`                                                                |
+
+---
+
+## 🐳 Docker & DevOps Integration
+
+Connekt is engineered for reproducible local containerization and continuous integration (CI) automation. The entire multi-tier stack—MongoDB 7.0 database, Express 5 backend with Socket.IO signaling, and React 19 frontend served via Nginx—can be spun up locally with a single Docker Compose command or validated in continuous integration pipelines.
+
+### Docker Topology & Network Architecture
+
+```text
+                           ┌───────────────────────────┐
+                           │      Client Browser       │
+                           │   React 19 SPA (Client)   │
+                           └─────────────┬─────────────┘
+                                         │
+                                         │ HTTP (Port 5173)
+                                         ▼
+                           ┌───────────────────────────┐
+                           │   connekt-frontend        │
+                           │   Nginx Alpine            │
+                           │   Static Assets + SPA     │
+                           └─────────────┬─────────────┘
+                                         │
+                                         │ REST API / WSS (Port 8080)
+                                         ▼
+                           ┌───────────────────────────┐
+                           │   connekt-backend         │
+                           │   Node.js 20 Alpine       │
+                           │   Express 5 + Socket.IO   │
+                           └─────────────┬─────────────┘
+                                         │
+                                         │ MongoDB Wire Protocol (Port 27017)
+                                         ▼
+                           ┌───────────────────────────┐
+                           │   connekt-mongo           │
+                           │   MongoDB 7.0             │
+                           │   Named Volume mongo_data │
+                           └───────────────────────────┘
+```
+
+### Containerized Service Specifications
+
+| Service | Container Name | Base Image | Internal Port | Host Port | Health Check Probe |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Database** | `connekt-mongo` | `mongo:7.0` | `27017` | `27017` | `mongosh --eval 'db.runCommand({ ping: 1 })'` |
+| **Backend** | `connekt-backend` | `node:20-alpine` | `8080` | `8080` | `wget -qO- http://localhost:8080/health \| grep -q '"status":"ok"'` |
+| **Frontend** | `connekt-frontend` | `nginx:alpine` | `80` | `5173` | `wget -qO- http://localhost/nginx-health \| grep -q 'healthy'` |
+
+### Quick Start with Docker Compose
+
+Ensure Docker Engine or Docker Desktop is running on your system:
+
+```bash
+# 1. Clone repository (if not already cloned)
+git clone https://github.com/AvishekAmin/connekt.git
+cd connekt
+
+# 2. Configure environment variables for Docker Compose
+cp .env.docker.example .env
+
+# 3. Build images and start all services in detached mode
+docker compose up --build -d
+
+# 4. Stream real-time logs across all services
+docker compose logs -f
+
+# 5. Check container statuses and health probes
+docker compose ps
+
+# 6. Stop all services and network
+docker compose down
+
+# 7. Stop all services and wipe persistent MongoDB volume data (optional reset)
+docker compose down -v
+```
+
+Once running, access the local containerized services:
+- 🌐 **Frontend Application:** [http://localhost:5173](http://localhost:5173)
+- 🔌 **Backend REST & WebSocket API:** [http://localhost:8080](http://localhost:8080)
+- 🩺 **Backend Health Probe:** [http://localhost:8080/health](http://localhost:8080/health)
+- 🗄️ **MongoDB Connection:** `mongodb://localhost:27017/connekt`
+
+### Continuous Integration (GitHub Actions)
+
+Connekt includes an enterprise GitHub Actions CI workflow (`.github/workflows/ci.yml`) triggered on every pull request and push to `main`:
+
+```text
+┌────────────────────────────────────────────────────────┐
+│             GitHub Actions CI Pipeline                 │
+├──────────────────────────┬─────────────────────────────┤
+│      backend-ci          │         frontend-ci         │
+│  - MongoDB 7.0 Service   │  - Node.js 20 Setup         │
+│  - Node.js 20 Setup      │  - npm ci Clean Install     │
+│  - npm ci Clean Install  │  - ESLint Linter Check      │
+│  - Node Syntax Check     │  - Vite Production Build    │
+│  - 40 Automated Tests    │                             │
+└─────────────┬────────────┴──────────────┬──────────────┘
+              │                           │
+              ▼                           ▼
+┌────────────────────────────────────────────────────────┐
+│                  docker-validation                     │
+│  - Docker Buildx Setup                                 │
+│  - Backend Multi-Stage Alpine Build Validation         │
+│  - Frontend Multi-Stage Nginx Build Validation         │
+├────────────────────────────────────────────────────────┤
+│                 compose-validation                     │
+│  - Docker Compose Syntax & Configuration Verification  │
+└────────────────────────────────────────────────────────┘
+```
 
 ---
 
