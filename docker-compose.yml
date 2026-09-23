@@ -1,0 +1,74 @@
+services:
+  # 1. MongoDB Service (Local Production Database)
+  mongo:
+    image: mongo:7.0
+    container_name: connekt-mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD-SHELL", "mongosh --eval 'db.runCommand({ ping: 1 })' || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - connekt-network
+
+  # 2. Connekt Backend API & WebRTC Signaling Gateway
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: connekt-backend
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      - NODE_ENV=production
+      - PORT=8080
+      - MONGO_URI=${MONGO_URI:-mongodb://mongo:27017/connekt}
+      - FRONTEND_URL=${FRONTEND_URL:-http://localhost:5173}
+      - JWT_ACCESS_SECRET=${JWT_ACCESS_SECRET:-connekt_production_jwt_access_secret_min_32_characters_long}
+      - JWT_REFRESH_SECRET=${JWT_REFRESH_SECRET:-connekt_production_jwt_refresh_secret_min_32_characters_long}
+      - JWT_ACCESS_EXPIRY=${JWT_ACCESS_EXPIRY:-15m}
+      - JWT_REFRESH_EXPIRY=${JWT_REFRESH_EXPIRY:-7d}
+      - WEBRTC_STUN_URL=${WEBRTC_STUN_URL:-stun:stun.l.google.com:19302}
+    depends_on:
+      mongo:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8080/health | grep -q '\"status\":\"ok\"' || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+    networks:
+      - connekt-network
+
+  # 3. Connekt Frontend (React 19 SPA served via Nginx)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        - VITE_BACKEND_URL=${VITE_BACKEND_URL:-http://localhost:8080}
+    container_name: connekt-frontend
+    restart: unless-stopped
+    ports:
+      - "5173:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - connekt-network
+
+volumes:
+  mongo_data:
+    driver: local
+
+networks:
+  connekt-network:
+    driver: bridge
