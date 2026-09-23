@@ -123,7 +123,7 @@ export default function Authentication() {
             <p className="text-xs sm:text-sm text-slate-400 pt-1">
               {formState === 0
                 ? "Enter your credentials to access your meetings"
-                : "Fill in the information below to get started with Connekt"}
+                : "Fill in the information to get started with Connekt"}
             </p>
           </div>
 

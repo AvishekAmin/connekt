@@ -122,6 +122,38 @@ Connekt separates RESTful state management and identity verification from real-t
 
 ---
 
+## 🔄 Real-Time Signaling & WebRTC Lifecycle
+
+```text
+Peer A (Host)                      Socket.IO Server                      Peer B (Joiner)
+      │                                   │                                      │
+      │── 1. room:join { roomId } ───────>│                                      │
+      │<─ 2. room:joined { roomId } ──────│                                      │
+      │                                   │                                      │
+      │                                   │<── 3. room:join { roomId } ──────────│
+      │                                   │─── 4. room:joined { roomId, peers }─>│
+      │<─ 5. peer:joined { peerId: B } ───│                                      │
+      │                                   │                                      │
+      │── 6. signal:offer ───────────────>│ (Verify same-room co-location)       │
+      │                                   │─── 7. signal:offer ─────────────────>│
+      │                                   │                                      │
+      │                                   │<── 8. signal:answer ─────────────────│
+      │<─ 9. signal:answer ───────────────│                                      │
+      │                                   │                                      │
+      │── 10. signal:ice-candidate ──────>│─── 11. signal:ice-candidate ────────>│
+      │<─ 13. signal:ice-candidate ───────│<── 12. signal:ice-candidate ─────────│
+      │                                   │                                      │
+      │================== 14. Direct P2P Media Stream Established ===============│
+      │                                   │                                      │
+      │── 15. media:state-change ────────>│─── 16. media:state-change ──────────>│
+      │── 17. chat:message ──────────────>│─── 18. chat:message ────────────────>│
+      │                                   │                                      │
+      │                                   │<── 19. disconnect ───────────────────│
+      │<─ 20. peer:left { peerId: B } ────│                                      │
+```
+
+---
+
 ## ✨ Feature Deep-Dive
 
 ### 🔐 1. Authentication & Session Security
@@ -217,7 +249,7 @@ Connekt separates RESTful state management and identity verification from real-t
 
 ---
 
-# 📁 Project Structure
+## 📁 Project Structure
 
 ```text
 connekt/
@@ -340,203 +372,62 @@ connekt/
 
 ---
 
-## 🔄 Real-Time Signaling & WebRTC Lifecycle
+## 📡 Complete API Reference
 
-```text
-Peer A (Host)                      Socket.IO Server                      Peer B (Joiner)
-      │                                   │                                      │
-      │── 1. room:join { roomId } ───────>│                                      │
-      │<─ 2. room:joined { roomId } ──────│                                      │
-      │                                   │                                      │
-      │                                   │<── 3. room:join { roomId } ──────────│
-      │                                   │─── 4. room:joined { roomId, peers }─>│
-      │<─ 5. peer:joined { peerId: B } ───│                                      │
-      │                                   │                                      │
-      │── 6. signal:offer ───────────────>│ (Verify same-room co-location)       │
-      │                                   │─── 7. signal:offer ─────────────────>│
-      │                                   │                                      │
-      │                                   │<── 8. signal:answer ─────────────────│
-      │<─ 9. signal:answer ───────────────│                                      │
-      │                                   │                                      │
-      │── 10. signal:ice-candidate ──────>│─── 11. signal:ice-candidate ────────>│
-      │<─ 13. signal:ice-candidate ───────│<── 12. signal:ice-candidate ─────────│
-      │                                   │                                      │
-      │================== 14. Direct P2P Media Stream Established ===============│
-      │                                   │                                      │
-      │── 15. media:state-change ────────>│─── 16. media:state-change ──────────>│
-      │── 17. chat:message ──────────────>│─── 18. chat:message ────────────────>│
-      │                                   │                                      │
-      │                                   │<── 19. disconnect ───────────────────│
-      │<─ 20. peer:left { peerId: B } ────│                                      │
-```
+All protected REST endpoints require an active Bearer JWT in the `Authorization: Bearer <accessToken>` header. Session rotation and termination utilize the secure `refreshToken` HttpOnly cookie. Real-time signaling and in-meeting communications require an authenticated JWT during the Socket.IO handshake (`auth: { token }`).
 
----
+### Health & Observability
 
-## 🔌 REST API Specification
+| Method | Endpoint  | Description                        | Auth   | Request Body | Response                                                  |
+| :----- | :-------- | :--------------------------------- | :----- | :----------- | :-------------------------------------------------------- |
+| `GET`  | `/health` | Server and database liveness probe | Public | None         | `{ status: "ok", timestamp: "2026-09-22T00:00:00.000Z" }` |
 
-### Health Check
+### Authentication & Identity (`/api/v1/auth`)
 
-```http
-GET /health
-```
-- **Response `200 OK`:**
-  ```json
-  { "status": "ok", "db": "connected" }
-  ```
+| Method | Endpoint               | Description                                           | Auth             | Request Body                     | Response                                                                     |
+| :----- | :--------------------- | :---------------------------------------------------- | :--------------- | :------------------------------- | :--------------------------------------------------------------------------- |
+| `POST` | `/api/v1/auth/signup`  | Create new user account with hashed credentials       | Public           | `{ name, username, password }`   | `{ message: "User registered successfully", user: { id, name, username } }`  |
+| `POST` | `/api/v1/auth/login`   | Authenticate credentials, issue access token & cookie | Public           | `{ username, password }`         | `{ accessToken: "...", user: { id, name, username } }`                      |
+| `POST` | `/api/v1/auth/refresh` | Rotate session family & obtain fresh access token     | Refresh Cookie   | None                             | `{ accessToken: "..." }`                                                     |
+| `POST` | `/api/v1/auth/logout`  | Invalidate active refresh session & clear auth cookie | Refresh Cookie   | None                             | `{ message: "Logged out successfully" }`                                     |
+| `GET`  | `/api/v1/auth/me`      | Inspect currently authenticated user profile          | Bearer Protected | None                             | `{ user: { id, name, username } }`                                          |
 
----
+### Meeting Activity & History (`/api/v1/users`)
 
-### Authentication (`/api/v1/auth`)
+| Method | Endpoint                        | Description                                  | Auth             | Request Body            | Response                                                    |
+| :----- | :------------------------------ | :------------------------------------------- | :--------------- | :---------------------- | :---------------------------------------------------------- |
+| `POST` | `/api/v1/users/add_to_activity` | Record joined meeting code to user history   | Bearer Protected | `{ meetingCode: "..." }`| `{ message: "Meeting added to history" }`                   |
+| `GET`  | `/api/v1/users/get_all_activity`| Retrieve authenticated user's meeting history | Bearer Protected | None                    | `[{ _id: "...", meetingCode: "...", date: "2026-09-..." }]` |
 
-#### 1. Register User
-```http
-POST /api/v1/auth/signup
-Content-Type: application/json
+### Backward-Compatibility Aliases (`/api/v1/users`)
 
-{
-  "name": "Alex Mercer",
-  "username": "alexmercer",
-  "password": "Password123"
-}
-```
-- **Response `201 Created`:**
-  ```json
-  {
-    "message": "User registered successfully",
-    "user": {
-      "id": "670...",
-      "name": "Alex Mercer",
-      "username": "alexmercer"
-    }
-  }
-  ```
+| Method | Endpoint               | Description                                     | Auth   | Request Body                   | Response                                               |
+| :----- | :--------------------- | :---------------------------------------------- | :----- | :----------------------------- | :----------------------------------------------------- |
+| `POST` | `/api/v1/users/signup` | Legacy registration alias (forwards to signup)  | Public | `{ name, username, password }` | `{ message: "...", user: { id, name, username } }`     |
+| `POST` | `/api/v1/users/login`  | Legacy authentication alias (forwards to login) | Public | `{ username, password }`       | `{ accessToken: "...", user: { id, name, username } }`  |
 
-#### 2. User Login
-```http
-POST /api/v1/auth/login
-Content-Type: application/json
+### Real-Time WebRTC Signaling & Socket.IO Events
 
-{
-  "username": "alexmercer",
-  "password": "Password123"
-}
-```
-- **Response `200 OK`:**
-  - Sets HTTP-Only cookie: `refreshToken=<token>; HttpOnly; Secure; SameSite=Strict; Max-Age=604800`
-  ```json
-  {
-    "accessToken": "eyJhbG...",
-    "user": {
-      "id": "670...",
-      "name": "Alex Mercer",
-      "username": "alexmercer"
-    }
-  }
-  ```
+All Socket.IO client connections authenticate during the initial handshake:
 
-#### 3. Refresh Access Token
-```http
-POST /api/v1/auth/refresh
-Cookie: refreshToken=<token>
-```
-- **Response `200 OK`:**
-  - Rotates refresh cookie with a newly minted token.
-  ```json
-  { "accessToken": "eyJhbG..." }
-  ```
-- **Response `401 Unauthorized` (Token Reuse Detected):**
-  - Triggers immediate session family revocation.
-  ```json
-  { "error": "Invalid refresh token", "code": "REFRESH_TOKEN_REUSE" }
-  ```
-
-#### 4. Current User Profile
-```http
-GET /api/v1/auth/me
-Authorization: Bearer <accessToken>
-```
-- **Response `200 OK`:**
-  ```json
-  {
-    "user": {
-      "id": "670...",
-      "name": "Alex Mercer",
-      "username": "alexmercer"
-    }
-  }
-  ```
-
-#### 5. User Logout
-```http
-POST /api/v1/auth/logout
-Cookie: refreshToken=<token>
-```
-- **Response `200 OK`:**
-  - Clears `refreshToken` cookie and marks session as revoked in the database.
-  ```json
-  { "message": "Logged out successfully" }
-  ```
-
----
-
-### Meeting Management (`/api/v1/meetings`)
-
-#### 1. Record Meeting to History
-```http
-POST /api/v1/meetings/activity
-Authorization: Bearer <accessToken>
-Content-Type: application/json
-
-{
-  "meetingCode": "alpha-room-123"
-}
-```
-- **Response `201 Created`:**
-  ```json
-  { "message": "Meeting added to history" }
-  ```
-
-#### 2. Retrieve User Meeting History
-```http
-GET /api/v1/meetings/activity
-Authorization: Bearer <accessToken>
-```
-- **Response `200 OK`:**
-  ```json
-  [
-    {
-      "_id": "670...",
-      "meetingCode": "alpha-room-123",
-      "date": "2026-09-13T11:00:00.000Z"
-    }
-  ]
-  ```
-
-*(Note: Legacy endpoints `/api/v1/users/login`, `/api/v1/users/signup`, `/api/v1/users/add_to_activity`, and `/api/v1/users/get_all_activity` remain fully functional as compatibility aliases).*
-
----
-
-## ⚡ Socket.IO Event Specification
-
-All socket connections require an authenticated JWT token during handshake:
 ```javascript
-const socket = io(SERVER_URL, {
+const socket = io(BACKEND_URL, {
   auth: { token: accessToken }
 });
 ```
 
-| Event Name | Direction | Payload | Description |
-| :--- | :--- | :--- | :--- |
-| `room:join` | Client → Server | `{ roomId: string }` | Join a meeting room. Enforces single-room per socket. |
-| `room:joined` | Server → Client | `{ roomId: string, peers: Array }` | Confirms room entry and provides active peer list. |
-| `peer:joined` | Server → Client | `{ peerId: string, name: string }` | Broadcast to peers when a new user enters the room. |
-| `peer:left` | Server → Client | `{ peerId: string }` | Broadcast to peers when a user exits or disconnects. |
-| `signal:offer` | Client ⇄ Server | `{ to: string, offer: RTCSessionDescription }` | Relays WebRTC SDP offer (cross-room isolated). |
-| `signal:answer` | Client ⇄ Server | `{ to: string, answer: RTCSessionDescription }` | Relays WebRTC SDP answer (cross-room isolated). |
-| `signal:ice-candidate` | Client ⇄ Server | `{ to: string, candidate: RTCIceCandidate }` | Relays ICE candidate for NAT traversal. |
-| `media:state-change` | Client ⇄ Server | `{ isAudioMuted: boolean, isVideoOff: boolean }` | Broadcasts microphone/camera status to peers. |
-| `chat:message` | Client ⇄ Server | `{ message: string }` | Sends a chat message (rate-limited, server-verified sender). |
-| `chat:error` | Server → Client | `{ error: string }` | Emitted when message exceeds length or rate limit. |
+| Event Name             | Direction       | Description                                                 | Auth           | Payload Structure                                                                  |
+| :--------------------- | :-------------- | :---------------------------------------------------------- | :------------- | :--------------------------------------------------------------------------------- |
+| `room:join`            | Client → Server | Join a meeting room (enforces single room per socket)       | Authenticated  | `{ roomId: string }`                                                               |
+| `room:joined`          | Server → Client | Confirms room entry and returns active peer list            | Authenticated  | `{ roomId: string, peers: Array<string> }`                                         |
+| `peer:joined`          | Server → Client | Broadcast to room peers when a new participant connects     | Authenticated  | `{ peerId: string, name: string, userId: string }`                                 |
+| `peer:left`            | Server → Client | Broadcast to room peers when a participant disconnects      | Authenticated  | `{ peerId: string }`                                                               |
+| `signal:offer`         | Client ⇄ Server | Relays WebRTC SDP offer (strictly scoped to same room)      | Authenticated  | `{ to: string, offer: RTCSessionDescriptionInit }`                                 |
+| `signal:answer`        | Client ⇄ Server | Relays WebRTC SDP answer (strictly scoped to same room)     | Authenticated  | `{ to: string, answer: RTCSessionDescriptionInit }`                                |
+| `signal:ice-candidate` | Client ⇄ Server | Relays ICE candidate for NAT traversal (scoped to peer)     | Authenticated  | `{ to: string, candidate: RTCIceCandidateInit }`                                   |
+| `media:state-change`   | Client ⇄ Server | Broadcasts participant audio mute / video disabled status   | Authenticated  | `{ isAudioMuted: boolean, isVideoOff: boolean }`                                   |
+| `chat:message`         | Client ⇄ Server | In-meeting chat message (server stamped sender & rate-limit)| Authenticated  | `{ message: string }` $\rightarrow$ `{ id, sender, name, message, timestamp }`     |
+| `chat:error`           | Server → Client | Emitted when message exceeds length or rate limit threshold | Authenticated  | `{ error: string }`                                                                |
 
 ---
 
@@ -629,7 +520,7 @@ The frontend will launch at `http://localhost:5173`.
 
 ---
 
-## 🧪 Testing & Verification
+## 🧪 Testing & Automated Verification
 
 Connekt includes comprehensive automated test suites for security and real-time operations:
 
@@ -667,7 +558,7 @@ npm run build
 ## 👨‍💻 Author
 
 **Avishek Amin**  
-Full-Stack Developer & Software Engineer
+Full-Stack Developer & Machine Learning Engineer
 
 - 🔗 **LinkedIn:** [linkedin.com/in/avishekamin](https://www.linkedin.com/in/avishekamin)
 - 🔗 **GitHub:** [github.com/AvishekAmin](https://github.com/AvishekAmin)
