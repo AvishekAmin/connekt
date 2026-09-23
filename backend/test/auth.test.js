@@ -35,9 +35,10 @@ const getRefreshCookie = (res) => {
 };
 
 const waitForDb = () =>
-  new Promise((resolve) => {
+  new Promise((resolve, reject) => {
     if (mongoose.connection.readyState === 1) return resolve();
     mongoose.connection.once("connected", resolve);
+    mongoose.connection.once("error", reject);
   });
 
 before(async () => {

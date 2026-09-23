@@ -2,7 +2,7 @@ import { test, describe, before, after, afterEach } from "node:test";
 import assert from "node:assert/strict";
 import { createServer } from "node:http";
 import jwt from "jsonwebtoken";
-import { io as Client } from "../../frontend/node_modules/socket.io-client/build/esm/index.js";
+import { io as Client } from "socket.io-client";
 import { config } from "../src/config/env.js";
 import { connectToSocket } from "../src/sockets/socketManager.js";
 import { roomManager } from "../src/sockets/roomManager.js";
