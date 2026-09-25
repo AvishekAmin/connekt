@@ -48,14 +48,14 @@ function HistoryComponent() {
   );
 
   return (
-    <div className="min-h-screen bg-[#050814] text-white flex flex-col selection:bg-[#00D8F6]/20 selection:text-[#00D8F6]">
+    <div className="min-h-screen bg-[#0a0a0a] text-white flex flex-col selection:bg-[#00D8F6]/20 selection:text-[#00D8F6]">
       <Navbar showAppNav={true} />
 
       <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-2 sm:pt-3 pb-8 sm:pb-12 space-y-8">
         <div className="space-y-4">
           <Link
             to={ROUTES.DASHBOARD}
-            className="inline-flex items-center gap-2 text-xs font-medium text-slate-300 hover:text-white bg-[#0D1527] border border-[#1E2B4D] hover:bg-[#131D36] rounded-full px-4 py-2 w-fit transition-all"
+            className="inline-flex items-center gap-2 text-xs font-medium text-slate-300 hover:text-white bg-[#141414] border border-white/10 hover:bg-[#1f1f1f] rounded-full px-4 py-2 w-fit transition-all"
           >
             <ArrowLeft className="size-3.5" />
             <span>Back to Dashboard</span>
@@ -77,7 +77,7 @@ function HistoryComponent() {
               <Button
                 variant="outline"
                 size="sm"
-                className="rounded-full border-[#1E2B4D] bg-[#0D1527] hover:bg-[#131D36] text-white gap-1.5 text-xs px-4"
+                className="rounded-full border-white/10 bg-[#141414] hover:bg-[#1f1f1f] text-white gap-1.5 text-xs px-4"
                 onClick={fetchHistory}
                 disabled={loading}
               >
@@ -98,7 +98,7 @@ function HistoryComponent() {
               placeholder="Search by meeting code..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="rounded-full bg-[#0D1527] border-[#1E2B4D] pl-11 pr-4 h-11 text-sm text-white placeholder:text-slate-500 focus-visible:ring-1 focus-visible:ring-[#00D8F6] focus-visible:border-[#00D8F6]"
+              className="rounded-full bg-[#141414] border-white/10 pl-11 pr-4 h-11 text-sm text-white placeholder:text-slate-500 focus-visible:ring-1 focus-visible:ring-[#00D8F6] focus-visible:border-[#00D8F6]"
             />
           </div>
         )}
@@ -108,7 +108,7 @@ function HistoryComponent() {
             {[1, 2, 3, 4].map((i) => (
               <Skeleton
                 key={i}
-                className="h-20 w-full rounded-2xl bg-[#131D36]"
+                className="h-20 w-full rounded-2xl bg-[#1a1a1a]"
               />
             ))}
           </div>
@@ -135,7 +135,7 @@ function HistoryComponent() {
             {filteredMeetings.map((item, index) => (
               <div
                 key={item._id || index}
-                className="p-5 sm:p-6 rounded-2xl border border-[#1E2B4D] bg-[#0D1527] hover:border-slate-500 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4 group shadow-md"
+                className="p-5 sm:p-6 rounded-2xl border border-white/10 bg-[#141414] hover:border-white/25 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4 group shadow-md"
               >
                 <div className="space-y-2 min-w-0">
                   <div className="flex items-center gap-3 flex-wrap">
@@ -152,7 +152,7 @@ function HistoryComponent() {
                     <button
                       type="button"
                       onClick={() => handleCopyCode(item.meetingCode)}
-                      className="text-slate-400 hover:text-white transition-colors p-1 rounded-full hover:bg-[#131D36]"
+                      className="text-slate-400 hover:text-white transition-colors p-1 rounded-full hover:bg-[#1f1f1f]"
                       title="Copy meeting code"
                       aria-label="Copy meeting code"
                     >
@@ -199,7 +199,7 @@ function HistoryComponent() {
             ))}
           </div>
         ) : searchQuery ? (
-          <div className="rounded-3xl bg-[#0D1527] border border-[#1E2B4D] p-12 text-center space-y-3 shadow-md">
+          <div className="rounded-3xl bg-[#141414] border border-white/10 p-12 text-center space-y-3 shadow-md">
             <Search className="size-8 text-slate-400 mx-auto" />
             <div className="space-y-1">
               <p className="text-base font-medium text-white">
@@ -213,14 +213,14 @@ function HistoryComponent() {
               variant="outline"
               size="sm"
               onClick={() => setSearchQuery("")}
-              className="rounded-full border-[#1E2B4D] bg-[#131D36] text-xs text-white"
+              className="rounded-full border-white/10 bg-[#1a1a1a] hover:bg-[#262626] text-xs text-white"
             >
               Clear Search
             </Button>
           </div>
         ) : (
-          <div className="rounded-3xl bg-[#0D1527] border border-[#1E2B4D] p-12 text-center space-y-4 shadow-md">
-            <div className="size-12 rounded-full bg-[#131D36] text-[#00D8F6] flex items-center justify-center mx-auto border border-[#1E2B4D]">
+          <div className="rounded-3xl bg-[#141414] border border-white/10 p-12 text-center space-y-4 shadow-md">
+            <div className="size-12 rounded-full bg-[#1a1a1a] text-[#00D8F6] flex items-center justify-center mx-auto border border-white/10">
               <Video className="size-6" />
             </div>
             <div className="space-y-1 max-w-sm mx-auto">

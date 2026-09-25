@@ -32,7 +32,7 @@ export default function LandingPage() {
   }, []);
 
   return (
-    <div className="h-screen h-[100dvh] overflow-hidden bg-[#050814] text-white flex flex-col justify-between selection:bg-[#00D8F6]/20 selection:text-[#00D8F6]">
+    <div className="h-screen h-[100dvh] overflow-hidden bg-[#0a0a0a] text-white flex flex-col justify-between selection:bg-[#00D8F6]/20 selection:text-[#00D8F6]">
       <Navbar />
 
       <main className="flex-1 flex items-center justify-center overflow-hidden">
@@ -72,8 +72,8 @@ export default function LandingPage() {
                 <div className="relative mx-auto max-w-lg lg:max-w-none">
                   <div className="absolute -inset-0.5 bg-gradient-to-r from-[#00D8F6]/25 to-[#7B61FF]/25 rounded-3xl blur-md -z-10" />
 
-                  <div className="rounded-3xl border border-[#1E2B4D] bg-[#0D1527]/95 backdrop-blur-md p-4 sm:p-5 shadow-2xl shadow-black/80">
-                    <div className="flex items-center justify-between pb-3.5 border-b border-[#1E2B4D]">
+                  <div className="rounded-3xl border border-white/10 bg-[#141414]/95 backdrop-blur-md p-4 sm:p-5 shadow-2xl shadow-black/80">
+                    <div className="flex items-center justify-between pb-3.5 border-b border-white/10">
                       <div className="flex items-center gap-2">
                         <div className="flex gap-1.5">
                           <span className="size-2.5 rounded-full bg-red-500/80" />
@@ -94,21 +94,21 @@ export default function LandingPage() {
                     </div>
 
                     <div className="grid grid-cols-2 gap-3 my-4">
-                      <div className="relative aspect-video rounded-2xl bg-[#131D36] flex items-center justify-center border border-[#1E2B4D] overflow-hidden group">
+                      <div className="relative aspect-video rounded-2xl bg-[#181818] flex items-center justify-center border border-white/5 overflow-hidden group">
                         <div className="size-12 rounded-full bg-cyan-500/15 text-[#00D8F6] flex items-center justify-center font-bold text-base border border-[#00D8F6]/30 shadow-inner">
                           AA
                         </div>
-                        <div className="absolute bottom-2.5 left-2.5 px-2.5 py-0.5 rounded-full bg-[#050814]/85 backdrop-blur-sm text-[11px] font-medium text-white flex items-center gap-1.5 border border-white/10">
+                        <div className="absolute bottom-2.5 left-2.5 px-2.5 py-0.5 rounded-full bg-[#0a0a0a]/85 backdrop-blur-sm text-[11px] font-medium text-white flex items-center gap-1.5 border border-white/10">
                           <Mic className="size-3 text-[#00E599]" />
                           <span>You</span>
                         </div>
                       </div>
 
-                      <div className="relative aspect-video rounded-2xl bg-[#0E162B] flex items-center justify-center border border-[#1E2B4D] overflow-hidden">
+                      <div className="relative aspect-video rounded-2xl bg-[#181818] flex items-center justify-center border border-white/5 overflow-hidden">
                         <div className="size-12 rounded-full bg-indigo-500/15 text-[#7B61FF] flex items-center justify-center font-bold text-base border border-[#7B61FF]/30 shadow-inner">
                           JS
                         </div>
-                        <div className="absolute bottom-2.5 left-2.5 px-2.5 py-0.5 rounded-full bg-[#050814]/85 backdrop-blur-sm text-[11px] font-medium text-white flex items-center gap-1.5 border border-white/10">
+                        <div className="absolute bottom-2.5 left-2.5 px-2.5 py-0.5 rounded-full bg-[#0a0a0a]/85 backdrop-blur-sm text-[11px] font-medium text-white flex items-center gap-1.5 border border-white/10">
                           <Mic className="size-3 text-[#00E599]" />
                           <span>Participant 2</span>
                         </div>
@@ -116,17 +116,17 @@ export default function LandingPage() {
                     </div>
 
                     <div className="flex items-center justify-center gap-2.5 pt-2">
-                      <div className="rounded-full bg-[#0A1020] border border-[#1E2B4D] p-1.5 px-3 flex items-center gap-2 shadow-inner">
-                        <div className="size-8 rounded-full bg-[#131D36] border border-[#1E2B4D] flex items-center justify-center text-slate-300">
+                      <div className="rounded-full bg-[#111111] border border-white/10 p-1.5 px-3 flex items-center gap-2 shadow-inner">
+                        <div className="size-8 rounded-full bg-[#1a1a1a] border border-white/10 flex items-center justify-center text-slate-300">
                           <Mic className="size-4" />
                         </div>
-                        <div className="size-8 rounded-full bg-[#131D36] border border-[#1E2B4D] flex items-center justify-center text-slate-300">
+                        <div className="size-8 rounded-full bg-[#1a1a1a] border border-white/10 flex items-center justify-center text-slate-300">
                           <Video className="size-4" />
                         </div>
-                        <div className="size-8 rounded-full bg-[#131D36] border border-[#1E2B4D] flex items-center justify-center text-slate-300">
+                        <div className="size-8 rounded-full bg-[#1a1a1a] border border-white/10 flex items-center justify-center text-slate-300">
                           <MonitorUp className="size-4" />
                         </div>
-                        <div className="size-8 rounded-full bg-[#131D36] border border-[#1E2B4D] flex items-center justify-center text-slate-300">
+                        <div className="size-8 rounded-full bg-[#1a1a1a] border border-white/10 flex items-center justify-center text-slate-300">
                           <MessageSquare className="size-4" />
                         </div>
                         <div className="size-8 rounded-full bg-red-600 flex items-center justify-center text-white shadow-md shadow-red-600/30">
@@ -142,7 +142,7 @@ export default function LandingPage() {
         </section>
       </main>
 
-      <footer className="w-full border-t border-[#1E2B4D]/60 bg-[#070D1C]/90 backdrop-blur-md px-4 sm:px-6 lg:px-8 py-3 shrink-0">
+      <footer className="w-full border-t border-white/10 bg-[#0a0a0a]/90 backdrop-blur-md px-4 sm:px-6 lg:px-8 py-3 shrink-0">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-slate-400">
           <div className="flex items-center gap-2 justify-center md:justify-start flex-1">
             <a

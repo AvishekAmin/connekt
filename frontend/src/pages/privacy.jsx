@@ -6,14 +6,14 @@ import { Shield, FileText, Lock, ArrowLeft, HelpCircle } from "lucide-react";
 
 export default function PrivacyPage() {
   return (
-    <div className="min-h-screen bg-[#050814] text-white flex flex-col selection:bg-[#00D8F6]/20 selection:text-[#00D8F6]">
+    <div className="min-h-screen bg-[#0a0a0a] text-white flex flex-col selection:bg-[#00D8F6]/20 selection:text-[#00D8F6]">
       <Navbar />
 
       <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-16 space-y-8">
         <div>
           <Link
             to={ROUTES.LANDING}
-            className="inline-flex items-center gap-2 text-xs font-medium text-slate-300 hover:text-white bg-[#0D1527] border border-[#1E2B4D] hover:bg-[#131D36] rounded-full px-4 py-2 w-fit transition-all"
+            className="inline-flex items-center gap-2 text-xs font-medium text-slate-300 hover:text-white bg-[#141414] border border-white/10 hover:bg-[#1f1f1f] rounded-full px-4 py-2 w-fit transition-all"
           >
             <ArrowLeft className="size-3.5" />
             <span>Back to home</span>
@@ -45,8 +45,8 @@ export default function PrivacyPage() {
           </span>
         </div>
 
-        <div className="rounded-3xl bg-[#0D1527] border border-[#1E2B4D] p-6 sm:p-10 shadow-xl space-y-8">
-          <div className="flex items-center gap-3 border-b border-[#1E2B4D] pb-5">
+        <div className="rounded-3xl bg-[#141414] border border-white/10 p-6 sm:p-10 shadow-xl space-y-8">
+          <div className="flex items-center gap-3 border-b border-white/10 pb-5">
             <FileText className="size-6 text-[#00D8F6]" />
             <h2 className="text-xl sm:text-2xl font-bold text-white">
               Terms of Service
@@ -126,8 +126,8 @@ export default function PrivacyPage() {
           </div>
         </div>
 
-        <div className="rounded-3xl bg-[#0D1527] border border-[#1E2B4D] p-6 sm:p-10 shadow-xl space-y-8">
-          <div className="flex items-center gap-3 border-b border-[#1E2B4D] pb-5">
+        <div className="rounded-3xl bg-[#141414] border border-white/10 p-6 sm:p-10 shadow-xl space-y-8">
+          <div className="flex items-center gap-3 border-b border-white/10 pb-5">
             <Lock className="size-6 text-[#7B61FF]" />
             <h2 className="text-xl sm:text-2xl font-bold text-white">
               Privacy Policy
@@ -209,7 +209,7 @@ export default function PrivacyPage() {
           Last Updated: September 2026 • Effective Worldwide
         </p>
 
-        <div className="rounded-3xl bg-gradient-to-r from-[#0D1527] to-[#131D36] border border-[#1E2B4D] p-8 text-center space-y-4">
+        <div className="rounded-3xl bg-[#141414] border border-white/10 p-8 text-center space-y-4 shadow-xl">
           <HelpCircle className="size-8 text-[#00D8F6] mx-auto" />
           <div className="space-y-1">
             <h3 className="text-lg font-bold text-white">
@@ -230,7 +230,7 @@ export default function PrivacyPage() {
         </div>
       </main>
 
-      <footer className="w-full border-t border-[#1E2B4D]/60 bg-[#070D1C]/90 backdrop-blur-md px-4 sm:px-6 lg:px-8 py-3 shrink-0">
+      <footer className="w-full border-t border-white/10 bg-[#0a0a0a]/90 backdrop-blur-md px-4 sm:px-6 lg:px-8 py-3 shrink-0">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-slate-400">
           <div className="flex items-center gap-2 justify-center md:justify-start flex-1">
             <a

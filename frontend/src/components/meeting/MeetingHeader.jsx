@@ -15,7 +15,7 @@ export default function MeetingHeader({
   };
 
   return (
-    <header className="h-14 px-4 sm:px-6 bg-[#050814]/85 backdrop-blur-md border-b border-[#1E2B4D] flex items-center justify-between z-30 shrink-0 select-none">
+    <header className="h-14 px-4 sm:px-6 bg-[#0a0a0a]/90 backdrop-blur-md border-b border-white/10 flex items-center justify-between z-30 shrink-0 select-none">
       <div className="flex items-center gap-2">
         <img src="/favicon.svg" alt="Connekt" className="size-7 rounded-md" />
         <span className="font-bold text-sm sm:text-base tracking-tight text-white hidden sm:inline">
@@ -27,7 +27,7 @@ export default function MeetingHeader({
         <button
           type="button"
           onClick={handleCopy}
-          className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#0D1527] hover:bg-[#131D36] border border-[#1E2B4D] text-xs font-mono text-white transition-all group"
+          className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#141414] hover:bg-[#1f1f1f] border border-white/10 text-xs font-mono text-white transition-all group"
           title="Click to copy meeting code"
           aria-label="Click to copy meeting code"
         >
@@ -49,7 +49,7 @@ export default function MeetingHeader({
       </div>
 
       <div className="flex items-center gap-2">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#0D1527] border border-[#1E2B4D] text-xs text-slate-300 font-semibold">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#141414] border border-white/10 text-xs text-slate-300 font-semibold">
           <Users className="size-3.5 text-[#00D8F6]" />
           <span>{participantCount}</span>
         </div>

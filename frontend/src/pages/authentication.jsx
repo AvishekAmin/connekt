@@ -92,14 +92,14 @@ export default function Authentication() {
   };
 
   return (
-    <div className="min-h-screen bg-[#050814] text-white flex flex-col justify-between p-4 sm:p-6 lg:p-8 relative overflow-hidden selection:bg-[#00D8F6]/20 selection:text-[#00D8F6]">
+    <div className="min-h-screen bg-[#0a0a0a] text-white flex flex-col justify-between p-4 sm:p-6 lg:p-8 relative overflow-hidden selection:bg-[#00D8F6]/20 selection:text-[#00D8F6]">
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-[#00D8F6]/10 rounded-full blur-3xl pointer-events-none -z-10" />
       <div className="absolute bottom-1/4 right-1/3 w-[350px] h-[350px] bg-[#7B61FF]/10 rounded-full blur-3xl pointer-events-none -z-10" />
 
       <div className="w-full max-w-5xl mx-auto flex items-center justify-between">
         <Link
           to={ROUTES.LANDING}
-          className="inline-flex items-center gap-2 text-xs font-medium text-slate-400 hover:text-white bg-[#0D1527] border border-[#1E2B4D] hover:bg-[#131D36] rounded-full px-4 py-2 transition-all"
+          className="inline-flex items-center gap-2 text-xs font-medium text-slate-300 hover:text-white bg-[#141414] border border-white/10 hover:bg-[#1f1f1f] rounded-full px-4 py-2 transition-all"
         >
           <ArrowLeft className="size-3.5" />
           <span>Back to home</span>
@@ -112,7 +112,7 @@ export default function Authentication() {
       </div>
 
       <div className="w-full max-w-md mx-auto my-8">
-        <div className="bg-[#0D1527]/95 border border-[#1E2B4D] rounded-3xl p-6 sm:p-10 shadow-2xl shadow-black/80 backdrop-blur-md">
+        <div className="bg-[#141414]/95 border border-white/10 rounded-3xl p-6 sm:p-10 shadow-2xl shadow-black backdrop-blur-md">
           <div className="text-center space-y-1 mb-6">
             <span className="text-2xl sm:text-3xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[#00D8F6] via-[#6366F1] to-[#EC4899]">
               Connekt
@@ -128,7 +128,7 @@ export default function Authentication() {
           </div>
 
           {location.state?.redirectTo && (
-            <div className="mb-5 p-3 rounded-2xl bg-[#062436] border border-[#00D8F6]/30 text-xs text-[#00D8F6] flex items-center gap-2 shadow-inner">
+            <div className="mb-5 p-3 rounded-2xl bg-cyan-950/30 border border-cyan-500/30 text-xs text-[#00D8F6] flex items-center gap-2 shadow-inner">
               <Video className="size-4 shrink-0" />
               <span>
                 Please {formState === 0 ? "log in" : "sign up"} to enter meeting{" "}
@@ -139,7 +139,7 @@ export default function Authentication() {
             </div>
           )}
 
-          <div className="grid grid-cols-2 p-1 bg-[#0A1020] rounded-full border border-[#1E2B4D] mb-6">
+          <div className="grid grid-cols-2 p-1 bg-[#0f0f0f] rounded-full border border-white/10 mb-6">
             <button
               type="button"
               className={`py-2 text-xs sm:text-sm font-bold rounded-full transition-all ${
@@ -199,7 +199,7 @@ export default function Authentication() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   disabled={isLoading}
-                  className="bg-[#131D36] border-[#1E2B4D] focus-visible:ring-1 focus-visible:ring-[#00D8F6] focus-visible:border-[#00D8F6] rounded-xl h-11 text-sm text-white placeholder:text-slate-500"
+                  className="bg-[#1a1a1a] border-white/10 focus-visible:ring-1 focus-visible:ring-[#00D8F6] focus-visible:border-[#00D8F6] rounded-xl h-11 text-sm text-white placeholder:text-slate-500"
                 />
               </div>
             )}
@@ -215,7 +215,7 @@ export default function Authentication() {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 disabled={isLoading}
-                className="bg-[#131D36] border-[#1E2B4D] focus-visible:ring-1 focus-visible:ring-[#00D8F6] focus-visible:border-[#00D8F6] rounded-xl h-11 text-sm text-white placeholder:text-slate-500"
+                className="bg-[#1a1a1a] border-white/10 focus-visible:ring-1 focus-visible:ring-[#00D8F6] focus-visible:border-[#00D8F6] rounded-xl h-11 text-sm text-white placeholder:text-slate-500"
               />
             </div>
 
@@ -231,7 +231,7 @@ export default function Authentication() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   disabled={isLoading}
-                  className="bg-[#131D36] border-[#1E2B4D] focus-visible:ring-1 focus-visible:ring-[#00D8F6] focus-visible:border-[#00D8F6] rounded-xl h-11 pr-10 text-sm text-white placeholder:text-slate-500"
+                  className="bg-[#1a1a1a] border-white/10 focus-visible:ring-1 focus-visible:ring-[#00D8F6] focus-visible:border-[#00D8F6] rounded-xl h-11 pr-10 text-sm text-white placeholder:text-slate-500"
                 />
                 <button
                   type="button"

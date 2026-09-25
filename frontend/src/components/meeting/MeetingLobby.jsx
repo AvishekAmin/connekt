@@ -34,17 +34,17 @@ export default function MeetingLobby({
   };
 
   return (
-    <div className="min-h-screen bg-[#050814] text-white flex flex-col items-center justify-between p-4 sm:p-8 selection:bg-[#00D8F6]/20 selection:text-[#00D8F6]">
+    <div className="min-h-screen bg-[#0a0a0a] text-white flex flex-col items-center justify-between p-4 sm:p-8 selection:bg-[#00D8F6]/20 selection:text-[#00D8F6]">
       <div className="w-full max-w-5xl flex items-center justify-between">
         <Link
           to={ROUTES.DASHBOARD}
-          className="inline-flex items-center gap-2 text-xs font-medium text-slate-300 hover:text-white bg-[#0D1527] border border-[#1E2B4D] hover:bg-[#131D36] rounded-full px-4 py-2 transition-all group"
+          className="inline-flex items-center gap-2 text-xs font-medium text-slate-300 hover:text-white bg-[#141414] border border-white/10 hover:bg-[#1f1f1f] rounded-full px-4 py-2 transition-all group"
         >
           <ArrowLeft className="size-4 group-hover:-translate-x-0.5 transition-transform" />
           <span>Leave Lobby</span>
         </Link>
 
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0D1527] border border-[#1E2B4D] text-xs font-mono text-slate-400">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#141414] border border-white/10 text-xs font-mono text-slate-400">
           <span>Room:</span>
           <span className="font-bold text-[#00D8F6]">#{meetingCode}</span>
         </div>
@@ -53,7 +53,7 @@ export default function MeetingLobby({
       <main className="w-full max-w-4xl my-auto py-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           <div className="lg:col-span-7 flex flex-col items-center">
-            <div className="relative w-full aspect-video rounded-3xl overflow-hidden bg-[#0D1527] border border-[#1E2B4D] shadow-2xl flex items-center justify-center">
+            <div className="relative w-full aspect-video rounded-3xl overflow-hidden bg-[#141414] border border-white/10 shadow-2xl flex items-center justify-center">
               <video
                 ref={(el) => {
                   if (localVideoRef) {
@@ -77,20 +77,20 @@ export default function MeetingLobby({
 
               {(!isVideoOn || !videoAvailable) && (
                 <div className="flex flex-col items-center justify-center text-slate-400 space-y-2 select-none">
-                  <div className="size-16 rounded-full bg-[#131D36] border border-[#1E2B4D] flex items-center justify-center text-[#00D8F6]">
+                  <div className="size-16 rounded-full bg-[#1a1a1a] border border-white/10 flex items-center justify-center text-[#00D8F6]">
                     <User className="size-8" />
                   </div>
                   <span className="text-xs font-medium">Camera is off</span>
                 </div>
               )}
 
-              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-3 px-3.5 py-1.5 rounded-full bg-[#050814]/85 backdrop-blur-md border border-[#1E2B4D] z-10 shadow-lg">
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-3 px-3.5 py-1.5 rounded-full bg-[#111111]/90 backdrop-blur-md border border-white/10 z-10 shadow-lg">
                 <button
                   type="button"
                   onClick={onToggleAudio}
                   className={`size-10 rounded-full flex items-center justify-center transition-all ${
                     isAudioOn && audioAvailable
-                      ? "bg-[#131D36] border border-[#1E2B4D] hover:bg-[#1A2642] text-white"
+                      ? "bg-[#1a1a1a] border border-white/10 hover:bg-[#262626] text-white"
                       : "bg-red-600 hover:bg-red-700 text-white shadow-md shadow-red-600/30"
                   }`}
                   title={isAudioOn ? "Mute mic" : "Unmute mic"}
@@ -108,7 +108,7 @@ export default function MeetingLobby({
                   onClick={onToggleVideo}
                   className={`size-10 rounded-full flex items-center justify-center transition-all ${
                     isVideoOn && videoAvailable
-                      ? "bg-[#131D36] border border-[#1E2B4D] hover:bg-[#1A2642] text-white"
+                      ? "bg-[#1a1a1a] border border-white/10 hover:bg-[#262626] text-white"
                       : "bg-red-600 hover:bg-red-700 text-white shadow-md shadow-red-600/30"
                   }`}
                   title={isVideoOn ? "Turn off camera" : "Turn on camera"}
@@ -154,7 +154,7 @@ export default function MeetingLobby({
                   placeholder="e.g. Alex"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  className="rounded-full bg-[#131D36] border-[#1E2B4D] text-white px-5 h-12 text-sm placeholder:text-slate-500 focus-visible:ring-1 focus-visible:ring-[#00D8F6] focus-visible:border-[#00D8F6]"
+                  className="rounded-full bg-[#1a1a1a] border-white/10 text-white px-5 h-12 text-sm placeholder:text-slate-500 focus-visible:ring-1 focus-visible:ring-[#00D8F6] focus-visible:border-[#00D8F6]"
                 />
               </div>
 

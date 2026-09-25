@@ -215,7 +215,7 @@ function VideoMeetComponent() {
           onToggleAudio={handleToggleAudio}
         />
       ) : (
-        <div className="relative w-screen h-screen bg-[#050814] text-white flex flex-col overflow-hidden select-none selection:bg-[#00D8F6]/20 selection:text-[#00D8F6]">
+        <div className="relative w-screen h-screen bg-[#0a0a0a] text-white flex flex-col overflow-hidden select-none selection:bg-[#00D8F6]/20 selection:text-[#00D8F6]">
           <MeetingHeader
             meetingCode={routeMeetingCode || "Room"}
             participantCount={participants.length + 1}

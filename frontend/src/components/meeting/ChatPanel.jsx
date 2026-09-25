@@ -46,10 +46,10 @@ export default function ChatPanel({
 
   return (
     <aside
-      className="fixed inset-y-0 right-0 z-50 w-full sm:w-80 md:w-96 bg-[#0D1527]/98 backdrop-blur-xl border-l border-[#1E2B4D] flex flex-col shadow-2xl transition-transform animate-in slide-in-from-right duration-200 select-text"
+      className="fixed inset-y-0 right-0 z-50 w-full sm:w-80 md:w-96 bg-[#141414]/98 backdrop-blur-xl border-l border-white/10 flex flex-col shadow-2xl transition-transform animate-in slide-in-from-right duration-200 select-text"
       aria-label="In-call chat drawer"
     >
-      <div className="h-14 px-4 border-b border-[#1E2B4D] flex items-center justify-between shrink-0">
+      <div className="h-14 px-4 border-b border-white/10 flex items-center justify-between shrink-0">
         <div className="flex items-center gap-2">
           <MessageSquare className="size-4 text-[#00D8F6]" />
           <h2 className="text-sm font-semibold text-white">In-Call Messages</h2>
@@ -57,7 +57,7 @@ export default function ChatPanel({
         <button
           type="button"
           onClick={onClose}
-          className="size-8 rounded-full flex items-center justify-center text-slate-400 hover:text-white hover:bg-[#131D36] transition-colors"
+          className="size-8 rounded-full flex items-center justify-center text-slate-400 hover:text-white hover:bg-[#1f1f1f] transition-colors"
           title="Close chat"
           aria-label="Close chat"
         >
@@ -96,7 +96,7 @@ export default function ChatPanel({
                   className={`max-w-[85%] px-3.5 py-2 rounded-2xl text-sm leading-relaxed break-words ${
                     isMe
                       ? "bg-gradient-to-r from-[#00D8F6] to-[#7B61FF] text-black font-semibold rounded-tr-xs shadow-md"
-                      : "bg-[#131D36] text-white border border-[#1E2B4D] rounded-tl-xs"
+                      : "bg-[#1f1f1f] text-white border border-white/10 rounded-tl-xs"
                   }`}
                 >
                   {item.data}
@@ -106,7 +106,7 @@ export default function ChatPanel({
           })
         ) : (
           <div className="h-full flex flex-col items-center justify-center text-center p-6 space-y-2 text-slate-400">
-            <div className="size-10 rounded-full bg-[#131D36] flex items-center justify-center text-[#00D8F6]">
+            <div className="size-10 rounded-full bg-[#1a1a1a] flex items-center justify-center text-[#00D8F6]">
               <MessageSquare className="size-5" />
             </div>
             <p className="text-sm font-medium text-white">No messages yet</p>
@@ -119,7 +119,7 @@ export default function ChatPanel({
         <div ref={messagesEndRef} />
       </div>
 
-      <div className="p-3 border-t border-[#1E2B4D] bg-[#0D1527] shrink-0">
+      <div className="p-3 border-t border-white/10 bg-[#141414] shrink-0">
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -134,7 +134,7 @@ export default function ChatPanel({
             value={messageText}
             onChange={(e) => setMessageText(e.target.value)}
             onKeyDown={handleKeyDown}
-            className="rounded-full bg-[#131D36] border-[#1E2B4D] text-sm text-white px-4 h-10 placeholder:text-slate-500 focus-visible:ring-1 focus-visible:ring-[#00D8F6] focus-visible:border-[#00D8F6] flex-1"
+            className="rounded-full bg-[#1a1a1a] border-white/10 text-sm text-white px-4 h-10 placeholder:text-slate-500 focus-visible:ring-1 focus-visible:ring-[#00D8F6] focus-visible:border-[#00D8F6] flex-1"
           />
           <Button
             type="submit"

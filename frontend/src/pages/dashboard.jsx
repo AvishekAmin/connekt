@@ -70,14 +70,14 @@ function DashboardComponent() {
   };
 
   return (
-    <div className="min-h-screen bg-[#050814] text-white flex flex-col selection:bg-[#00D8F6]/20 selection:text-[#00D8F6]">
+    <div className="min-h-screen bg-[#0a0a0a] text-white flex flex-col selection:bg-[#00D8F6]/20 selection:text-[#00D8F6]">
       <Navbar showAppNav={true} />
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-2 sm:pt-3 pb-8 sm:pb-12 space-y-8">
         <div className="space-y-4">
           <Link
             to={ROUTES.LANDING}
-            className="inline-flex items-center gap-2 text-xs font-medium text-slate-300 hover:text-white bg-[#0D1527] border border-[#1E2B4D] hover:bg-[#131D36] rounded-full px-4 py-2 w-fit transition-all"
+            className="inline-flex items-center gap-2 text-xs font-medium text-slate-300 hover:text-white bg-[#141414] border border-white/10 hover:bg-[#1f1f1f] rounded-full px-4 py-2 w-fit transition-all"
           >
             <ArrowLeft className="size-3.5" />
             <span>Back to home</span>
@@ -97,7 +97,7 @@ function DashboardComponent() {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           <div className="lg:col-span-6">
-            <div className="rounded-3xl bg-[#0D1527] border border-[#1E2B4D] p-6 sm:p-8 shadow-xl space-y-6">
+            <div className="rounded-3xl bg-[#141414] border border-white/10 p-6 sm:p-8 shadow-xl space-y-6">
               <div className="space-y-1">
                 <div className="size-10 rounded-full bg-cyan-500/10 text-[#00D8F6] flex items-center justify-center border border-[#00D8F6]/30 mb-2">
                   <Video className="size-5" />
@@ -123,7 +123,7 @@ function DashboardComponent() {
                         setMeetingCode(e.target.value);
                         if (error) setError("");
                       }}
-                      className="rounded-full bg-[#131D36] border-[#1E2B4D] text-white px-5 h-12 text-sm sm:text-base font-mono placeholder:text-slate-500 focus-visible:ring-1 focus-visible:ring-[#00D8F6] focus-visible:border-[#00D8F6]"
+                      className="rounded-full bg-[#1a1a1a] border-white/10 text-white px-5 h-12 text-sm sm:text-base font-mono placeholder:text-slate-500 focus-visible:ring-1 focus-visible:ring-[#00D8F6] focus-visible:border-[#00D8F6]"
                     />
                   </div>
                   {error && (
@@ -143,14 +143,14 @@ function DashboardComponent() {
                 </Button>
               </form>
 
-              <div className="pt-2 border-t border-[#1E2B4D]/60 flex items-center justify-between">
+              <div className="pt-2 border-t border-white/10 flex items-center justify-between">
                 <span className="text-xs text-slate-400">
                   Need a new room right away?
                 </span>
                 <button
                   type="button"
                   onClick={handleCreateInstantMeeting}
-                  className="rounded-full bg-[#131D36] border border-[#1E2B4D] hover:bg-[#1A2642] text-slate-200 hover:text-white px-4 py-2 text-xs font-semibold transition-all"
+                  className="rounded-full bg-[#1a1a1a] border border-white/10 hover:bg-[#262626] text-slate-200 hover:text-white px-4 py-2 text-xs font-semibold transition-all"
                 >
                   + Instant Room
                 </button>
@@ -179,7 +179,7 @@ function DashboardComponent() {
                 {[1, 2, 3].map((i) => (
                   <Skeleton
                     key={i}
-                    className="h-16 w-full rounded-2xl bg-[#131D36]"
+                    className="h-16 w-full rounded-2xl bg-[#1a1a1a]"
                   />
                 ))}
               </div>
@@ -188,7 +188,7 @@ function DashboardComponent() {
                 {recentMeetings.map((item, idx) => (
                   <div
                     key={item._id || idx}
-                    className="p-4 rounded-2xl border border-[#1E2B4D] bg-[#0D1527] hover:border-slate-500 transition-all flex items-center justify-between gap-3 group"
+                    className="p-4 rounded-2xl border border-white/10 bg-[#141414] hover:border-white/25 transition-all flex items-center justify-between gap-3 group"
                   >
                     <div className="min-w-0 flex-1 space-y-1">
                       <div className="flex items-center gap-2">
@@ -219,7 +219,7 @@ function DashboardComponent() {
                     <Button
                       variant="outline"
                       size="sm"
-                      className="rounded-full bg-[#131D36] border-[#1E2B4D] hover:bg-[#1A2642] hover:border-slate-500 text-white text-xs font-semibold px-4 py-2 shrink-0"
+                      className="rounded-full bg-[#1a1a1a] border-white/10 hover:bg-[#262626] hover:border-white/20 text-white text-xs font-semibold px-4 py-2 shrink-0"
                       onClick={() =>
                         navigate(ROUTES.getMeetingPath(item.meetingCode))
                       }
@@ -230,8 +230,8 @@ function DashboardComponent() {
                 ))}
               </div>
             ) : (
-              <div className="rounded-3xl bg-[#0D1527] border border-[#1E2B4D] p-8 text-center space-y-3 shadow-md">
-                <div className="size-10 rounded-full bg-[#131D36] text-slate-400 flex items-center justify-center mx-auto">
+              <div className="rounded-3xl bg-[#141414] border border-white/10 p-8 text-center space-y-3 shadow-md">
+                <div className="size-10 rounded-full bg-[#1a1a1a] text-slate-400 flex items-center justify-center mx-auto">
                   <Clock className="size-5" />
                 </div>
                 <div className="space-y-1">

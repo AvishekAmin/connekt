@@ -16,14 +16,14 @@ import {
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-[#050814] text-white flex flex-col selection:bg-[#00D8F6]/20 selection:text-[#00D8F6]">
+    <div className="min-h-screen bg-[#0a0a0a] text-white flex flex-col selection:bg-[#00D8F6]/20 selection:text-[#00D8F6]">
       <Navbar />
 
       <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-16 space-y-8">
         <div>
           <Link
             to={ROUTES.LANDING}
-            className="inline-flex items-center gap-2 text-xs font-medium text-slate-300 hover:text-white bg-[#0D1527] border border-[#1E2B4D] hover:bg-[#131D36] rounded-full px-4 py-2 w-fit transition-all"
+            className="inline-flex items-center gap-2 text-xs font-medium text-slate-300 hover:text-white bg-[#141414] border border-white/10 hover:bg-[#1f1f1f] rounded-full px-4 py-2 w-fit transition-all"
           >
             <ArrowLeft className="size-3.5" />
             <span>Back to home</span>
@@ -44,8 +44,8 @@ export default function AboutPage() {
           </p>
         </div>
 
-        <div className="rounded-3xl bg-[#0D1527] border border-[#1E2B4D] p-6 sm:p-10 shadow-xl space-y-4">
-          <div className="flex items-center gap-3 border-b border-[#1E2B4D] pb-4">
+        <div className="rounded-3xl bg-[#141414] border border-white/10 p-6 sm:p-10 shadow-xl space-y-4">
+          <div className="flex items-center gap-3 border-b border-white/10 pb-4">
             <BookOpen className="size-6 text-[#00D8F6]" />
             <h2 className="text-xl sm:text-2xl font-bold text-white">
               Our Story
@@ -68,8 +68,8 @@ export default function AboutPage() {
           </p>
         </div>
 
-        <div className="rounded-3xl bg-[#0D1527] border border-[#1E2B4D] p-6 sm:p-10 shadow-xl space-y-4">
-          <div className="flex items-center gap-3 border-b border-[#1E2B4D] pb-4">
+        <div className="rounded-3xl bg-[#141414] border border-white/10 p-6 sm:p-10 shadow-xl space-y-4">
+          <div className="flex items-center gap-3 border-b border-white/10 pb-4">
             <Target className="size-6 text-[#7B61FF]" />
             <h2 className="text-xl sm:text-2xl font-bold text-white">
               Our Mission
@@ -85,13 +85,13 @@ export default function AboutPage() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="rounded-2xl bg-[#0D1527] border border-[#1E2B4D] p-6 text-center space-y-1 hover:border-[#00D8F6]/40 transition-all">
+          <div className="rounded-2xl bg-[#141414] border border-white/10 p-6 text-center space-y-1 hover:border-[#00D8F6]/40 transition-all">
             <span className="text-3xl font-extrabold text-[#00D8F6] font-mono">
               &lt; 50ms
             </span>
             <p className="text-xs text-slate-400 font-medium">Peer Latency</p>
           </div>
-          <div className="rounded-2xl bg-[#0D1527] border border-[#1E2B4D] p-6 text-center space-y-1 hover:border-[#00D8F6]/40 transition-all">
+          <div className="rounded-2xl bg-[#141414] border border-white/10 p-6 text-center space-y-1 hover:border-[#00D8F6]/40 transition-all">
             <span className="text-3xl font-extrabold text-[#00D8F6] font-mono">
               99.99%
             </span>
@@ -99,13 +99,13 @@ export default function AboutPage() {
               Signaling Uptime
             </p>
           </div>
-          <div className="rounded-2xl bg-[#0D1527] border border-[#1E2B4D] p-6 text-center space-y-1 hover:border-[#00D8F6]/40 transition-all">
+          <div className="rounded-2xl bg-[#141414] border border-white/10 p-6 text-center space-y-1 hover:border-[#00D8F6]/40 transition-all">
             <span className="text-3xl font-extrabold text-[#00D8F6] font-mono">
               100k+
             </span>
             <p className="text-xs text-slate-400 font-medium">Video Minutes</p>
           </div>
-          <div className="rounded-2xl bg-[#0D1527] border border-[#1E2B4D] p-6 text-center space-y-1 hover:border-[#00D8F6]/40 transition-all">
+          <div className="rounded-2xl bg-[#141414] border border-white/10 p-6 text-center space-y-1 hover:border-[#00D8F6]/40 transition-all">
             <span className="text-3xl font-extrabold text-[#00D8F6] font-mono">
               0
             </span>
@@ -115,8 +115,8 @@ export default function AboutPage() {
           </div>
         </div>
 
-        <div className="rounded-3xl bg-[#0D1527] border border-[#1E2B4D] p-6 sm:p-10 shadow-xl space-y-6">
-          <div className="flex items-center gap-3 border-b border-[#1E2B4D] pb-4">
+        <div className="rounded-3xl bg-[#141414] border border-white/10 p-6 sm:p-10 shadow-xl space-y-6">
+          <div className="flex items-center gap-3 border-b border-white/10 pb-4">
             <Heart className="size-6 text-[#EC4899]" />
             <h2 className="text-xl sm:text-2xl font-bold text-white">
               Our Values
@@ -128,7 +128,7 @@ export default function AboutPage() {
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="rounded-2xl bg-[#131D36]/60 border border-[#1E2B4D] p-5 space-y-2 hover:border-[#00D8F6]/40 transition-all">
+            <div className="rounded-2xl bg-[#1a1a1a]/60 border border-white/10 p-5 space-y-2 hover:border-[#00D8F6]/40 transition-all">
               <div className="size-10 rounded-xl bg-[#00D8F6]/10 text-[#00D8F6] flex items-center justify-center">
                 <ShieldCheck className="size-5" />
               </div>
@@ -142,7 +142,7 @@ export default function AboutPage() {
               </p>
             </div>
 
-            <div className="rounded-2xl bg-[#131D36]/60 border border-[#1E2B4D] p-5 space-y-2 hover:border-[#00D8F6]/40 transition-all">
+            <div className="rounded-2xl bg-[#1a1a1a]/60 border border-white/10 p-5 space-y-2 hover:border-[#00D8F6]/40 transition-all">
               <div className="size-10 rounded-xl bg-[#7B61FF]/10 text-[#7B61FF] flex items-center justify-center">
                 <Zap className="size-5" />
               </div>
@@ -155,7 +155,7 @@ export default function AboutPage() {
               </p>
             </div>
 
-            <div className="rounded-2xl bg-[#131D36]/60 border border-[#1E2B4D] p-5 space-y-2 hover:border-[#00D8F6]/40 transition-all">
+            <div className="rounded-2xl bg-[#1a1a1a]/60 border border-white/10 p-5 space-y-2 hover:border-[#00D8F6]/40 transition-all">
               <div className="size-10 rounded-xl bg-[#00E599]/10 text-[#00E599] flex items-center justify-center">
                 <Users className="size-5" />
               </div>
@@ -168,7 +168,7 @@ export default function AboutPage() {
               </p>
             </div>
 
-            <div className="rounded-2xl bg-[#131D36]/60 border border-[#1E2B4D] p-5 space-y-2 hover:border-[#00D8F6]/40 transition-all">
+            <div className="rounded-2xl bg-[#1a1a1a]/60 border border-white/10 p-5 space-y-2 hover:border-[#00D8F6]/40 transition-all">
               <div className="size-10 rounded-xl bg-[#EC4899]/10 text-[#EC4899] flex items-center justify-center">
                 <Sparkles className="size-5" />
               </div>
@@ -183,21 +183,21 @@ export default function AboutPage() {
           </div>
         </div>
 
-        <div className="rounded-3xl bg-[#0D1527] border border-[#1E2B4D] p-6 sm:p-10 shadow-xl space-y-6">
-          <div className="flex items-center gap-3 border-b border-[#1E2B4D] pb-4">
+        <div className="rounded-3xl bg-[#141414] border border-white/10 p-6 sm:p-10 shadow-xl space-y-6">
+          <div className="flex items-center gap-3 border-b border-white/10 pb-4">
             <Users className="size-6 text-[#00D8F6]" />
             <h2 className="text-xl sm:text-2xl font-bold text-white">
               Meet the Creator
             </h2>
           </div>
-          <div className="max-w-md mx-auto p-6 rounded-2xl bg-[#131D36]/60 border border-[#1E2B4D] text-center space-y-3 hover:border-[#00D8F6]/40 transition-all">
+          <div className="max-w-md mx-auto p-6 rounded-2xl bg-[#1a1a1a]/60 border border-white/10 text-center space-y-3 hover:border-[#00D8F6]/40 transition-all">
             <div className="size-16 rounded-full bg-gradient-to-tr from-[#00D8F6] to-[#7B61FF] text-black font-extrabold text-xl flex items-center justify-center mx-auto shadow-lg shadow-cyan-500/20">
               AA
             </div>
             <div>
               <h3 className="text-lg font-bold text-white">Avishek Amin</h3>
               <p className="text-xs text-[#00D8F6] font-medium">
-                Founder &amp; Full Stack Architect
+                Founder &amp; Full Stack Developer
               </p>
             </div>
             <p className="text-xs text-slate-400 leading-relaxed">
@@ -209,7 +209,7 @@ export default function AboutPage() {
         </div>
       </main>
 
-      <footer className="w-full border-t border-[#1E2B4D]/60 bg-[#070D1C]/90 backdrop-blur-md px-4 sm:px-6 lg:px-8 py-3 shrink-0">
+      <footer className="w-full border-t border-white/10 bg-[#0a0a0a]/90 backdrop-blur-md px-4 sm:px-6 lg:px-8 py-3 shrink-0">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-slate-400">
           <div className="flex items-center gap-2 justify-center md:justify-start flex-1">
             <a

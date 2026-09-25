@@ -6,38 +6,38 @@
 
 :root,
 .dark {
-  --background: #050814;
+  --background: #0a0a0a;
   --foreground: #ffffff;
 
-  --card: #0d1527;
+  --card: #141414;
   --card-foreground: #ffffff;
 
-  --popover: #0d1527;
+  --popover: #141414;
   --popover-foreground: #ffffff;
 
   --primary: #00d8f6;
   --primary-foreground: #000000;
 
-  --secondary: #131d36;
+  --secondary: #1a1a1a;
   --secondary-foreground: #ffffff;
 
-  --muted: #131d36;
-  --muted-foreground: #8292ab;
+  --muted: #1a1a1a;
+  --muted-foreground: #94a3b8;
   --accent: #7b61ff;
   --accent-foreground: #000000;
 
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
 
-  --border: #1e2b4d;
-  --input: #1e2b4d;
+  --border: rgba(255, 255, 255, 0.08);
+  --input: #1a1a1a;
   --ring: #00d8f6;
 
   --radius: 1rem;
 }
 
 body {
-  background-color: #050814;
+  background-color: #0a0a0a;
   color: #ffffff;
   font-family:
     "Poppins",
@@ -133,19 +133,19 @@ textarea {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--background, #050814);
+  background: var(--background, #0a0a0a);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 216, 255, 0.25);
+  background: rgba(255, 255, 255, 0.15);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 216, 255, 0.48);
+  background: rgba(255, 255, 255, 0.28);
 }
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: rgba(0, 216, 255, 0.25) var(--background, #050814);
+  scrollbar-color: rgba(255, 255, 255, 0.15) var(--background, #0a0a0a);
 }

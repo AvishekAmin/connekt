@@ -37,14 +37,14 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#050814] text-white flex flex-col selection:bg-[#00D8F6]/20 selection:text-[#00D8F6]">
+    <div className="min-h-screen bg-[#0a0a0a] text-white flex flex-col selection:bg-[#00D8F6]/20 selection:text-[#00D8F6]">
       <Navbar />
 
       <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-16 space-y-8">
         <div>
           <Link
             to={ROUTES.LANDING}
-            className="inline-flex items-center gap-2 text-xs font-medium text-slate-300 hover:text-white bg-[#0D1527] border border-[#1E2B4D] hover:bg-[#131D36] rounded-full px-4 py-2 w-fit transition-all"
+            className="inline-flex items-center gap-2 text-xs font-medium text-slate-300 hover:text-white bg-[#141414] border border-white/10 hover:bg-[#1f1f1f] rounded-full px-4 py-2 w-fit transition-all"
           >
             <ArrowLeft className="size-3.5" />
             <span>Back to home</span>
@@ -66,7 +66,7 @@ export default function ContactPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="rounded-2xl bg-[#0D1527] border border-[#1E2B4D] p-6 text-center space-y-2 hover:border-[#00D8F6]/40 transition-all">
+          <div className="rounded-2xl bg-[#141414] border border-white/10 p-6 text-center space-y-2 hover:border-[#00D8F6]/40 transition-all">
             <div className="size-12 rounded-xl bg-[#00D8F6]/10 text-[#00D8F6] flex items-center justify-center mx-auto">
               <Mail className="size-5" />
             </div>
@@ -82,7 +82,7 @@ export default function ContactPage() {
             </p>
           </div>
 
-          <div className="rounded-2xl bg-[#0D1527] border border-[#1E2B4D] p-6 text-center space-y-2 hover:border-[#00D8F6]/40 transition-all">
+          <div className="rounded-2xl bg-[#141414] border border-white/10 p-6 text-center space-y-2 hover:border-[#00D8F6]/40 transition-all">
             <div className="size-12 rounded-xl bg-[#7B61FF]/10 text-[#7B61FF] flex items-center justify-center mx-auto">
               <Phone className="size-5" />
             </div>
@@ -98,7 +98,7 @@ export default function ContactPage() {
             </p>
           </div>
 
-          <div className="rounded-2xl bg-[#0D1527] border border-[#1E2B4D] p-6 text-center space-y-2 hover:border-[#00D8F6]/40 transition-all">
+          <div className="rounded-2xl bg-[#141414] border border-white/10 p-6 text-center space-y-2 hover:border-[#00D8F6]/40 transition-all">
             <div className="size-12 rounded-xl bg-[#00E599]/10 text-[#00E599] flex items-center justify-center mx-auto">
               <MessageSquare className="size-5" />
             </div>
@@ -112,8 +112,8 @@ export default function ContactPage() {
           </div>
         </div>
 
-        <div className="rounded-3xl bg-[#0D1527] border border-[#1E2B4D] p-6 sm:p-10 shadow-xl space-y-6">
-          <div className="flex items-center gap-3 border-b border-[#1E2B4D] pb-4">
+        <div className="rounded-3xl bg-[#141414] border border-white/10 p-6 sm:p-10 shadow-xl space-y-6">
+          <div className="flex items-center gap-3 border-b border-white/10 pb-4">
             <Send className="size-6 text-[#00D8F6]" />
             <h2 className="text-xl sm:text-2xl font-bold text-white">
               Send Us a Message
@@ -134,7 +134,7 @@ export default function ContactPage() {
                 variant="outline"
                 size="sm"
                 onClick={() => setSubmitted(false)}
-                className="rounded-full border-[#1E2B4D] bg-[#131D36] text-white hover:bg-[#1E2B4D] text-xs"
+                className="rounded-full border-white/10 bg-[#1a1a1a] text-white hover:bg-[#262626] text-xs"
               >
                 Send Another Message
               </Button>
@@ -154,7 +154,7 @@ export default function ContactPage() {
                     onChange={(e) =>
                       setFormData({ ...formData, name: e.target.value })
                     }
-                    className="rounded-xl bg-[#131D36] border-[#1E2B4D] text-white h-11 text-sm placeholder:text-slate-500 focus-visible:ring-1 focus-visible:ring-[#00D8F6]"
+                    className="rounded-xl bg-[#1a1a1a] border-white/10 text-white h-11 text-sm placeholder:text-slate-500 focus-visible:ring-1 focus-visible:ring-[#00D8F6]"
                   />
                 </div>
                 <div className="space-y-1.5">
@@ -169,7 +169,7 @@ export default function ContactPage() {
                     onChange={(e) =>
                       setFormData({ ...formData, email: e.target.value })
                     }
-                    className="rounded-xl bg-[#131D36] border-[#1E2B4D] text-white h-11 text-sm placeholder:text-slate-500 focus-visible:ring-1 focus-visible:ring-[#00D8F6]"
+                    className="rounded-xl bg-[#1a1a1a] border-white/10 text-white h-11 text-sm placeholder:text-slate-500 focus-visible:ring-1 focus-visible:ring-[#00D8F6]"
                   />
                 </div>
               </div>
@@ -184,7 +184,7 @@ export default function ContactPage() {
                   onChange={(e) =>
                     setFormData({ ...formData, subject: e.target.value })
                   }
-                  className="w-full rounded-xl bg-[#131D36] border border-[#1E2B4D] text-white h-11 px-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#00D8F6]"
+                  className="w-full rounded-xl bg-[#1a1a1a] border border-white/10 text-white h-11 px-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#00D8F6]"
                 >
                   <option value="" disabled>
                     Select a topic
@@ -210,7 +210,7 @@ export default function ContactPage() {
                   onChange={(e) =>
                     setFormData({ ...formData, message: e.target.value })
                   }
-                  className="w-full rounded-xl bg-[#131D36] border border-[#1E2B4D] text-white p-3 text-sm placeholder:text-slate-500 focus:outline-none focus:ring-1 focus:ring-[#00D8F6] resize-y"
+                  className="w-full rounded-xl bg-[#1a1a1a] border border-white/10 text-white p-3 text-sm placeholder:text-slate-500 focus:outline-none focus:ring-1 focus:ring-[#00D8F6] resize-y"
                 />
               </div>
 
@@ -226,8 +226,8 @@ export default function ContactPage() {
           )}
         </div>
 
-        <div className="rounded-3xl bg-[#0D1527] border border-[#1E2B4D] p-6 sm:p-10 shadow-xl space-y-6">
-          <div className="flex items-center gap-3 border-b border-[#1E2B4D] pb-4">
+        <div className="rounded-3xl bg-[#141414] border border-white/10 p-6 sm:p-10 shadow-xl space-y-6">
+          <div className="flex items-center gap-3 border-b border-white/10 pb-4">
             <Building className="size-6 text-[#00D8F6]" />
             <h2 className="text-xl sm:text-2xl font-bold text-white">
               Our Office
@@ -274,7 +274,7 @@ export default function ContactPage() {
         </div>
       </main>
 
-      <footer className="w-full border-t border-[#1E2B4D]/60 bg-[#070D1C]/90 backdrop-blur-md px-4 sm:px-6 lg:px-8 py-3 shrink-0">
+      <footer className="w-full border-t border-white/10 bg-[#0a0a0a]/90 backdrop-blur-md px-4 sm:px-6 lg:px-8 py-3 shrink-0">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-slate-400">
           <div className="flex items-center gap-2 justify-center md:justify-start flex-1">
             <a

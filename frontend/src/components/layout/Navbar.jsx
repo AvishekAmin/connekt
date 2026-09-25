@@ -112,7 +112,7 @@ export default function Navbar({ _showAuth = false, _showAppNav = false }) {
 
   return (
     <header className="sticky top-0 z-50 w-full px-3 py-3 sm:px-6 md:px-8">
-      <div className="max-w-7xl mx-auto rounded-2xl md:rounded-full border border-[#1E2B4D] bg-[#0A1020]/90 backdrop-blur-xl px-4 py-2.5 sm:px-6 flex items-center justify-between gap-3 sm:gap-4 shadow-2xl shadow-black/60 transition-all">
+      <div className="max-w-7xl mx-auto rounded-2xl md:rounded-full border border-white/10 bg-[#121212]/90 backdrop-blur-xl px-4 py-2.5 sm:px-6 flex items-center justify-between gap-3 sm:gap-4 shadow-2xl shadow-black/60 transition-all">
         <Link
           to={ROUTES.LANDING}
           className="flex items-center gap-2.5 shrink-0 focus:outline-none group"
@@ -139,10 +139,10 @@ export default function Navbar({ _showAuth = false, _showAppNav = false }) {
         <div className="hidden lg:flex items-center gap-3 flex-1 justify-center max-w-2xl">
           <form
             onSubmit={handleJoinMeeting}
-            className={`flex items-center rounded-full border bg-[#0D1527]/90 px-3.5 py-1.5 transition-all shadow-inner ${
+            className={`flex items-center rounded-full border bg-[#181818] px-3.5 py-1.5 transition-all shadow-inner ${
               inputError
                 ? "border-red-500/80 ring-1 ring-red-500/50"
-                : "border-[#1E2B4D] focus-within:border-[#00D8F6]/80 focus-within:ring-1 focus-within:ring-[#00D8F6]/40"
+                : "border-white/10 focus-within:border-[#00D8F6]/80 focus-within:ring-1 focus-within:ring-[#00D8F6]/40"
             }`}
           >
             <Keyboard className="size-4 text-slate-400 shrink-0 mr-2.5" />
@@ -171,7 +171,7 @@ export default function Navbar({ _showAuth = false, _showAppNav = false }) {
           <button
             type="button"
             onClick={handleCreateMeeting}
-            className="h-[38px] rounded-full border border-[#00D8F6]/45 hover:border-[#00D8F6] bg-[#0D1527]/90 hover:bg-[#131D36] text-white px-4 py-2 text-xs sm:text-sm font-semibold flex items-center gap-2 transition-all shadow-sm hover:shadow-cyan-500/15 active:scale-95 shrink-0 group"
+            className="h-[38px] rounded-full border border-[#00D8F6]/45 hover:border-[#00D8F6] bg-[#181818] hover:bg-[#222222] text-white px-4 py-2 text-xs sm:text-sm font-semibold flex items-center gap-2 transition-all shadow-sm hover:shadow-cyan-500/15 active:scale-95 shrink-0 group"
           >
             <div className="relative flex items-center justify-center text-[#00D8F6]">
               <Video className="size-4 text-[#00D8F6]" />
@@ -183,7 +183,7 @@ export default function Navbar({ _showAuth = false, _showAppNav = false }) {
 
         <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
           {isLoading ? (
-            <div className="size-9 rounded-full bg-[#131D36] border border-[#1E2B4D] animate-pulse" />
+            <div className="size-9 rounded-full bg-[#1a1a1a] border border-white/10 animate-pulse" />
           ) : !isAuthenticated ? (
             <>
               <button
@@ -206,7 +206,7 @@ export default function Navbar({ _showAuth = false, _showAppNav = false }) {
             <>
               <Link
                 to={ROUTES.HISTORY}
-                className="h-[38px] hidden sm:inline-flex items-center gap-2 rounded-full border border-[#1E2B4D] bg-[#0D1527] hover:bg-[#131D36] hover:border-[#00D8F6]/40 text-slate-200 hover:text-white px-4 py-2 text-xs sm:text-sm font-semibold transition-all shrink-0 active:scale-95"
+                className="h-[38px] hidden sm:inline-flex items-center gap-2 rounded-full border border-white/10 bg-[#141414] hover:bg-[#1f1f1f] hover:border-[#00D8F6]/40 text-slate-200 hover:text-white px-4 py-2 text-xs sm:text-sm font-semibold transition-all shrink-0 active:scale-95"
               >
                 <History className="size-4 text-[#00D8F6]" />
                 <span>History</span>
@@ -225,8 +225,8 @@ export default function Navbar({ _showAuth = false, _showAppNav = false }) {
                 </button>
 
                 {userDropdownOpen && (
-                  <div className="absolute right-0 mt-2.5 w-52 rounded-2xl border border-[#1E2B4D] bg-[#0D1527]/95 backdrop-blur-2xl p-2 shadow-2xl z-50 animate-in fade-in zoom-in-95 duration-150">
-                    <div className="px-3 py-2 border-b border-[#1E2B4D]">
+                  <div className="absolute right-0 mt-2.5 w-52 rounded-2xl border border-white/10 bg-[#141414]/95 backdrop-blur-2xl p-2 shadow-2xl z-50 animate-in fade-in zoom-in-95 duration-150">
+                    <div className="px-3 py-2 border-b border-white/10">
                       <p className="text-xs font-bold text-white truncate">
                         {user?.name || user?.username}
                       </p>
@@ -239,7 +239,7 @@ export default function Navbar({ _showAuth = false, _showAppNav = false }) {
                       <Link
                         to={ROUTES.DASHBOARD}
                         onClick={() => setUserDropdownOpen(false)}
-                        className="flex items-center gap-2 px-3 py-2 text-xs font-medium text-slate-200 hover:text-white hover:bg-[#131D36] rounded-xl transition-all"
+                        className="flex items-center gap-2 px-3 py-2 text-xs font-medium text-slate-200 hover:text-white hover:bg-[#1f1f1f] rounded-xl transition-all"
                       >
                         <LayoutDashboard className="size-3.5 text-[#00D8F6]" />
                         <span>Dashboard</span>
@@ -248,13 +248,13 @@ export default function Navbar({ _showAuth = false, _showAppNav = false }) {
                       <Link
                         to={ROUTES.HISTORY}
                         onClick={() => setUserDropdownOpen(false)}
-                        className="flex items-center gap-2 px-3 py-2 text-xs font-medium text-slate-200 hover:text-white hover:bg-[#131D36] rounded-xl transition-all"
+                        className="flex items-center gap-2 px-3 py-2 text-xs font-medium text-slate-200 hover:text-white hover:bg-[#1f1f1f] rounded-xl transition-all"
                       >
                         <History className="size-3.5 text-[#00D8F6]" />
                         <span>Meeting History</span>
                       </Link>
 
-                      <hr className="border-[#1E2B4D] my-1" />
+                      <hr className="border-white/10 my-1" />
 
                       <button
                         type="button"
@@ -274,7 +274,7 @@ export default function Navbar({ _showAuth = false, _showAppNav = false }) {
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-2 rounded-full border border-[#1E2B4D] bg-[#0D1527] hover:bg-[#131D36] text-slate-300 hover:text-white transition-all"
+            className="lg:hidden p-2 rounded-full border border-white/10 bg-[#141414] hover:bg-[#1f1f1f] text-slate-300 hover:text-white transition-all"
             aria-label="Toggle navigation menu"
           >
             {mobileMenuOpen ? (
@@ -287,10 +287,10 @@ export default function Navbar({ _showAuth = false, _showAppNav = false }) {
       </div>
 
       {mobileMenuOpen && (
-        <div className="lg:hidden max-w-7xl mx-auto mt-2 rounded-2xl border border-[#1E2B4D] bg-[#0D1527]/95 backdrop-blur-2xl p-4 shadow-2xl space-y-3.5 animate-in fade-in duration-150">
+        <div className="lg:hidden max-w-7xl mx-auto mt-2 rounded-2xl border border-white/10 bg-[#141414]/95 backdrop-blur-2xl p-4 shadow-2xl space-y-3.5 animate-in fade-in duration-150">
           <form
             onSubmit={handleJoinMeeting}
-            className="flex items-center rounded-full border border-[#1E2B4D] bg-[#101930] px-3.5 py-1.5"
+            className="flex items-center rounded-full border border-white/10 bg-[#181818] px-3.5 py-1.5"
           >
             <Keyboard className="size-4 text-slate-400 shrink-0 mr-2" />
             <input
@@ -311,14 +311,14 @@ export default function Navbar({ _showAuth = false, _showAppNav = false }) {
           <button
             type="button"
             onClick={handleCreateMeeting}
-            className="w-full rounded-full border border-[#00D8F6]/45 bg-[#131D36] text-white py-2 text-xs font-semibold flex items-center justify-center gap-2"
+            className="w-full rounded-full border border-[#00D8F6]/45 bg-[#1a1a1a] text-white py-2 text-xs font-semibold flex items-center justify-center gap-2"
           >
             <Video className="size-4 text-[#00D8F6]" />
             <span>Create a meeting</span>
           </button>
 
           {!isLoading && !isAuthenticated && (
-            <div className="grid grid-cols-2 gap-2 pt-1 border-t border-[#1E2B4D]">
+            <div className="grid grid-cols-2 gap-2 pt-1 border-t border-white/10">
               <button
                 type="button"
                 onClick={() => handleNavigateToAuth(1)}
@@ -337,7 +337,7 @@ export default function Navbar({ _showAuth = false, _showAppNav = false }) {
           )}
 
           {!isLoading && isAuthenticated && (
-            <div className="space-y-3 pt-2 border-t border-[#1E2B4D]">
+            <div className="space-y-3 pt-2 border-t border-white/10">
               <div className="flex items-center gap-3 px-1">
                 <div className="size-9 rounded-full bg-gradient-to-r from-[#00D8F6] to-[#7B61FF] text-black font-extrabold flex items-center justify-center text-sm shadow-md shadow-cyan-500/25 shrink-0">
                   {user?.name?.charAt(0)?.toUpperCase() ||
@@ -358,7 +358,7 @@ export default function Navbar({ _showAuth = false, _showAppNav = false }) {
                 <Link
                   to={ROUTES.DASHBOARD}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center justify-center gap-1.5 rounded-full border border-[#1E2B4D] bg-[#131D36] text-white py-2 text-xs font-medium text-center hover:bg-[#1A2642] transition-all"
+                  className="flex items-center justify-center gap-1.5 rounded-full border border-white/10 bg-[#1a1a1a] text-white py-2 text-xs font-medium text-center hover:bg-[#262626] transition-all"
                 >
                   <LayoutDashboard className="size-3.5 text-[#00D8F6]" />
                   <span>Dashboard</span>
@@ -366,7 +366,7 @@ export default function Navbar({ _showAuth = false, _showAppNav = false }) {
                 <Link
                   to={ROUTES.HISTORY}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center justify-center gap-1.5 rounded-full border border-[#1E2B4D] bg-[#131D36] text-white py-2 text-xs font-medium text-center hover:bg-[#1A2642] transition-all"
+                  className="flex items-center justify-center gap-1.5 rounded-full border border-white/10 bg-[#1a1a1a] text-white py-2 text-xs font-medium text-center hover:bg-[#262626] transition-all"
                 >
                   <History className="size-3.5 text-[#00D8F6]" />
                   <span>History</span>
